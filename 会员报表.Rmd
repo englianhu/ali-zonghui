@@ -1,0 +1,367 @@
+---
+title: "阿里彩票"
+subtitle: "会员报表报告"
+author: "雷欧 <img src='figure/cd23-isqivxh1309422.jpg' width='24'>"
+date: "`r lubridate::today()`"
+output:
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    code_folding: hide
+---
+
+```{r warning = FALSE, message=FALSE}
+## 3210448065@qq.com
+## leiou123
+
+## 2849108450@qq.com
+## leiou123
+## https://rstudio.cloud/project/1198888
+
+pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr', 
+         'knitr', 'kableExtra', 'forecast', 'formattable', 'DT', 
+         'lubridate', 'highcharter', 'htmltools', 'echarts4r')
+
+plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
+```
+
+# 数据
+
+读取样本数据。
+
+```{r warning = FALSE}
+## 读取数据
+fls <- suppressWarnings(list.files('data/会员报表'))
+smp <- fls %>% llply(., function(x) {
+    dtt <- x %>% str_replace_all('.xls', '') %>% ymd
+    smpp <- read_excel(paste0('data/会员报表/', x))
+    data.frame('日期' = dtt, smpp)
+}) %>% bind_rows %>% 
+    as_tibble %>% 
+    mutate('用户账号' = factor(用户账号), 
+           '等级' = factor(等级), 
+           '上级代理' = factor(上级代理), 
+           '盈率' = as.numeric(percent(盈率))) %>% 
+    mutate_if(is.character, as.numeric)
+rm(fls)
+
+smp %>% datatable(
+    caption = "会员报表数据", 
+    escape = FALSE, filter = 'top', rownames = FALSE, 
+    extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
+                      'Buttons' = NULL, 'Responsive' = NULL), 
+    options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+                   lengthMenu = list(c(10, 50, 100, 500, -1), 
+                                     c('10', '50', '100', '500', 'All')), 
+                   ColReorder = TRUE, rowReorder = TRUE, 
+                   buttons = list('copy', 'print', 
+                                  list(extend = 'collection', 
+                                       buttons = c('csv', 'excel', 'pdf'), 
+                                       text = 'Download'), I('colvis'))))
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的报表数据。
+
+<br>
+<br>
+
+# 绘图
+
+<br>
+
+## 投注人数
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+pl1 <- smp %>% 
+  highchart() %>% 
+  hc_chart('line', hcaes(x = 日期, y = 投注人数, group = 彩种名称)) %>% 
+  hc_title(text = '用户账号') %>%
+  hc_subtitle(text = '投注人数')
+
+tagList(pl1)
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(投注人数, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '投注人数', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '投注人数') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    #selectedMode = 'multiple', #https://echarts.apache.org/en/option.html#legend
+    #selected = list('彩种'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**投注人数**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 投注金额
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '投注金额')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(投注金额, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '投注金额', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '投注金额') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**投注金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 中奖金额
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '中奖金额')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(中奖金额, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '中奖金额', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '中奖金额') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**中奖金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 撤单金额
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '撤单金额')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(撤单金额, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '撤单金额', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '撤单金额') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**撤单金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 返点金额
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '返点金额')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(返点金额, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '返点金额', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '返点金额') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**返点金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 盈利
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '盈利')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(盈利, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '盈利', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '盈利') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**盈利**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+
+## 盈率
+
+```{r warning = FALSE, eval = FALSE, results = 'asis'}
+smp %>% 
+    hchart('line', hcaes(x = 日期, y = 投注金额, group = 彩种名称)) %>% 
+    hc_title(text = '彩种') %>%
+    hc_subtitle(text = '盈率')
+```
+
+```{r}
+smp %>% 
+    group_by(彩种名称) %>% 
+    e_charts(x = 日期) %>% 
+    e_line(盈率, smooth = TRUE) %>% 
+  e_datazoom(
+    type = 'slider', 
+    toolbox = FALSE,
+    bottom = -5) %>% 
+  e_tooltip() %>% 
+  e_title(text = '彩种', subtext = '盈率', left = 'center') %>% 
+  e_axis_labels(x = '日期', y = '盈率') %>%
+  e_x_axis(日期, axisPointer = list(show = TRUE)) %>% 
+  e_legend(
+    orient = 'vertical', 
+    type = c('scroll'), 
+    left = 0, top = 80) %>% 
+  e_grid(left = 150, top = 90) %>% 
+  #e_theme('shine') %>% 
+  e_toolbox_feature('saveAsImage', title = '截图')
+```
+
+上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**盈率**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+
+<br>
+<br>
+
+# 结论
+
+<br>
+
+## 总结
+
+以上是将数据绘图，还需要通过统计模型预测，不过基于数据观测值太少^[[binary.com Interview Question I (Extention)](https://rpubs.com/englianhu/binary-Q1E)尝试分别使用`3个月`、`6个月`、`12个月`、`18个月`和`24个月`的数据，结果`12个月`的数据最为精准。]，所以暂时没有预测。
+
+<br>
+
+## 附录
+
+```{r warning = FALSE, results = 'asis'}
+suppressMessages(require('dplyr', quietly = TRUE))
+suppressMessages(require('formattable', quietly = TRUE))
+suppressMessages(require('knitr', quietly = TRUE))
+suppressMessages(require('kableExtra', quietly = TRUE))
+sys1 <- devtools::session_info()$platform %>% 
+  unlist %>% data.frame(Category = names(.), session_info = .)
+rownames(sys1) <- NULL
+#sys1 %<>% rbind(., data.frame(
+#  Category = 'Current time', 
+#  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST'))) %>% 
+#  dplyr::filter(Category != 'os')
+sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
+names(sys2)[2] <- c('Sys.info')
+rownames(sys2) <- NULL
+if (nrow(sys1) == 7 & nrow(sys2) == 8) {
+  sys1 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+} else {
+  sys2 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+}
+cbind(sys1, sys2) %>% 
+  kable(caption = 'Additional session information:') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+rm(sys1, sys2)
+```

@@ -1,0 +1,566 @@
+---
+title: "阿里彩票"
+subtitle: "分析样本数据 <img src='figure/中日混血儿男神.jpg' width='20'>"
+author: "雷欧"
+date: "`r lubridate::today()`"
+output:
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    code_folding: hide
+---
+
+读取程序包
+
+```{r include=FALSE}
+## 3210448065@qq.com
+## leiou123
+## https://rstudio.cloud/project/1198888
+
+## 读取程序包
+if(!require('BBmisc')) {install.packages('BBmisc')}
+require('BBmisc')
+lib(c('readxl', 'lme4', 'forecast', 'openxlsx', 'plyr', 
+      'xts', 'dplyr', 'knitr', 'quantmod', 'magrittr', 
+      'purrr', 'lubridate', 'stats', 'knitr', 'kableExtra', 
+      'formattable', 'ggplot2', 'broom', 'DT', 'stringr'))
+```
+
+# 介绍
+
+今天尝试分析小组**样本数据**，分析`总添加`、`总注册`、`总首冲`、`总投注`、`总流水`、`总充值`、`总盈利`、`净投注`、`总体留存率`、`人均充值`能产生多少`负盈利`。
+
+# 数据
+
+读取样本数据。
+
+```{r warning=FALSE}
+## 读取数据
+smp <- suppressAll(read_excel('巅峰9月各组每日报表.xlsx') %>% tbl_df)
+names(smp) <- smp[1,]; smp %<>% .[-1,]
+# 总盈利, 总添加, 总注册, 总首冲, 总投注, 总流水, 总充值
+# names(smp) <- c('Date', 'PL', 'Add', 'RG', 'FD', 'TB', 'TO', 'TD')
+smp %<>% mutate_if(is.character, as.numeric)
+smp$日期 %<>% as.numeric %>% as.Date()
+
+smp %>% datatable(
+    caption = "样本数据", 
+    escape = FALSE, filter = 'top', rownames = FALSE, 
+    extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
+                      'Buttons' = NULL, 'Responsive' = NULL), 
+    options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+                   lengthMenu = list(c(10, 50, 100, -1), c('10', '50', '100', 'All')), 
+                   ColReorder = TRUE, rowReorder = TRUE, 
+                   buttons = list('copy', 'print', 
+                                  list(extend = 'collection', 
+                                       buttons = c('csv', 'excel', 'pdf'), 
+                                       text = 'Download'), I('colvis'))))
+
+```
+
+# 线性模型
+
+统计建模，以下乃使用线性模型分析。
+
+```{r warning=FALSE}
+## 模型比较
+m1 <- lm(总盈利 ~ 总添加 + 总注册 + 总首冲 + 总投注 + 总流水 + 总充值, data = smp)
+m2 <- lm(总盈利 ~ 总添加 + 总注册 + 总首冲 + 总投注 + 总流水, data = smp)
+m3 <- lm(总盈利 ~ 总添加 + 总注册 + 总首冲 + 总投注, data = smp)
+m4 <- lm(总盈利 ~ 总添加 + 总注册 + 总首冲, data = smp)
+
+m <- list(m1 = m1, m2 = m2, m3 = m3, m4 = m4)
+rm(m1, m2, m3, m4)
+```
+
+# 移动模型
+
+## 测试14天移动数据
+
+```{r warning=FALSE, message=FALSE}
+## 转换数据类型
+nm <- c('Date', 'PL', 'Add', 'RG', 'FD', 'TB', 'TO', 'TD', 'NB', 'NBR', 'AD')
+names(smp) <- nm
+
+smp %<>% na.omit
+datt <- llply(smp[,-1], function(x) {
+  x %<>% xts(order.by = smp$Date)
+  x
+})
+
+## 样本数据 14天
+dbt <- smp$Date[14:length(smp$Date)]
+datt <- suppressMessages(llply(dbt, function(x) {
+  dbtt <- smp$Date[smp$Date <= x]
+  dbtt <- dbtt[(length(dbtt) - 14):length(dbtt)]
+  z <- llply(datt, function(y) {
+    y <- y[index(y) %in% dbtt]
+    xx <- auto.arima(y, D=1)
+    fst <- forecast(xx, h=1) %>% 
+      tbl_df %>% select('Point Forecast') %>% 
+      rename(`FP` = `Point Forecast`)
+    names(y) %<>% str_extract_all('[A-Z]{1,}')
+    y <- y[nrow(y)]
+    zz <- data.frame(Date = index(y), y, fst) %>% tbl_df
+    zz
+  }) %>% bind_cols
+}) %>% bind_rows)
+
+datt %<>% select(-Date...4, -Date...7, -Date...10, -Date...13, 
+                 -Date...16, -Date...19, -Date...22, 
+                 -Date...25, -Date...28)
+datt %<>% mutate(
+  FP...3 = c(NA, FP...3[-length(FP...3)]), 
+  FP...6 = c(NA, FP...6[-length(FP...6)]), 
+  FP...9 = c(NA, FP...9[-length(FP...9)]), 
+  FP...12 = c(NA, FP...12[-length(FP...12)]), 
+  FP...15 = c(NA, FP...15[-length(FP...15)]), 
+  FP...18 = c(NA, FP...18[-length(FP...18)]), 
+  FP...21 = c(NA, FP...21[-length(FP...21)]), 
+  FP...24 = c(NA, FP...24[-length(FP...24)]), 
+  FP...27 = c(NA, FP...27[-length(FP...27)]), 
+  FP...30 = c(NA, FP...30[-length(FP...30)]))
+
+names(datt) <- c('日期',	'总添加',	'预测总添加',	
+   '总注册',	'预测总注册',	'总首冲',	'预测总首冲',	
+   '总投注',	'预测总投注',	'总流水',	'预测总流水',	
+   '总充值',	'预测总充值',	'总盈利',	'预测总盈利',	
+   '净投注',	'预测净投注',	'总体留存率',	'预测总体留存率',	
+   '人均充值', '预测人均充值')
+```
+
+### 绘图
+
+```{r warning=FALSE}
+## 绘图
+
+## 预测总添加 - 总添加
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总添加, colour = 总添加)) + 
+  geom_line(aes(y = 预测总添加, colour = 预测总添加))
+```
+
+上图显示预测总添加。
+
+```{r warning=FALSE}
+## 预测总注册 - 总注册
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总注册, colour = 总注册)) + 
+  geom_line(aes(y = 预测总注册, colour = 预测总注册))
+```
+
+上图显示预测总注册。
+
+```{r warning=FALSE}
+## 预测总投注 - 总投注
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总投注, colour = 总投注)) + 
+  geom_line(aes(y = 预测总投注, colour = 预测总投注))
+```
+
+上图显示预测总投注。
+
+```{r warning=FALSE}
+## 预测总流水 - 总流水
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总流水, colour = 总流水)) + 
+  geom_line(aes(y = 预测总流水, colour = 预测总流水))
+```
+
+上图显示预测总流水。
+
+```{r warning=FALSE}
+## 预测总充值 - 总充值
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总充值, colour = 总充值)) + 
+  geom_line(aes(y = 预测总充值, colour = 预测总充值))
+```
+
+上图显示预测总充值。
+
+```{r warning=FALSE}
+## 预测总盈利 - 总盈利
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总盈利, colour = 总盈利)) + 
+  geom_line(aes(y = 预测总盈利, colour = 预测总盈利))
+```
+
+上图显示预测总盈利。
+
+```{r warning=FALSE}
+## 预测净投注 - 净投注
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 净投注, colour = 净投注)) + 
+  geom_line(aes(y = 预测净投注, colour = 预测净投注))
+```
+
+上图显示预测总投注。
+
+```{r warning=FALSE}
+## 预测总体留存率 - 总体留存率
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总体留存率, colour = 总体留存率)) + 
+  geom_line(aes(y = 预测总体留存率, colour = 预测总体留存率))
+```
+
+上图显示预测总体留存率。
+
+```{r warning=FALSE}
+## 预测人均充值 - 人均充值
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 人均充值, colour = 人均充值)) + 
+  geom_line(aes(y = 预测人均充值, colour = 预测人均充值))
+```
+
+上图显示预测总人均充值。
+
+### 比较预测值精准度
+
+```{r warning=FALSE}
+datt %>% na.omit %>% 
+  kable(caption = '预测样本数据') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>%
+  scroll_box(width = '100%', height = '400px')
+```
+
+```{r warning=FALSE}
+## MSE 比较预测值精准度
+mse <- datt %>% na.omit %>% 
+    mutate(
+      均方误差.总添加 = mean((预测总添加 - 总添加)^2),
+      均方误差.总注册 = mean((预测总注册 - 总注册)^2),
+      均方误差.总投注 = mean((预测总投注 - 总投注)^2),
+      均方误差.总流水 = mean((预测总流水 - 总流水)^2),
+      均方误差.总充值 = mean((预测总充值 - 总充值)^2),
+      均方误差.总盈利 = mean((预测总盈利 - 总盈利)^2),
+      均方误差.净投注 = mean((预测净投注 - 净投注)^2),
+      均方误差.总体留存率 = mean((预测总体留存率 - 总体留存率)^2),
+      均方误差.人均充值 = mean((预测人均充值 - 人均充值)^2))
+
+mse1 <- mse %>% 
+  select(均方误差.总添加, 均方误差.总注册, 均方误差.总投注, 
+         均方误差.总流水, 均方误差.总充值, 均方误差.总盈利, 
+         均方误差.净投注, 均方误差.总体留存率, 均方误差.人均充值) %>% 
+  unique
+
+suppressAll(mse1 %>% 
+  kable(booktabs = T) %>%
+  kable_styling())
+```
+
+## 测试21天移动数据
+
+```{r warning=FALSE, message=FALSE}
+## 转换数据类型
+nm <- c('Date', 'PL', 'Add', 'RG', 'FD', 'TB', 'TO', 'TD', 'NB', 'NBR', 'AD')
+names(smp) <- nm
+
+smp %<>% na.omit
+datt <- llply(smp[,-1], function(x) {
+  x %<>% xts(order.by = smp$Date)
+  x
+})
+
+## 样本数据 21天
+dbt <- smp$Date[21:length(smp$Date)]
+datt <- suppressMessages(llply(dbt, function(x) {
+  dbtt <- smp$Date[smp$Date <= x]
+  dbtt <- dbtt[(length(dbtt) - 21):length(dbtt)]
+  z <- llply(datt, function(y) {
+    y <- y[index(y) %in% dbtt]
+    xx <- auto.arima(y, D=1)
+    fst <- forecast(xx, h=1) %>% 
+      tbl_df %>% select('Point Forecast') %>% 
+      rename(`FP` = `Point Forecast`)
+    names(y) %<>% str_extract_all('[A-Z]{1,}')
+    y <- y[nrow(y)]
+    zz <- data.frame(Date = index(y), y, fst) %>% tbl_df
+    zz
+  }) %>% bind_cols
+}) %>% bind_rows)
+
+
+datt %<>% select(-Date...4, -Date...7, -Date...10, -Date...13, 
+                 -Date...16, -Date...19, -Date...22, 
+                 -Date...25, -Date...28)
+datt %<>% mutate(
+  FP...3 = c(NA, FP...3[-length(FP...3)]), 
+  FP...6 = c(NA, FP...6[-length(FP...6)]), 
+  FP...9 = c(NA, FP...9[-length(FP...9)]), 
+  FP...12 = c(NA, FP...12[-length(FP...12)]), 
+  FP...15 = c(NA, FP...15[-length(FP...15)]), 
+  FP...18 = c(NA, FP...18[-length(FP...18)]), 
+  FP...21 = c(NA, FP...21[-length(FP...21)]), 
+  FP...24 = c(NA, FP...24[-length(FP...24)]), 
+  FP...27 = c(NA, FP...27[-length(FP...27)]), 
+  FP...30 = c(NA, FP...30[-length(FP...30)]))
+
+names(datt) <- c('日期',	'总添加',	'预测总添加',	
+   '总注册',	'预测总注册',	'总首冲',	'预测总首冲',	
+   '总投注',	'预测总投注',	'总流水',	'预测总流水',	
+   '总充值',	'预测总充值',	'总盈利',	'预测总盈利',	
+   '净投注',	'预测净投注',	'总体留存率',	'预测总体留存率',	
+   '人均充值', '预测人均充值')
+```
+
+### 绘图
+
+```{r warning=FALSE}
+## 绘图
+
+## 预测总添加 - 总添加
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总添加, colour = 总添加)) + 
+  geom_line(aes(y = 预测总添加, colour = 预测总添加))
+```
+
+上图显示预测总添加。
+
+```{r warning=FALSE}
+## 预测总注册 - 总注册
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总注册, colour = 总注册)) + 
+  geom_line(aes(y = 预测总注册, colour = 预测总注册))
+```
+
+上图显示预测总注册。
+
+```{r warning=FALSE}
+## 预测总投注 - 总投注
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总投注, colour = 总投注)) + 
+  geom_line(aes(y = 预测总投注, colour = 预测总投注))
+```
+
+上图显示预测总投注。
+
+```{r warning=FALSE}
+## 预测总流水 - 总流水
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总流水, colour = 总流水)) + 
+  geom_line(aes(y = 预测总流水, colour = 预测总流水))
+```
+
+上图显示预测总流水。
+
+```{r warning=FALSE}
+## 预测总充值 - 总充值
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总充值, colour = 总充值)) + 
+  geom_line(aes(y = 预测总充值, colour = 预测总充值))
+```
+
+上图显示预测总充值。
+
+```{r warning=FALSE}
+## 预测总盈利 - 总盈利
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总盈利, colour = 总盈利)) + 
+  geom_line(aes(y = 预测总盈利, colour = 预测总盈利))
+```
+
+上图显示预测总盈利。
+
+```{r warning=FALSE}
+## 预测净投注 - 净投注
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 净投注, colour = 净投注)) + 
+  geom_line(aes(y = 预测净投注, colour = 预测净投注))
+```
+
+上图显示预测总投注。
+
+```{r warning=FALSE}
+## 预测总体留存率 - 总体留存率
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 总体留存率, colour = 总体留存率)) + 
+  geom_line(aes(y = 预测总体留存率, colour = 预测总体留存率))
+```
+
+上图显示预测总体留存率。
+
+```{r warning=FALSE}
+## 预测人均充值 - 人均充值
+datt %>% ggplot(aes(日期)) + 
+  geom_line(aes(y = 人均充值, colour = 人均充值)) + 
+  geom_line(aes(y = 预测人均充值, colour = 预测人均充值))
+```
+
+上图显示预测总人均充值。
+
+### 比较预测值精准度
+
+```{r warning=FALSE}
+datt %>% na.omit %>% 
+  kable(caption = '预测样本数据') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>%
+  scroll_box(width = '100%', height = '400px')
+```
+
+```{r warning=FALSE}
+## MSE 比较预测值精准度
+mse <- datt %>% na.omit %>% 
+    mutate(均方误差.总添加 = mean((预测总添加 - 总添加)^2),
+           均方误差.总注册 = mean((预测总注册 - 总注册)^2),
+           均方误差.总投注 = mean((预测总投注 - 总投注)^2),
+           均方误差.总流水 = mean((预测总流水 - 总流水)^2),
+           均方误差.总充值 = mean((预测总充值 - 总充值)^2),
+           均方误差.总盈利 = mean((预测总盈利 - 总盈利)^2),
+           均方误差.净投注 = mean((预测净投注 - 净投注)^2),
+           均方误差.总体留存率 = mean((预测总体留存率 - 总体留存率)^2),
+           均方误差.人均充值 = mean((预测人均充值 - 人均充值)^2))
+
+mse2 <- mse %>% 
+    select(均方误差.总添加, 均方误差.总注册, 均方误差.总投注, 
+           均方误差.总流水, 均方误差.总充值, 均方误差.总盈利, 
+           均方误差.净投注, 均方误差.总体留存率, 均方误差.人均充值) %>% 
+    unique
+
+suppressWarnings(mse2 %>% 
+  kable(booktabs = T) %>%
+  kable_styling())
+```
+
+# 结论
+
+## 筛选最优线性模型
+
+筛选最优线性模型。
+
+```{r warning=FALSE}
+aic <- suppressAll(llply(1:length(m), function(i) {
+  y <- data.frame(paste0('m', i), t(data.frame(extractAIC(m[[i]]))))
+  names(y) <- (c('模型', '自由度', 'aic'))
+  y
+}) %>% bind_rows)
+rownames(aic) <- NULL
+
+## 筛选最佳模型
+aic %>% 
+  kable(booktabs = T) %>%
+  kable_styling() %>%
+  row_spec(aic$aic %>% which.min, bold = T, color = "white", background = 'goldenrod')
+```
+
+以上`r aic[which.min(aic$aic),]$'模型' %>% as.character`是最优模型。
+
+```{r warning=FALSE}
+suppressWarnings(m[[aic %>% .$aic %>% which.min]] %>% 
+  tidy %>% 
+  kable(booktabs = T) %>%
+  kable_styling())
+```
+
+阐述最佳模型。
+
+  - `截距(Intercept)`=是在没有任何变量的默认下的负盈利，负盈利为`r coef(m[[aic %>% .$aic %>% which.min]])[1]`。
+  - `总添加`=每添加一个`总添加`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[2]`负盈利。
+  - `总注册`=每添加一个`总注册`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[3]`负盈利。
+  - `总首冲`=每添加一个`总首冲`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[4]`负盈利。
+  - `总投注`=每添加一个`总投注`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[5]`负盈利。
+  - `总流水`=每添加一个`总流水`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[6]`负盈利。
+  - `总充值`=每添加一个`总充值`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[7]`负盈利。
+  - `总添加`+`总注册`，即可产生`r coef(m[[aic %>% .$aic %>% which.min]])[2]`+`r coef(m[[aic %>% .$aic %>% which.min]])[3]`=`r coef(m[[aic %>% .$aic %>% which.min]])[2] + coef(m[[aic %>% .$aic %>% which.min]])[3]`负盈利，以此类推。
+
+## 筛选最优移动模型
+
+筛选最优移动模型。
+
+```{r warning=FALSE}
+mse3 <- data.frame('数据量大小' = c('14天', '21天'), rbind(mse1, mse2))
+mse3 <- data.frame(mse3, '总体均方误差' = rowMeans(mse3[-1]))
+
+mse3 %>% 
+  kable(booktabs = T) %>% 
+  kable_styling()
+```
+
+根据以上均方误差比较，`21天`数据会比`14天`数据来得精准。此报表只是个样本数据。
+
+## 总结论
+
+- 需要预测公司整体`三个月`、`半年`、`一年`报表数据。
+- 分析好公司报表后，
+  - 还需要分析`彩种`、`赔率`、`流水`、`充值`、`负盈利`数据。
+  - 还需要分析`进粉成本`、`租金`等等其他成本，`负盈利`数据。
+
+## 平台
+
+**中博手游** <https://zbcp.yayaread.cn/#/home>
+
+1) 已有系统优势：
+  - 产品多、优惠多...
+    - 主打产品置放在显眼的位置，还有走势图方便玩家参考。
+    - 热门彩种列在左手边，方便玩家们选择。
+    - 开奖通告、资讯中心、最新中奖榜都在主页，方便玩家一览即可。
+    - 区分高频与低频彩种等等产品...
+
+2) 额外系统提升（人工智能化）：
+  - 如果会员可以在登录时，根据自己的等级，自动弹出个等级级别，还需要多少流水或充值量才能晋级，刺激玩家充值来玩晋级，刺激消费。
+  - 如果玩家或代理盈亏到一定的（后台可以自己设置），就会弹出开发代理的流水返点，然后在图表旁边有教程视频或图，方便玩家操作，刺激消费。
+  - 依据每个玩家平时玩什么彩种，然后自动推荐相关彩种，刺激消费。
+  - 存取款旁也有教程视频或者图。
+  - 赔率跳动风险管理设置。
+  - 打开网站5秒未点击任何按钮，就会自动转到注册页面。
+  - 自动出现默认邀请码，那么就不会空有流量却没有注册人数。（设置个小组专门负责这些会员，额外提升公司业绩）
+  - 注册页面需要填写微信、QQ和邮箱，那么有优惠活动时可以通知会员。（回访提升公司业绩）
+  - 注册页面和首次要充值的页面，左右两边会出现首充优惠、晋级奖励和每日嘉奖优惠。
+  - 已注册尚未首充，一登录账户，就会弹出充值页面，左右两边会出现首充优惠、晋级奖励和每日嘉奖优惠。
+  - 已充值过的会员，一到充值页面，左右两边会出现转卡优惠（根据周一至周五，周六周日的优惠而自动分辨）、晋级奖励和每日嘉奖优惠。
+  - 系统自动检测每个会员的盈亏是否达到指定的百分比（比方说赢了60％或亏了40％，可以设置每周或每月），然后会弹出信息提示。可以设置总充值低于多少的话，就不会弹出提示。（自动根据各别会员的盈亏，自动产生不同的盈利图，和宏图，刺激消费）
+  - 如果亏超过40％的会员，一登录账户就会弹出要不要接受亏损金。（如果亏超过40％的会员，也会自动收到邮件、微信、QQ通知，要不要来网站领取亏损金）。
+  - 如果赢超过60％，系统自动弹出提示，那么方便我们进一步处理。（包括查看玩什么彩种和几倍流水，卡款等等措施）
+  - 如果赢超过60％的会员，只要金额都不大（可以设置多少金额）的话，就会收到微信、QQ、邮件建议激活邀请码当代理，然后内容引导怎么操作和利润（难保他会开发到大会员）。
+  - 一揽子产品推荐，就是会员投注后尚未开奖，系统系统弹出其它相关产品（根据大数据分析），刺激消费。
+  - 风险管理，以足彩为例子，就是一开奖后，赔率就会自动调低，然后目前的最大投注额是100万（可以随着投注金额的大小自动变动最大投注额，或者累计投注额到了60%就会自动调动），可以根据累计投注额，设置赔率调动。
+  - 开发下级：添加个上载图片视频的功能，比方说单带多少的赚多少、介绍平台、首充优惠、转卡优惠等等图片视频。
+  - 体验金，智能弹出开发代理视窗，可以直接激活邀请码，并且可以输入所有朋友的QQ或微信号，然后系统提供开发下级教程、优惠等等图和视频，直接群发。
+  - 吃喝嫖赌都是传统行业，可以尝试和彩票杂志、烟酒、网贷或银行贷款、情色合作，添加个额外服务（凡是顾客买杂志、烟酒或嫖妓，那些商家可以成为我们代理，然后直接通过手机提供应用下载或二维码和邀请码开发下级，并且推销优惠活动和教导如何注册充值。亏钱的会员可以自行通过网贷刺激消费，只是法律上的需要考量）
+  - 存取款和网址都能智能转换，比方说有备用5到8个
+  - 第一：使用模拟号投注赢钱录制视频，账号打马赛克；第二：视频赢钱欢呼，然后在视频内有个输入金额和马上投注，方便消费，刺激消费。
+  - 第一：高流量不注册的话，可以和其它商家合作；第二：注册时填写职业、收入、兴趣、买车买房等等数据（可以添加个黄页，通过supper cookies收集浏览者的爱好的数据），然后根据那些数据自动弹出广告。赚取广告费。
+  - API
+  - 售卖官方服装、礼品等等
+
+个人觉得比我们目前的平台好很多...
+公司目前的商业模式已经可以赚到钱，不过可能公司寿命只有五六年，如果走品牌路线的话，可能可以学习威廉希尔、立博那些网站，靠品牌经营五六十年，不过成本与盈利就是的考量了...
+
+**鑫博，大发，爱彩，万达，等等**
+  - **鑫博** <https://688188.com/?invitecode=19118143>
+  - **爱彩** <https://77221122.com/spread?code=67420>
+
+# 附录
+
+```{r info, echo=FALSE, warning=FALSE, results='asis'}
+suppressMessages(require('dplyr', quietly = TRUE))
+suppressMessages(require('formattable', quietly = TRUE))
+suppressMessages(require('knitr', quietly = TRUE))
+suppressMessages(require('kableExtra', quietly = TRUE))
+sys1 <- devtools::session_info()$platform %>% 
+  unlist %>% data.frame(Category = names(.), session_info = .)
+rownames(sys1) <- NULL
+#sys1 %<>% rbind(., data.frame(
+#  Category = 'Current time', 
+#  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST'))) %>% 
+#  dplyr::filter(Category != 'os')
+sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
+names(sys2)[2] <- c('Sys.info')
+rownames(sys2) <- NULL
+if (nrow(sys1) == 7 & nrow(sys2) == 8) {
+  sys1 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+} else {
+  sys2 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+}
+cbind(sys1, sys2) %>% 
+  kable(caption = 'Additional session information:') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+rm(sys1, sys2)
+```

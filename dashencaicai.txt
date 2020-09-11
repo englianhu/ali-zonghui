@@ -1,0 +1,13 @@
+
+gmail.com
+user: dashencaicai@gmail.com
+pass: dashencaicai123
+
+github.com
+user: dashencaicai@gmail.com
+pass: Caicai0408
+
+
+git config --global user.email "dashencaicai@gmail.com"
+git config --global user.name "dashencaicai"
+
