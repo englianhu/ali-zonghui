@@ -1,0 +1,165 @@
+---
+title: "阿里彩票"
+subtitle: "彩种报告 (Part II)"
+author: "雷欧 <img src='figure/foxi_daoshi.jpg' width='24'>"
+date: "`r lubridate::today('Asia/Tokyo')`"
+output:
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    code_folding: hide
+---
+
+# 简介
+
+```{r, results = 'asis', warning = FALSE, message = FALSE}
+## 3210448065@qq.com
+## leiou123
+
+## 2849108450@qq.com
+## leiou123
+## https://rstudio.cloud/project/1198888
+if(!require('BBmisc')) {install.packages('BBmisc')}
+require('BBmisc')
+pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr', 'MASS', 
+         'knitr', 'kableExtra', 'forecast', 'formattable', 'DT', 'echarts4r', 
+         'lubridate', 'highcharter', 'htmltools', 'readr', 'pryr', 'sparklyr', 
+         'microbenchmark')
+
+#plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
+suppressAll(lib(pkg))
+rm(pkg)
+#sc <- spark_connect(master = 'local')
+```
+
+当初在推广部门，**宋组长**给个样本数据，我就尝试使用线性模型和时间序列`arima`模型分析了进粉业绩，详情请参考[阿里彩票 - 分析样本数据](https://rpubs.com/englianhu/ali)。然后转到运维部门分析了[阿里彩票 - 彩种报告](https://rpubs.com/englianhu/ali_bet_type)，只是基本分析彩种，将数据视觉化；此商业分析进一步使用相互线性模型分析数据，预测彩种盈利。
+
+- [如何 Estimate linear models](https://d.cosx.org/d/419820-estimate-linear-models)
+- [`lm()`包中formula 表达方法的问题](https://d.cosx.org/d/157623-157623)
+
+# 数据
+
+读取样本数据。
+
+```{r, results = 'asis', warning = FALSE}
+## 读取数据
+fls <- suppressWarnings(list.files('data/彩种'))
+smp <- fls %>% llply(., function(x) {
+    dtt <- x %>% str_replace_all('.xls', '') %>% ymd
+    smpp <- read_excel(paste0('data/彩种/', x)) %>% 
+      .[-nrow(.),]
+    data.frame('日期' = dtt, smpp)
+}) %>% bind_rows %>% 
+    as_tibble %>% 
+    mutate('彩种名称' = factor(彩种名称), '盈率' = as.numeric(percent(盈率))) %>% 
+    mutate_if(is.character, as.numeric)
+rm(fls)
+
+nm <- names(smp)
+#names(smp) <- c('Date', 'Type', 'Bettor', 'Turnover', 'Won', 'Cancelled', 'Rebates', 'Profit', 'Profit_rate')
+
+## 转化为大数据
+smp2 <- smp
+#smp2 <- copy_to(sc, smp2)
+
+# smp %>% datatable(
+#     caption = "彩种数据", 
+#     escape = FALSE, filter = 'top', rownames = FALSE, 
+#     extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
+#                       'Buttons' = NULL, 'Responsive' = NULL), 
+#     options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+#                    lengthMenu = list(c(10, 50, 100, 500, -1), 
+#                                      c('10', '50', '100', '500', 'All')), 
+#                    ColReorder = TRUE, rowReorder = TRUE, 
+#                    buttons = list('copy', 'print', 
+#                                   list(extend = 'collection', 
+#                                        buttons = c('csv', 'excel', 'pdf'), 
+#                                        text = 'Download'), I('colvis'))))
+
+smp2 %>% 
+  as_tibble %>% 
+  kbl('html', caption = '每日投注人数', escape = F) %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  scroll_box(height = '400px')
+```
+
+上图显示从`r range(smp$'日期')[1]`到`r range(smp$'日期')[2]`的报表数据，一共有`r nrow(smp)`个观测值。
+
+## formattable
+
+```{r, results = 'asis', warning = FALSE}
+md <- read_rds(path = 'data/md.rds')
+md2 <- md
+
+## https://www.colorhexa.com/color-names
+md2 %>% 
+  formattable(
+    list(
+        AIC = formatter('span', style = x ~ formattable::style(
+            color = ifelse(rank(x) <= 3, 'darkgoldenrod', 'grey')), 
+            x ~ paste0(round(x, 2), 
+                       ' (rank: ', sprintf('%1.f', rank(x)), ')')))) %>% 
+    mutate(df = color_tile('#2a52be', 'white')(df))#colbalt
+```
+
+## kableExtra
+
+```{r, results = 'asis', warning = FALSE}
+## https://www.colorhexa.com/color-names
+md2 %>% 
+  mutate(
+    df = color_tile('#2a52be', 'white')(df), #colbalt
+    AIC = ifelse(
+      rank(AIC) <= 3, 
+      cell_spec(
+        paste0(round(AIC, 2), ' (rank: ', sprintf('%1.f', rank(AIC)), ')'), 
+        'html', color = 'darkgoldenrod', bold = T), 
+      cell_spec(
+        paste0(round(AIC, 2), ' (rank: ', sprintf('%1.f', rank(AIC)), ')'), 
+        'html', color = 'grey', italic = T))) %>% 
+  kbl('html', caption = '最优模型', escape = F, align = c('c', 'r', 'r')) %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_material() %>% 
+  scroll_box(height = '400px')
+```
+
+## aaaaaaaaaaaaaaa
+
+```{r, warning = FALSE, results = 'asis'}
+suppressMessages(require('dplyr', quietly = TRUE))
+suppressMessages(require('magrittr', quietly = TRUE))
+suppressMessages(require('formattable', quietly = TRUE))
+suppressMessages(require('knitr', quietly = TRUE))
+suppressMessages(require('kableExtra', quietly = TRUE))
+
+sys1 <- devtools::session_info()$platform %>% 
+  unlist %>% data.frame(Category = names(.), session_info = .)
+rownames(sys1) <- NULL
+
+sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
+names(sys2)[2] <- c('Sys.info')
+rownames(sys2) <- NULL
+
+if (nrow(sys1) == 9 & nrow(sys2) == 8) {
+  sys2 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+} else {
+  sys1 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+}
+
+cbind(sys1, sys2) %>% 
+  kable(caption = 'Additional session information:') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+
+rm(sys1, sys2)
+```
+

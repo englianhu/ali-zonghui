@@ -2,7 +2,7 @@
 title: "阿里彩票"
 subtitle: "分析阿里数据 (Part II)"
 author: "雷欧 <img src='figure/QQ图片20200720121653.png' width='24'>"
-date: "`r lubridate::today()`"
+date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
     number_sections: yes
@@ -501,30 +501,32 @@ https://zbcp.yayaread.cn/#/home
 
 ```{r info, echo=FALSE, warning=FALSE, results='asis'}
 suppressMessages(require('dplyr', quietly = TRUE))
+suppressMessages(require('magrittr', quietly = TRUE))
 suppressMessages(require('formattable', quietly = TRUE))
 suppressMessages(require('knitr', quietly = TRUE))
 suppressMessages(require('kableExtra', quietly = TRUE))
+
 sys1 <- devtools::session_info()$platform %>% 
   unlist %>% data.frame(Category = names(.), session_info = .)
 rownames(sys1) <- NULL
-#sys1 %<>% rbind(., data.frame(
-#  Category = 'Current time', 
-#  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST'))) %>% 
-#  dplyr::filter(Category != 'os')
+
 sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
 names(sys2)[2] <- c('Sys.info')
 rownames(sys2) <- NULL
-if (nrow(sys1) == 7 & nrow(sys2) == 8) {
-  sys1 %<>% rbind(., data.frame(
-  Category = 'Current time', 
-  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
-} else {
+
+if (nrow(sys1) == 9 & nrow(sys2) == 8) {
   sys2 %<>% rbind(., data.frame(
   Category = 'Current time', 
   Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+} else {
+  sys1 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
 }
+
 cbind(sys1, sys2) %>% 
   kable(caption = 'Additional session information:') %>% 
   kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+
 rm(sys1, sys2)
 ```

@@ -1,0 +1,127 @@
+---
+title: "rm"
+author: "aaaaaaaa"
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+## https://www.ip138.com/sj
+if(!require('BBmisc')) {
+  install.packages('BBmisc')
+}
+require('BBmisc')
+pkgs <- c('rvest', 'RSelenium', 'reticulate', 'tidyverse', 'magrittr', 'RCurl', 
+          'plumber', 'bigQueryR', 'xts', 'forecast', 'googleCloudRunner', 
+          'knitr', 'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2')
+lib(pkgs)
+
+lnk <- 'https://www.ip138.com/sj'
+rm(pkgs)
+```
+
+```{python eval = FALSE}
+## https://rstudio.github.io/reticulate/articles/python_packages.html
+# create a new environment 
+conda_create()
+mods <- c('scipy', 'numpy', 'pandas', 'lxml', 'bs4', 'selenium', 'time', 'string', 'random')
+mods %>% llply(., function(x) {
+    tryCatch({
+        y <- conda_install(conda_list()[[1]][2], x)
+        y <- import(y)
+    }, error = function(e) {
+        NULL
+    })
+})
+
+# import SciPy (it will be automatically discovered in "r-reticulate")
+modsip <- mods %>% llply(import)
+
+# indicate that we want to use a specific condaenv
+#use_condaenv(conda_list()[[1]][2])
+
+# import SciPy (will use 'r-reticulate' as per call to use_condaenv)
+#scipy <- import('scipy')
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{python}
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+url = 'https://www.imdb.com/search/title?release_date=2018&sort=num_votes,desc&page=1'
+
+driver = webdriver.Chrome('/r-reticulate/chromedriver')
+driver.get(url)
+soup = BeautifulSoup(driver.page_source,"html.parser")
+
+while True:
+    items = [itm.get_text(strip=True) for itm in soup.select('.lister-item-content a[href^="/title/"]')]
+    print(items)
+
+    try:
+        driver.find_element_by_xpath('//a[contains(.,"Next")]').click()
+        soup = BeautifulSoup(driver.page_source,"html.parser")
+    except Exception: break
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+lnk <- c('https://www.ip138.com/mobile.asp?mobile=', '&action=mobile')
+i <- sprintf("%03d", 1:999) %>% paste0(6482776)
+lnk1 <- i %>% llply(., function(ii) {
+    paste0(lnk[1], ii, lnk[2])
+  }) %>% unlist
+
+i %>% llply(., function(ii) {
+    ll <- paste0(lnk[1], ii, lnk[2])
+    tryCatch({
+        ll %>% read_html %>% html_table()
+    }, error = function(e) {
+        NULL
+    })
+})
+
+
+lnk1[130:135] %>% llply(., function(ii) {
+    tryCatch({
+        ii %>% read_html %>% html_table()
+    }, error = function(e) {
+        NULL
+    })
+}) %>% unlist
+
+#Sys.setenv(http_proxy = "auth-proxy.xxxxxxx.com:9999")
+#Sys.setenv(https_proxy = "auth-proxy.xxxxxxx.com:9999")
+read_html(curl(lnk1[131], handle = curl::new_handle("useragent" = "Mozilla/5.0")))
+
+options(download.file.method="libcurl", url.method="libcurl")
+download.file(lnk1[131], destfile = paste0(i[131], '.html'), quiet = TRUE)
+content <- read_html(paste0(i[131], '.html'))
+```
+
+```{python}
+import pandas as pd
+import lxml
+
+test = 'https://www.ip138.com/mobile.asp?mobile=1316482776&action=mobile'
+
+tables = pd.read_html(test)
+rankings = tables[-1]
+rankings.iloc[:200]
+```
+
+```{r}
+
+```
