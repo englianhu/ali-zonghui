@@ -1,10 +1,17 @@
 ---
-title: "rm"
-author: "aaaaaaaa"
-date: "9/29/2020"
-output: 
+title: "中国手机号"
+subtitle: "啊啊啊"
+author: "雷欧 <img src='figure/aaaa.jpg' width='24'>"
+date: "`r lubridate::today('Asia/Tokyo')`"
+output:
   html_document: 
+    number_sections: yes
     toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -22,9 +29,14 @@ lib(pkgs)
 lnk <- 'https://www.ip138.com/sj'
 rm(pkgs)
 
+#https://github.com/githubwwwjjj/chinese.misc
 #options(tmp_chi_locale=NA)
 options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 ```
+
+## 中国电讯台
+
+[https://www.ding.com](https://www.ding.com/)
 
 ```{python eval = FALSE}
 ## https://rstudio.github.io/reticulate/articles/python_packages.html
@@ -50,13 +62,11 @@ modsip <- mods %>% llply(import)
 #scipy <- import('scipy')
 ```
 
-## R Markdown
+## 手机号前三码一览
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+[手机号码段及归属地查询规则](https://blog.csdn.net/pzasdq/article/details/50587428?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~first_rank_v2~rank_v25-3-50587428.nonecase&utm_term=%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5%E6%9F%A5%E8%AF%A2&spm=1000.2123.3001.4430)，[中国移动，联通，电信各手机号码前三位是多少？](https://zhidao.baidu.com/question/584943266.html)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{python}
+```{python eval = FALSE}
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
@@ -102,7 +112,7 @@ xxx #%>% llply(., function(x) {
 xxx %>% unlist %>% as.character %>% data.frame
 ```
 
-```{r pressure, echo=FALSE}
+```{r eval = FALSE}
 #https://m.ip138.com/sj.asp?mobile=1316482776
 #lnk <- c('https://m.ip138.com/mobile.asp?mobile=', '&action=mobile')
 
@@ -124,7 +134,80 @@ cont <- lnk %>%
 cont[sapply(cont, is.null)] <- NULL
 ```
 
-```{python}
+```{r eval = FALSE}
+#https://m.ip138.com/sj.asp?mobile=1316482776
+#lnk <- c('https://m.ip138.com/mobile.asp?mobile=', '&action=mobile')
+
+i <- sprintf("%03d", 1:999) %>% 
+  paste0(6482776)
+lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
+rm(i)
+
+cont <- lnk %>% 
+  llply(., function(ii) {
+    tryCatch({
+      xxx <- ii %>% read_html() %>% 
+        html_nodes('td') %>% 
+        .[144:152] %>% 
+        html_text(trim = T)# %>% 
+        str_replace_all('^<tr><td class=\"th\"|^<tr><td class=\"th\">|</td<td<span| width=\"36%\"|</td><td>|>|</span></td></tr>$|\\*', '') %>% 
+        .[. != ''] %>% 
+        str_split('<span')
+
+      xxx %<>% data.frame %>% 
+        t %>% 
+        as_tibble %>% 
+        dplyr::rename('种类' = V1, '明细' = V2)
+      cat('\nGet"', ii, '"');
+    }, error = function(e) {
+      NULL;
+      cat('\n', ii, 'not exist')
+    }) %>% unlist
+  })
+
+cont[sapply(cont, is.null)] <- NULL
+
+```
+
+```{r eval = FALSE}
+#https://m.ip138.com/sj.asp?mobile=1316482776
+#lnk <- c('https://m.ip138.com/mobile.asp?mobile=', '&action=mobile')
+
+i <- sprintf("%03d", 120:200) %>% 
+  paste0(6482776)
+lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
+rm(i)
+
+cont <- lnk %>% 
+  llply(., function(ii) {
+    tryCatch({
+      xxx <- ii %>% read_html() %>% 
+        html_nodes('td')# %>% 
+        # .[144:152] %>% 
+        # html_text(trim = T)# %>% 
+        #str_replace_all('^<tr><td class=\"th\"|^<tr><td class=\"th\">|</td<td<span| width=\"36%\"|</td><td>|>|</span></td></tr>$|\\*', '') %>% 
+        #.[. != ''] %>% 
+        #str_split('<span')
+
+      #xxx %<>% data.frame %>% 
+      #  t %>% 
+      #  as_tibble %>% 
+      #  dplyr::rename('种类' = V1, '明细' = V2)
+      cat('\nGet"', ii, '"');
+      xxx
+    }, error = function(e) {
+      cat('\n', ii, 'not exist'); 
+      NULL
+    })# %>% unlist
+  })
+
+cont[sapply(cont, is.null)] <- NULL
+cont <- cont[sapply(cont, function(x) length(x)>1)]
+
+saveRDS(cont, file = 'data/p6482776.rds')
+```
+
+```{python eval = FALSE}
 import pandas as pd
 import lxml
 
@@ -136,5 +219,11 @@ rankings.iloc[:200]
 ```
 
 ```{r}
+cont %>% llply(., function(x) {
+    html_text(x) %>% matrix(nc = 2, byrow = TRUE) %>% data.frame
+    })
+```
 
+```{r}
+cont <- read_rds('data/p6482776.rds')
 ```
