@@ -2,22 +2,28 @@
 title: "rm"
 author: "aaaaaaaa"
 date: "9/29/2020"
-output: html_document
+output: 
+  html_document: 
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
 ## https://www.ip138.com/sj
 if(!require('BBmisc')) {
   install.packages('BBmisc')
-}
+  }
 require('BBmisc')
-pkgs <- c('rvest', 'RSelenium', 'reticulate', 'tidyverse', 'magrittr', 'RCurl', 
-          'plumber', 'bigQueryR', 'xts', 'forecast', 'googleCloudRunner', 
-          'knitr', 'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2')
+pkgs <- c('rvest', 'RSelenium', 'reticulate', 'tidyverse', 'magrittr', 
+          'RCurl', 'plumber', 'bigQueryR', 'xts', 'forecast', 
+          'googleCloudRunner', 'plyr', 'chinese.misc', 'knitr', 
+          'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2')
 lib(pkgs)
-
+#(dependencies = TRUE, INSTALL_opts = '--no-lock')
 lnk <- 'https://www.ip138.com/sj'
 rm(pkgs)
+
+#options(tmp_chi_locale=NA)
+options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 ```
 
 ```{python eval = FALSE}
@@ -77,38 +83,45 @@ while True:
 
 You can also embed plots, for example:
 
+```{r}
+xxx <- read_html('view-source_https___m.ip138.com_sj.asp_mobile=1316482776.html') %>% 
+    html_nodes('td') %>% 
+    .[144:152] %>% 
+    html_text(trim = T) %>% 
+    str_replace_all('^<tr><td class=\"th\"|^<tr><td class=\"th\">|</td<td<span| width=\"36%\"|</td><td>|>|</span></td></tr>$|\\*', '') %>% 
+    .[. != ''] %>% 
+    str_split('<span')
+
+xxx #%>% llply(., function(x) {
+    #Encoding(x) = 'UTF-8'
+    #x
+    #}) %>% data.frame
+```
+
+```{r}
+xxx %>% unlist %>% as.character %>% data.frame
+```
+
 ```{r pressure, echo=FALSE}
-lnk <- c('https://www.ip138.com/mobile.asp?mobile=', '&action=mobile')
-i <- sprintf("%03d", 1:999) %>% paste0(6482776)
-lnk1 <- i %>% llply(., function(ii) {
-    paste0(lnk[1], ii, lnk[2])
-  }) %>% unlist
+#https://m.ip138.com/sj.asp?mobile=1316482776
+#lnk <- c('https://m.ip138.com/mobile.asp?mobile=', '&action=mobile')
 
-i %>% llply(., function(ii) {
-    ll <- paste0(lnk[1], ii, lnk[2])
+i <- sprintf("%03d", 1:999) %>% 
+  paste0(6482776)
+lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
+rm(i)
+
+cont <- lnk %>% 
+  llply(., function(ii) {
     tryCatch({
-        ll %>% read_html %>% html_table()
+      ii %>% getURL %>% 
+        read_html %>% html_table()
     }, error = function(e) {
         NULL
-    })
-})
+    }) %>% unlist
+  })
 
-
-lnk1[130:135] %>% llply(., function(ii) {
-    tryCatch({
-        ii %>% read_html %>% html_table()
-    }, error = function(e) {
-        NULL
-    })
-}) %>% unlist
-
-#Sys.setenv(http_proxy = "auth-proxy.xxxxxxx.com:9999")
-#Sys.setenv(https_proxy = "auth-proxy.xxxxxxx.com:9999")
-read_html(curl(lnk1[131], handle = curl::new_handle("useragent" = "Mozilla/5.0")))
-
-options(download.file.method="libcurl", url.method="libcurl")
-download.file(lnk1[131], destfile = paste0(i[131], '.html'), quiet = TRUE)
-content <- read_html(paste0(i[131], '.html'))
+cont[sapply(cont, is.null)] <- NULL
 ```
 
 ```{python}
