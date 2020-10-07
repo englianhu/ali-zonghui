@@ -80,11 +80,11 @@ driver.get(url)
 soup = BeautifulSoup(driver.page_source,"html.parser")
 
 while True:
-    items = [itm.get_text(strip=True) for itm in soup.select('.lister-item-content a[href^="/title/"]')]
+    items = [itm.get_text(strip=True) for itm in soup.select('.lister-item-p6482776ent a[href^="/title/"]')]
     print(items)
 
     try:
-        driver.find_element_by_xpath('//a[contains(.,"Next")]').click()
+        driver.find_element_by_xpath('//a[p6482776ains(.,"Next")]').click()
         soup = BeautifulSoup(driver.page_source,"html.parser")
     except Exception: break
 ```
@@ -121,7 +121,7 @@ i <- sprintf("%03d", 1:999) %>%
 lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
 rm(i)
 
-cont <- lnk %>% 
+p6482776 <- lnk %>% 
   llply(., function(ii) {
     tryCatch({
       ii %>% getURL %>% 
@@ -131,7 +131,7 @@ cont <- lnk %>%
     }) %>% unlist
   })
 
-cont[sapply(cont, is.null)] <- NULL
+p6482776[sapply(p6482776, is.null)] <- NULL
 ```
 
 ```{r eval = FALSE}
@@ -143,7 +143,7 @@ i <- sprintf("%03d", 1:999) %>%
 lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
 rm(i)
 
-cont <- lnk %>% 
+p6482776 <- lnk %>% 
   llply(., function(ii) {
     tryCatch({
       xxx <- ii %>% read_html() %>% 
@@ -165,7 +165,7 @@ cont <- lnk %>%
     }) %>% unlist
   })
 
-cont[sapply(cont, is.null)] <- NULL
+p6482776[sapply(p6482776, is.null)] <- NULL
 
 ```
 
@@ -178,13 +178,13 @@ i <- sprintf("%03d", 120:200) %>%
 lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
 rm(i)
 
-cont <- lnk %>% 
+p6482776 <- lnk %>% 
   llply(., function(ii) {
     tryCatch({
       xxx <- ii %>% read_html() %>% 
-        html_nodes('td')# %>% 
+        html_nodes('td') %>% 
         # .[144:152] %>% 
-        # html_text(trim = T)# %>% 
+        html_text(trim = T)# %>% 
         #str_replace_all('^<tr><td class=\"th\"|^<tr><td class=\"th\">|</td<td<span| width=\"36%\"|</td><td>|>|</span></td></tr>$|\\*', '') %>% 
         #.[. != ''] %>% 
         #str_split('<span')
@@ -201,11 +201,14 @@ cont <- lnk %>%
     })# %>% unlist
   })
 
-cont[sapply(cont, is.null)] <- NULL
-cont <- cont[sapply(cont, function(x) length(x)>1)]
+p6482776[sapply(p6482776, is.null)] <- NULL
+p6482776 <- p6482776[sapply(p6482776, function(x) length(x)>1)]
 
-saveRDS(cont, file = 'data/p6482776.rds')
-save(cont, 'data/p6482776.RData')
+p6482776 %<>% llply(., function(x) {
+    x %>% matrix(nc = 2, byrow = TRUE)# %>% data.frame
+})
+
+saveRDS(p6482776, file = 'data/p6482776.rds')
 ```
 
 ```{python eval = FALSE}
@@ -220,11 +223,11 @@ rankings.iloc[:200]
 ```
 
 ```{r}
-cont %>% llply(., function(x) {
+p6482776 %>% llply(., function(x) {
     html_text(x) %>% matrix(nc = 2, byrow = TRUE) %>% data.frame
     })
 ```
 
 ```{r}
-cont <- read_rds('data/p6482776.rds')
+p6482776 <- read_rds('data/p6482776.rds')
 ```
