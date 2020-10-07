@@ -205,6 +205,7 @@ cont[sapply(cont, is.null)] <- NULL
 cont <- cont[sapply(cont, function(x) length(x)>1)]
 
 saveRDS(cont, file = 'data/p6482776.rds')
+save(cont, 'data/p6482776.RData')
 ```
 
 ```{python eval = FALSE}
