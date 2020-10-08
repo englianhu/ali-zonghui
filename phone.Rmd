@@ -1,7 +1,7 @@
 ---
-title: "中国手机号"
-subtitle: "啊啊啊"
-author: "雷欧 <img src='figure/aaaa.jpg' width='24'>"
+title: "💙🤍 ❤️🖤 💚💙"
+subtitle: "📲 - *️⃣*️⃣*️⃣6️⃣4️⃣8️⃣2️⃣7️⃣7️⃣6️⃣ - 《踢出一个未来》🎶"
+author: "®γσ ξηg <img src='figure/aaaa.jpg' width='16'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
@@ -14,17 +14,31 @@ output:
     code_folding: hide
 ---
 
-```{r setup, include=FALSE}
+# ${\color{Black} \circledR} {\color{DarkGreen} \gamma} {\color{Red} \sigma} \; {\color{Blue} \xi} {\color{Red} \eta} {\color{Blue} g}$^[[Latex Equation](https://www.codecogs.com/latex/eqneditor.php)] 🎏^[[Emoji list](https://gist.github.com/rxaviers/7360908)]
+
+<br>
+
+![Quantitative Trading in Sportsbook and financial market](figure/soccer.jpg)
+
+<audio src='music/kick-off a better future.mp3' controls></audio>
+
+<br>
+
+<iframe title="vimeo-player" src="https://player.vimeo.com/video/191464377" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+
+---
+
+```{r}
 ## https://www.ip138.com/sj
-if(!require('BBmisc')) {
-  install.packages('BBmisc')
+if(!suppressPackageStartupMessages(require('BBmisc'))) {
+  suppressWarnings(suppressMessages(install.packages('BBmisc')))
   }
 require('BBmisc')
 pkgs <- c('rvest', 'RSelenium', 'reticulate', 'tidyverse', 'magrittr', 
-          'RCurl', 'plumber', 'bigQueryR', 'xts', 'forecast', 
-          'googleCloudRunner', 'plyr', 'chinese.misc', 'knitr', 
-          'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2')
-lib(pkgs)
+          'RCurl', 'plumber', 'bigQueryR', 'xts', 'forecast', 'purrr', 
+          'googleCloudRunner', 'plyr', 'chinese.misc', 'knitr', 'tidyr', 
+          'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2', 'formattable')
+suppressAll(lib(pkgs))
 #(dependencies = TRUE, INSTALL_opts = '--no-lock')
 lnk <- 'https://www.ip138.com/sj'
 rm(pkgs)
@@ -34,9 +48,32 @@ rm(pkgs)
 options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 ```
 
+<br>
+
 ## 中国电讯台
 
-[https://www.ding.com](https://www.ding.com/)
+<br>
+
+<figure>
+  <img src='figure/中国电信《爱江山更爱美人》.jpg' alt='Trulli' style='width:30%'>
+  <figcaption>《爱江山更爱美人》🎶
+
+  <img src='figure/中国联通《皇帝的烦恼》.jpg' alt='Trulli' style='width:32%'>
+  <figcaption>《皇帝的烦恼》🎶
+
+  <img src='figure/中国移动《忘情水》.jpg' alt='Trulli' style='width:30%'>
+  <figcaption>《忘情水》🎶
+</figure>
+
+<br>
+
+## 手机号前三码一览
+
+<br>
+
+- [手机号码段及归属地查询规则](https://blog.csdn.net/pzasdq/article/details/50587428?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~first_rank_v2~rank_v25-3-50587428.nonecase&utm_term=%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5%E6%9F%A5%E8%AF%A2&spm=1000.2123.3001.4430)
+- [中国移动，联通，电信各手机号码前三位是多少？](https://zhidao.baidu.com/question/584943266.html)
+
 
 ```{python eval = FALSE}
 ## https://rstudio.github.io/reticulate/articles/python_packages.html
@@ -62,10 +99,6 @@ modsip <- mods %>% llply(import)
 #scipy <- import('scipy')
 ```
 
-## 手机号前三码一览
-
-[手机号码段及归属地查询规则](https://blog.csdn.net/pzasdq/article/details/50587428?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~first_rank_v2~rank_v25-3-50587428.nonecase&utm_term=%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5%E6%9F%A5%E8%AF%A2&spm=1000.2123.3001.4430)，[中国移动，联通，电信各手机号码前三位是多少？](https://zhidao.baidu.com/question/584943266.html)
-
 ```{python eval = FALSE}
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -89,9 +122,18 @@ while True:
     except Exception: break
 ```
 
-## Including Plots
+<br>
+<br>
 
-You can also embed plots, for example:
+## 手机号查询
+
+<br>
+
+### 样本
+
+<br>
+
+[手机号码归属地查询](https://m.ip138.com/sj.asp)可以查询任何国内手机号。
 
 ```{r}
 xxx <- read_html('view-source_https___m.ip138.com_sj.asp_mobile=1316482776.html') %>% 
@@ -102,14 +144,29 @@ xxx <- read_html('view-source_https___m.ip138.com_sj.asp_mobile=1316482776.html'
     .[. != ''] %>% 
     str_split('<span')
 
-xxx #%>% llply(., function(x) {
-    #Encoding(x) = 'UTF-8'
-    #x
-    #}) %>% data.frame
+xxx %>% data.frame %>% 
+  t %>% data.frame %>% 
+  as_tibble %>% 
+  dplyr::rename('类别' = X1, '明细' = X2) %>% 
+  kbl('html', caption = '手机号详情', escape = F, align = 'r') %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  scroll_box(height = '400px')
 ```
 
-```{r}
-xxx %>% unlist %>% as.character %>% data.frame
+<br>
+
+### 靓号
+
+```{python eval = FALSE}
+import pandas as pd
+import lxml
+
+test = 'https://www.ip138.com/mobile.asp?mobile=1316482776&action=mobile'
+
+tables = pd.read_html(test)
+rankings = tables[-1]
+rankings.iloc[:200]
 ```
 
 ```{r eval = FALSE}
@@ -132,41 +189,6 @@ p6482776 <- lnk %>%
   })
 
 p6482776[sapply(p6482776, is.null)] <- NULL
-```
-
-```{r eval = FALSE}
-#https://m.ip138.com/sj.asp?mobile=1316482776
-#lnk <- c('https://m.ip138.com/mobile.asp?mobile=', '&action=mobile')
-
-i <- sprintf("%03d", 1:999) %>% 
-  paste0(6482776)
-lnk <- paste0('https://m.ip138.com/sj.asp?mobile=', i)
-rm(i)
-
-p6482776 <- lnk %>% 
-  llply(., function(ii) {
-    tryCatch({
-      xxx <- ii %>% read_html() %>% 
-        html_nodes('td') %>% 
-        .[144:152] %>% 
-        html_text(trim = T)# %>% 
-        str_replace_all('^<tr><td class=\"th\"|^<tr><td class=\"th\">|</td<td<span| width=\"36%\"|</td><td>|>|</span></td></tr>$|\\*', '') %>% 
-        .[. != ''] %>% 
-        str_split('<span')
-
-      xxx %<>% data.frame %>% 
-        t %>% 
-        as_tibble %>% 
-        dplyr::rename('种类' = V1, '明细' = V2)
-      cat('\nGet"', ii, '"');
-    }, error = function(e) {
-      NULL;
-      cat('\n', ii, 'not exist')
-    }) %>% unlist
-  })
-
-p6482776[sapply(p6482776, is.null)] <- NULL
-
 ```
 
 ```{r eval = FALSE}
@@ -205,29 +227,153 @@ p6482776[sapply(p6482776, is.null)] <- NULL
 p6482776 <- p6482776[sapply(p6482776, function(x) length(x)>1)]
 
 p6482776 %<>% llply(., function(x) {
-    x %>% matrix(nc = 2, byrow = TRUE)# %>% data.frame
-})
+    x %>% 
+    str_replace_all('\\*', '') %>% 
+    matrix(nc = 2, byrow = TRUE) %>% 
+    data.frame %>% 
+    as_tibble %>% 
+    dplyr::rename('类别' = X1, '明细' = X2)
+  })
+
+p6482776 %<>% 
+    ldply(., function(x) {
+        x %>% t %>% data.frame %>% 
+            mutate_at(1:ncol(.), funs(str_replace_all(., ' ', ''))) %>% 
+        .[-1,]
+  }) %>% as_tibble %>% 
+    mutate(`手机号码段` = as.numeric(X1), 
+           `卡号归属地` = factor(X2), 
+           `卡类型` = factor(X3), 
+           `区号` = factor(X4),
+           `邮编` = as.numeric(X5)) %>% 
+    .[-c(1:5)]
+
+## https://rstudio-pubs-static.s3.amazonaws.com/406749_dc4af7298f934812b35b11631abb5ad5.html
 
 saveRDS(p6482776, file = 'data/p6482776.rds')
 ```
 
-```{python eval = FALSE}
-import pandas as pd
-import lxml
 
-test = 'https://www.ip138.com/mobile.asp?mobile=1316482776&action=mobile'
-
-tables = pd.read_html(test)
-rankings = tables[-1]
-rankings.iloc[:200]
-```
-
-```{r}
-p6482776 %>% llply(., function(x) {
-    html_text(x) %>% matrix(nc = 2, byrow = TRUE) %>% data.frame
-    })
-```
 
 ```{r}
 p6482776 <- read_rds('data/p6482776.rds')
+p6482776 %>% 
+  mutate(
+    手机号码段 = color_tile('white', 'darkgrey')(手机号码段), 
+    卡类型 = if_else(
+      str_detect(卡类型, '联通'), 
+  cell_spec(卡类型, background = 'black', color = 'red', italic = TRUE), 
+    if_else(
+      str_detect(卡类型, '电信'), 
+      cell_spec(卡类型, background = 'blue', color = 'white', italic = TRUE), 
+    if_else(
+      str_detect(卡类型, '移动'), 
+  cell_spec(卡类型, background = 'lightgreen', color = 'blue', italic = TRUE), 
+  cell_spec(卡类型, background = 'gold', color = 'black'))
+  ))) %>% 
+    
+  kbl('html', caption = '手机号详情', escape = F, align = 'r') %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  scroll_box(height = '400px')
 ```
+
+<br>
+
+## 买号网
+
+- [手机靓号网（网页版）](http://www.1686888.com)
+- [手机靓号网（手机版）](http://m.1686888.com)
+
+<br>
+<br>
+
+## 手机号维护网站
+
+<br>
+
+![[https://www.ding.com](https://www.ding.com/)可以设定7天、14天、28天、30天自动充值，跨越全球手机号。](figure/ding.png)
+
+<br>
+<br>
+
+# 结论
+
+<br>
+
+## 年鉴
+
+<br>
+
+- [科学大家|赌博的乐趣与挑战：不确定性与统计推断](https://tech.sina.cn/scientist/2018-09-11/detail-ihiixyeu6001744.d.html)
+- [年鉴｜概率论与数理统计的前世今生](https://www.jianshu.com/p/37158001f8df)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=16&amp;end=41" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=84&amp;end=114" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=174&amp;end=219" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=305&amp;end=342" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=376&amp;end=410" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=526&amp;end=553" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=580&amp;end=606" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=636&amp;end=666" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=702&amp;end=728" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=785&amp;end=820" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=850&amp;end=880" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=895&amp;end=919" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=1092&amp;end=1123" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=1140&amp;end=1172" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=1180&amp;end=1207" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=1239&amp;end=1256" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/09nf9O3IqDg?start=1268&amp;end=1315" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## 附录
+
+```{r, warning = FALSE, results = 'asis'}
+suppressMessages(require('dplyr', quietly = TRUE))
+suppressMessages(require('magrittr', quietly = TRUE))
+suppressMessages(require('formattable', quietly = TRUE))
+suppressMessages(require('knitr', quietly = TRUE))
+suppressMessages(require('kableExtra', quietly = TRUE))
+
+sys1 <- devtools::session_info()$platform %>% 
+  unlist %>% data.frame(Category = names(.), session_info = .)
+rownames(sys1) <- NULL
+
+sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
+names(sys2)[2] <- c('Sys.info')
+rownames(sys2) <- NULL
+
+if (nrow(sys1) == 9 & nrow(sys2) == 8) {
+  sys2 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+} else {
+  sys1 %<>% rbind(., data.frame(
+  Category = 'Current time', 
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+}
+
+cbind(sys1, sys2) %>% 
+  kable(caption = 'Additional session information:') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+
+rm(sys1, sys2)
+```
+
+**Powered by - Copyright® Intellectual Property Rights of <img src='figure/scibrokes_trading.jpg' width='24'> [Sςιβrοκεrs Trαdιηg®️](http://www.scibrokes.com)経営企業**
