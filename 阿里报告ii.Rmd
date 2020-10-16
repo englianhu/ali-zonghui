@@ -499,7 +499,7 @@ https://zbcp.yayaread.cn/#/home
 
 # 附录
 
-```{r info, echo=FALSE, warning=FALSE, results='asis'}
+```{r, warning = FALSE, results = 'asis'}
 suppressMessages(require('dplyr', quietly = TRUE))
 suppressMessages(require('magrittr', quietly = TRUE))
 suppressMessages(require('formattable', quietly = TRUE))
@@ -517,16 +517,19 @@ rownames(sys2) <- NULL
 if (nrow(sys1) == 9 & nrow(sys2) == 8) {
   sys2 %<>% rbind(., data.frame(
   Category = 'Current time', 
-  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST🗾')))
 } else {
   sys1 %<>% rbind(., data.frame(
   Category = 'Current time', 
-  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST🗾')))
 }
 
 cbind(sys1, sys2) %>% 
-  kable(caption = 'Additional session information:') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
-rm(sys1, sys2)
+  kbl(caption = 'Additional session information:') %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(9, bold = T, color = 'white', background = '#D7261E')
 ```
+
+---
+
+<span style='color:RoyalBlue'>**Powered by - Copyright® Intellectual Property Rights of <img src='figure/scibrokes_trading.jpg' width='24'> [Sςιβrοκεrs Trαdιηg®️](http://www.scibrokes.com)経営企業**</span>
