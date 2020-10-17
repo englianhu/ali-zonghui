@@ -334,8 +334,8 @@ md2 %>%
 ## https://stackoverflow.com/a/24133767/3806250
 num <- 2:5
 
-mpr_list <- llply(num, function(i) {
-  mpr = list(
+mprf_list <- llply(num, function(i) {
+  mprf = list(
     #p00 = lm(Profit ~ 
     #         poly(Date, degree = i) * 
     #         poly(Bettor, degree = i) * 
@@ -452,7 +452,7 @@ mpr_list <- llply(num, function(i) {
     dplyr::rename(df = V1, AIC = V2)
 
     ## save files, easier to read.
-    write_rds(mpr, path = paste0('data/mpr', i, '.rds'))
+    write_rds(mprf, path = paste0('data/mprf', i, '.rds'))
   })
 
 
@@ -468,8 +468,8 @@ mpr_list <- llply(num, function(i) {
 ## https://stackoverflow.com/a/24133767/3806250
 num <- 2:5
 
-mp_list <- llply(num, function(i) {
-  mp = list(
+mprt_list <- llply(num, function(i) {
+  mprt = list(
     #p00 = lm(Profit ~ 
     #         poly(Date, degree = i, raw = TRUE) * 
     #         poly(Bettor, degree = i, raw = TRUE) * 
@@ -586,7 +586,7 @@ mp_list <- llply(num, function(i) {
     dplyr::rename(df = V1, AIC = V2)
 
     ## save files, easier to read.
-    write_rds(mp, path = paste0('data/mp', i, '.rds'))
+    write_rds(mprt, path = paste0('data/mprt', i, '.rds'))
   })
 
 
