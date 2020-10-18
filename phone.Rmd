@@ -5,6 +5,7 @@ author: "®γσ ξηg <img src='figure/aaaa.jpg' width='16'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
+    mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -14,8 +15,7 @@ output:
     code_folding: hide
 ---
 
-# ${\color{Black} \circledR} {\color{DarkGreen} \gamma} {\color{Red} \sigma} \; {\color{Blue} \xi} {\color{Red} \eta} {\color{Blue} g}$^[[Latex Equation](https://www.codecogs.com/latex/eqneditor.php)] 🎏^[[Emoji list](https://gist.github.com/rxaviers/7360908)]
-
+# ${\color{Black} \circledR} {\color{DarkGreen} \gamma} {\color{Red} \sigma} \; {\color{Blue} \xi} {\color{Red} \eta} {\color{Blue} g}$^[[Latex Equation](https://www.codecogs.com/latex/eqneditor.php)] 🎏^[[Emoji list](https://gist.github.com/rxaviers/7360908),[Colorised LaTEX formula](https://community.rstudio.com/t/colorised-latex-formula/84115/2?u=englianhu)]
 <br>
 
 ![Quantitative Trading in Sportsbook and financial market](figure/soccer.jpg)
@@ -63,7 +63,14 @@ options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 
   <img src='figure/中国移动《忘情水》.jpg' alt='Trulli' style='width:30%'>
   <figcaption>《忘情水》🎶
+
+  <img src='figure/中国广电《兄弟干杯》.jpg' alt='Trulli' style='width:30%'>
+  <figcaption>《兄弟干杯》🎶
 </figure>
+
+<br>
+
+[**通信大变天！第四大运营商来了，又是阿里巴巴！**](https://mp.weixin.qq.com/s/VeVG0AGXDULuhUDxe9tRbQ)
 
 <br>
 
@@ -73,7 +80,7 @@ options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 
 - [手机号码段及归属地查询规则](https://blog.csdn.net/pzasdq/article/details/50587428?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~first_rank_v2~rank_v25-3-50587428.nonecase&utm_term=%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5%E6%9F%A5%E8%AF%A2&spm=1000.2123.3001.4430)
 - [中国移动，联通，电信各手机号码前三位是多少？](https://zhidao.baidu.com/question/584943266.html)
-
+- `广电192的号码有没有人用呢？...`^[[通信大变天！第四大运营商来了，又是阿里巴巴！](https://mp.weixin.qq.com/s/VeVG0AGXDULuhUDxe9tRbQ)]
 
 ```{python eval = FALSE}
 ## https://rstudio.github.io/reticulate/articles/python_packages.html
@@ -292,6 +299,8 @@ p6482776 %>%
 <br>
 
 ![[https://www.ding.com](https://www.ding.com/)可以设定7天、14天、28天、30天自动充值，跨越全球手机号。](figure/ding.png)
+
+<https://www.dingconnect.com>当代理，维护全球手机号。
 
 <br>
 <br>

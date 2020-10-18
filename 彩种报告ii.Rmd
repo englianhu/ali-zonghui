@@ -28,13 +28,14 @@ output:
 ## 2849108450@qq.com
 ## leiou123
 ## https://rstudio.cloud/project/1198888
-if(!require('BBmisc')) {install.packages('BBmisc')}
+if(!require('BBmisc')) {install.packages('BBmisc', dependencies = TRUE, 
+                                         INSTALL_opts = '--no-lock')}
 require('BBmisc')
 pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr', 'MASS', 
          'knitr', 'kableExtra', 'forecast', 'formattable', 'DT', 'echarts4r', 
          'lubridate', 'highcharter', 'htmltools', 'readr', 'pryr', 'sparklyr', 
          'lme4', 'microbenchmark', 'polynom', 'multipol', 'splines', 'leaps', 
-         'highr')
+         'highr', 'dplyr', 'pacman')
 
 #plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
 suppressAll(lib(pkg))
@@ -332,7 +333,7 @@ md2 %>%
 
 ```{r, results = 'asis', eval = FALSE, warning = FALSE}
 ## https://stackoverflow.com/a/24133767/3806250
-num <- 2:5
+num <- 5#2:5
 
 mprf_list <- llply(num, function(i) {
   mprf = list(
