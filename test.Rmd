@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+author: "®γσ ξηg <img src='figure/aaaa.jpg' width='16'>"
+date: "10/20/2020"
+  html_document: 
+    mathjax: default
+---
+
+https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+http://docs.mathjax.org/en/latest/input/tex/macros/index.html?highlight=widetilde
+
+$$
+\begin{align*}
+\color{red}{x} + \color{blue}{y}\\
+
+{\color{red} x} + {\color{blue} y}\\
+
+\color{Red} \beta_{1}X_{1}\\
+
+{\color{Red} \beta_{1}}X_{1}\\
+\end{align*}
+$$
+
+$$
+\color{Red} \widetilde{\beta_{1}}X_{1}
+$$
+
+$$
+{\color{Red} \widetilde{\beta_{1}}}}X_{1}
+$$
+
+$$
+{\color{Red} \widetilde{\beta_{1}}}
+$$
+
+
+

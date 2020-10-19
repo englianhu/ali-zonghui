@@ -5,6 +5,7 @@ author: "雷欧 <img src='figure/foxi_daoshi.jpg' width='24'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
+    mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -21,7 +22,7 @@ output:
 
 <br>
 
-```{r, results = 'asis', warning = FALSE, message = FALSE}
+```{r message=FALSE, warning=FALSE, results='asis'}
 ## 3210448065@qq.com
 ## leiou123
 
@@ -74,20 +75,6 @@ names(smp) <- c('Date', 'Type', 'Bettor', 'Turnover', 'Won', 'Cancelled', 'Rebat
 ## 转化为大数据
 smp2 <- smp
 #smp2 <- copy_to(sc, smp2)
-
-# smp %>% datatable(
-#     caption = "彩种数据", 
-#     escape = FALSE, filter = 'top', rownames = FALSE, 
-#     extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
-#                       'Buttons' = NULL, 'Responsive' = NULL), 
-#     options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
-#                    lengthMenu = list(c(10, 50, 100, 500, -1), 
-#                                      c('10', '50', '100', '500', 'All')), 
-#                    ColReorder = TRUE, rowReorder = TRUE, 
-#                    buttons = list('copy', 'print', 
-#                                   list(extend = 'collection', 
-#                                        buttons = c('csv', 'excel', 'pdf'), 
-#                                        text = 'Download'), I('colvis'))))
 
 # smp2 %>% 
 #   as_tibble %>% 
@@ -153,10 +140,29 @@ $$
 $$
 \begin{align*}
  Y& = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{2}\\ 
- &= \beta_{0} + {\color{Red} \widetilde{\beta_{1}}}X_{1} + \beta_{2}X_{2}; {\color{Red} \widetilde{\beta_{1}}} = \beta_{1} + \beta_{2}X_{2}\\
+ &= \beta_{0} + \color{Red}\widetilde{\beta_{1}}X_{1} + \beta_{2}X_{2}; \color{Red}\widetilde{\beta_{1}} = \beta_{1} + \beta_{2}X_{2}\\
 \end{align*}
 $$
 <span style='color:Orange'>*方程3.1.1：多元相互式模型（[在线LaTEX方程编辑器](https://www.codecogs.com/latex/eqneditor.php)）*</span>
+
+$$
+\begin{align*}
+\color{red}{x} + \color{blue}{y}\\
+
+{\color{red} x} + {\color{blue} y}\\
+
+\color{Red} \beta_{1}X_{1}\\
+
+{\color{Red} \beta_{1}}X_{1}\\
+\end{align*}
+$$
+$$
+\begin{align*}
+\color{Red} \widetilde{\beta_{1}}X_{1}\\
+
+{\color{Red} \widetilde{\beta_{1}}}X_{1}\\
+\end{align*}
+$$
 
 ```{r, results = 'asis', eval = FALSE, warning = FALSE}
 # lm1 <- lm(Profit ~ Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2)
@@ -239,7 +245,7 @@ microbenchmark(
 <br>
 
 ```{r, results = 'asis', warning = FALSE}
-md <- read_rds(path = 'data/md.rds')
+md <- read_rds('data/md.rds')
 md2 <- md
 
 ## https://www.colorhexa.com/color-names
@@ -592,7 +598,6 @@ mprt_list <- llply(num, function(i) {
 
 
 ```
-
 
 
 #### 多项式程度最优化
