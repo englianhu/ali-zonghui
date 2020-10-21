@@ -201,13 +201,13 @@ md <- list(
 ## save files, easier to read.
 microbenchmark(
    save(md, file = 'data/md.rda'), 
-   write_rds(md, path = 'data/md.rds'), 
+   write_rds(md, 'data/md.rds'), 
    saveRDS(md, file = 'data/md.rds'))
 #Unit: microseconds
 #                                expr     min       lq     mean   median      uq     max neval
-#      save(md, file = "data/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
-# write_rds(md, path = "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
-#   saveRDS(md, file = "data/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
+#      save(md, "data/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
+# write_rds(md, "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
+#   saveRDS(md, "data/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
 ```
 
 1) $m00 = lm(Profit \sim Date * Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2)$
@@ -339,130 +339,150 @@ md2 %>%
 
 ```{r, results = 'asis', eval = FALSE, warning = FALSE}
 ## https://stackoverflow.com/a/24133767/3806250
-num <- 5#2:5
+num <- 2:5
 
 mprf_list <- llply(num, function(i) {
-  mprf = list(
-    #p00 = lm(Profit ~ 
-    #         poly(Date, degree = i) * 
-    #         poly(Bettor, degree = i) * 
-    #         poly(Turnover, degree = i) * 
-    #         poly(Won, degree = i) * 
-    #         poly(Cancelled, degree = i) * 
-    #         poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p01 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p02 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i), smp2) %>% extractAIC, 
-    p03 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p04 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p05 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p06 = lm(Profit ~ 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p07 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p08 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i), smp2) %>% extractAIC, 
-    p09 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p10 = lm(Profit ~ 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p11 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Cancelled, degree = i), smp2) %>% extractAIC, 
-    p12 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p13 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i), smp2) %>% extractAIC, 
-    p14 = lm(Profit ~ 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p15 = lm(Profit ~ 
-             poly(Turnover, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p16 = lm(Profit ~ 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p17 = lm(Profit ~ 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p18 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i), smp2) %>% extractAIC, 
-    p19 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p20 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p21 = lm(Profit ~ 
-             poly(Bettor, degree = i) * 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC, 
-    p22 = lm(Profit ~ 
-             poly(Turnover, degree = i) * 
-             poly(Won, degree = i) * 
-             poly(Cancelled, degree = i) * 
-             poly(Rebates, degree = i), smp2) %>% extractAIC
+    mprf = list(
+        #p00 = lm(Profit ~ 
+        #         poly(Date, degree = i) * 
+        #         poly(Bettor, degree = i) * 
+        #         poly(Turnover, degree = i) * 
+        #         poly(Won, degree = i) * 
+        #         poly(Cancelled, degree = i) * 
+        #         poly(Rebates, degree = i), smp2) %>% extractAIC, 
+        {p01 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p01, paste0('data/mprf', i, '_p01.rds'))}, 
+        {p02 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i), smp2) %>% extractAIC;
+        write_rds(p02, paste0('data/mprf', i, '_p02.rds'))}, 
+        {p03 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p03, paste0('data/mprf', i, '_p03.rds'))}, 
+        {p04 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p04, paste0('data/mprf', i, '_p04.rds'))}, 
+        {p05 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p05, paste0('data/mprf', i, '_p05.rds'))}, 
+        {p06 = lm(Profit ~ 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p06, paste0('data/mprf', i, '_p06.rds'))}, 
+        {p07 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p07, paste0('data/mprf', i, '_p07.rds'))}, 
+        {p08 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i), smp2) %>% extractAIC;
+        write_rds(p08, paste0('data/mprf', i, '_p08.rds'))}, 
+        {p09 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p09, paste0('data/mprf', i, '_p09.rds'))}, 
+        {p10 = lm(Profit ~ 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p10, paste0('data/mprf', i, '_p10.rds'))}, 
+        {p11 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Cancelled, degree = i), smp2) %>% extractAIC;
+        write_rds(p11, paste0('data/mprf', i, '_p11.rds'))}, 
+        {p12 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p12, paste0('data/mprf', i, '_p12.rds'))}, 
+        {p13 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i), smp2) %>% extractAIC;
+        write_rds(p13, paste0('data/mprf', i, '_p13.rds'))}, 
+        {p14 = lm(Profit ~ 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p14, paste0('data/mprf', i, '_p14.rds'))}, 
+        {p15 = lm(Profit ~ 
+                     poly(Turnover, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p15, paste0('data/mprf', i, '_p15.rds'))}, 
+        {p16 = lm(Profit ~ 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p16, paste0('data/mprf', i, '_p16.rds'))}, 
+        {p17 = lm(Profit ~ 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p17, paste0('data/mprf', i, '_p17.rds'))}, 
+        {p18 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i), smp2) %>% extractAIC;
+        write_rds(p18, paste0('data/mprf', i, '_p18.rds'))}, 
+        {p19 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p19, paste0('data/mprf', i, '_p19.rds'))}, 
+        {p20 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p20, paste0('data/mprf', i, '_p20.rds'))}, 
+        {p21 = lm(Profit ~ 
+                     poly(Bettor, degree = i) * 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p21, paste0('data/mprf', i, '_p21.rds'))}, 
+        {p22 = lm(Profit ~ 
+                     poly(Turnover, degree = i) * 
+                     poly(Won, degree = i) * 
+                     poly(Cancelled, degree = i) * 
+                     poly(Rebates, degree = i), smp2) %>% extractAIC;
+        write_rds(p22, paste0('data/mprf', i, '_p22.rds'))}
     ) %>% 
-    ldply %>% 
-    as_tibble %>% 
-    dplyr::rename(df = V1, AIC = V2)
-
+        ldply %>% 
+        as_tibble %>% 
+        dplyr::rename(df = V1, AIC = V2)
+    
     ## save files, easier to read.
-    write_rds(mprf, path = paste0('data/mprf', i, '.rds'))
-  })
-
-
+    write_rds(mprf, paste0('data/mprf', i, '.rds'))
+})
 ```
 
 <br>
@@ -593,12 +613,9 @@ mprt_list <- llply(num, function(i) {
     dplyr::rename(df = V1, AIC = V2)
 
     ## save files, easier to read.
-    write_rds(mprt, path = paste0('data/mprt', i, '.rds'))
+    write_rds(mprt, paste0('data/mprt', i, '.rds'))
   })
-
-
 ```
-
 
 #### 多项式程度最优化
 
@@ -637,51 +654,14 @@ print(anova(fit_1,fit_2,fit_3,fit_4,fit_5))
 ```
 *[7.8.1 Polynomial Regression and Step Functions7.8.1 Polynomial Regression and Step Functions](http://www.science.smith.edu/~jcrouser/SDS293/labs/lab12-r.html#Deciding-on-a-degree)*
 
-
-```{r, results = 'asis', eval = FALSE, warning = FALSE}
-# lm1 <- lm(Profit ~ Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2)
-
-# m.aic.backward1 <- step(lm1, direction = 'backward', trace = 1)
-# m.aic.backward2 <- step(lm1)
-
-md <- list(
-  m00 = lm(Profit ~ poly(Date, 4) * poly(Type, 4) * poly(Bettor, 4) * poly(Turnover, 4) * poly(Won, 4) * poly(Cancelled, 4) * poly(Rebates, 4), smp2) %>% extractAIC, 
-  m01 = lm(Profit ~ Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m02 = lm(Profit ~ Type * Bettor * Turnover * Won * Cancelled, smp2) %>% extractAIC, 
-  m03 = lm(Profit ~ Type * Bettor * Turnover * Won * Rebates, smp2) %>% extractAIC, 
-  m04 = lm(Profit ~ Type * Bettor * Turnover * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m05 = lm(Profit ~ Type * Bettor * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m06 = lm(Profit ~ Type * Turnover * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m07 = lm(Profit ~ Bettor * Turnover * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m08 = lm(Profit ~ Type * Bettor * Turnover * Won, smp2) %>% extractAIC, 
-  m09 = lm(Profit ~ Type * Bettor * Turnover * Rebates, smp2) %>% extractAIC, 
-  m10 = lm(Profit ~ Type * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m11 = lm(Profit ~ Type * Bettor * Turnover * Cancelled, smp2) %>% extractAIC, 
-  m12 = lm(Profit ~ Type * Bettor * Won * Rebates, smp2) %>% extractAIC, 
-  m13 = lm(Profit ~ Type * Bettor * Won * Cancelled, smp2) %>% extractAIC, 
-  m14 = lm(Profit ~ Type * Turnover * Won * Rebates, smp2) %>% extractAIC, 
-  m15 = lm(Profit ~ Type * Turnover * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m16 = lm(Profit ~ Type * Turnover * Won * Rebates, smp2) %>% extractAIC, 
-  m17 = lm(Profit ~ Type * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m18 = lm(Profit ~ Bettor * Turnover * Won * Cancelled, smp2) %>% extractAIC, 
-  m19 = lm(Profit ~ Bettor * Turnover * Won * Rebates, smp2) %>% extractAIC, 
-  m20 = lm(Profit ~ Bettor * Turnover * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m21 = lm(Profit ~ Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2) %>% extractAIC, 
-  m22 = lm(Profit ~ Turnover * Won * Cancelled * Rebates, smp2) %>% extractAIC) %>% 
-  ldply %>% 
-  as_tibble %>% 
-  dplyr::rename(df = V1, AIC = V2) %>% 
-
-## save files, easier to read.
-microbenchmark(
-   save(md, file = 'data/md.rda'), 
-   write_rds(md, path = 'data/md.rds'), 
-   saveRDS(md, file = 'data/md.rds'))
-#Unit: microseconds
-#                                expr     min       lq     mean   median      uq     max neval
-#      save(md, file = "data/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
-# write_rds(md, path = "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
-#   saveRDS(md, file = "data/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
+```{r}
+dir('data', pattern = 'mp') %>% llply(., function(x) {
+    read_rds(paste0('data/', x)) %>% 
+        mutate(.md = str_replace_all(x, '.rds', '')) %>% 
+        dplyr::select(.md, .id, df, AIC)
+}) %>% ldply %>% 
+    as_tibble %>% 
+    pack_rows('Group 1', 1, 22, label_row_css = 'background-color: #666; color: #fff;')
 ```
 
 <br>
@@ -733,12 +713,12 @@ mp <- list(
 ## save files, easier to read.
 microbenchmark(
    save(md, file = 'data/md.rda'), 
-   write_rds(md, path = 'data/md.rds'), 
+   write_rds(md, 'data/md.rds'), 
    saveRDS(md, file = 'data/md.rds'))
 #Unit: microseconds
 #                                expr     min       lq     mean   median      uq     max neval
 #      save(md, file = "data/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
-# write_rds(md, path = "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
+# write_rds(md, "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
 #   saveRDS(md, file = "data/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
 ```
 
