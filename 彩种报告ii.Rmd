@@ -327,267 +327,267 @@ num <- 2:5
 mprf_list <- llply(num, function(i) {
     mprf = list(
         #p00 = lm(Profit ~ 
-        #         poly(Date, degree = i, raw = TRUE) * 
-        #         poly(Bettor, degree = i, raw = TRUE) * 
-        #         poly(Turnover, degree = i, raw = TRUE) * 
-        #         poly(Won, degree = i, raw = TRUE) * 
-        #         poly(Cancelled, degree = i, raw = TRUE) * 
-        #         poly(Rebates, degree = i, raw = TRUE), smp2) %>% extractAIC, 
+        #         poly(Date, degree = i, raw = FALSE) * 
+        #         poly(Bettor, degree = i, raw = FALSE) * 
+        #         poly(Turnover, degree = i, raw = FALSE) * 
+        #         poly(Won, degree = i, raw = FALSE) * 
+        #         poly(Cancelled, degree = i, raw = FALSE) * 
+        #         poly(Rebates, degree = i, raw = FALSE), smp2) %>% extractAIC, 
         {p01 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p01'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p01'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p01, paste0('data/mprf', i, '_p01.rds'))}, 
         {p02 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p02'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p02'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p02, paste0('data/mprf', i, '_p02.rds'))}, 
         {p03 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p03'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p03'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p03, paste0('data/mprf', i, '_p03.rds'))}, 
         {p04 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p04'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p04'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p04, paste0('data/mprf', i, '_p04.rds'))}, 
         {p05 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p05'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p05'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p05, paste0('data/mprf', i, '_p05.rds'))}, 
         {p06 = lm(Profit ~ 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p06'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p06'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p06, paste0('data/mprf', i, '_p06.rds'))}, 
         {p07 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p07'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p07'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p07, paste0('data/mprf', i, '_p07.rds'))}, 
         {p08 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p08'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p08'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p08, paste0('data/mprf', i, '_p08.rds'))}, 
         {p09 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p09'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p09'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p09, paste0('data/mprf', i, '_p09.rds'))}, 
         {p10 = lm(Profit ~ 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p10'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p10'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p10, paste0('data/mprf', i, '_p10.rds'))}, 
         {p11 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p11'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p11'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p11, paste0('data/mprf', i, '_p11.rds'))}, 
         {p12 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p12'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p12'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p12, paste0('data/mprf', i, '_p12.rds'))}, 
         {p13 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p13'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p13'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p13, paste0('data/mprf', i, '_p13.rds'))}, 
         {p14 = lm(Profit ~ 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p14'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p14'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p14, paste0('data/mprf', i, '_p14.rds'))}, 
         {p15 = lm(Profit ~ 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p15'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p15'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p15, paste0('data/mprf', i, '_p15.rds'))}, 
         {p16 = lm(Profit ~ 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p16'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p16'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p16, paste0('data/mprf', i, '_p16.rds'))}, 
         {p17 = lm(Profit ~ 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p17'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p17'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p17, paste0('data/mprf', i, '_p17.rds'))}, 
         {p18 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p18'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p18'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p18, paste0('data/mprf', i, '_p18.rds'))}, 
         {p19 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p19'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p19'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p19, paste0('data/mprf', i, '_p19.rds'))}, 
         {p20 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p20'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p20'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p20, paste0('data/mprf', i, '_p20.rds'))}, 
         {p21 = lm(Profit ~ 
-                     poly(Bettor, degree = i, raw = TRUE) * 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Bettor, degree = i, raw = FALSE) * 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p21'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p21'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p21, paste0('data/mprf', i, '_p21.rds'))}, 
         {p22 = lm(Profit ~ 
-                     poly(Turnover, degree = i, raw = TRUE) * 
-                     poly(Won, degree = i, raw = TRUE) * 
-                     poly(Cancelled, degree = i, raw = TRUE) * 
-                     poly(Rebates, degree = i, raw = TRUE), smp2) %>% 
+                     poly(Turnover, degree = i, raw = FALSE) * 
+                     poly(Won, degree = i, raw = FALSE) * 
+                     poly(Cancelled, degree = i, raw = FALSE) * 
+                     poly(Rebates, degree = i, raw = FALSE), smp2) %>% 
           extractAIC %>% 
           as_tibble %>% 
           t %>% as_tibble %>% 
           dplyr::rename(df = V1, AIC = V2) %>% 
-          mutate(.md = paste0('mprf_p22'), degree = i, raw = TRUE) %>% 
+          mutate(.md = paste0('mprf_p22'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p22, paste0('data/mprf', i, '_p22.rds'))}
     ) %>% 
@@ -1017,7 +1017,7 @@ mdp %>%
 - [R LME4 mixed models with nesting and nesting-interactions](https://stackoverflow.com/questions/62423505/r-lme4-mixed-models-with-nesting-and-nesting-interactions)
 - [lmer poly() function on interactions](https://stackoverflow.com/questions/58943913/lmer-poly-function-on-interactions)^[内嵌多项式线型模型(Polynomial Regression)]
 
-```{r}
+```{r, eval = FALSE}
 read_rds('data/mprf5.rds') %>% 
     dplyr::filter(AIC == min(AIC)) %>% 
     kbl('html', caption = '最优模型', escape = F, align = c('c', 'r', 'r')) %>% 
@@ -1027,7 +1027,7 @@ read_rds('data/mprf5.rds') %>%
 ```
 `lm(Profit ~ poly(Bettor, degree = i, raw = TRUE) * ` `poly(Turnover, degree = i, raw = TRUE) * ` `poly(Won, degree = i, raw = TRUE) * ` `poly(Cancelled, degree = i, raw = TRUE) * ` `poly(Rebates, degree = i, raw = TRUE), smp2)`是最优模型，这儿我再添加内嵌模型。
 
-```{r}
+```{r, eval = FALSE}
 bs <- lm(Profit ~ poly(Bettor, degree = 1) * poly(Turnover, degree = 1) * poly(Won, degree = i, raw = TRUE) * poly(Cancelled, degree = i, raw = TRUE) * poly(Rebates, degree = 1), smp2)
 
 
