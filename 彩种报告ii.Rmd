@@ -1174,6 +1174,10 @@ mm001 = lm(Profit ~ Date *
     extractAIC
 write_rds(mm001, paste0('data/mm001.rds'))
 
+
+## lmer(y~poly(x,2,raw=TRUE)+(1|f)+(0+x|f)+(0+I(x^2)|f),
+##            data=d)
+
     ## save files, easier to read.
     #write_rds(mprf, paste0('data/mprf', i, '.rds'))
 })
