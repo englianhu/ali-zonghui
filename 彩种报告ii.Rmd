@@ -37,7 +37,7 @@ pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr', 'MASS',
          'knitr', 'kableExtra', 'forecast', 'formattable', 'DT', 'echarts4r', 
          'lubridate', 'highcharter', 'htmltools', 'readr', 'pryr', 'sparklyr', 
          'lme4', 'microbenchmark', 'polynom', 'multipol', 'splines', 'leaps', 
-         'highr', 'dplyr', 'pacman', 'lme4', 'nlme')
+         'highr', 'dplyr', 'pacman', 'lme4', 'nlme', 'Rfast')
 
 #plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
 suppressAll(lib(pkg))
@@ -1087,7 +1087,7 @@ llply(5, function(i) {
             mutate(.md = paste0('mmprf_p02'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(mm02, paste0('data/mmprf', i, '_p02.rds'))}, 
-        {mm03 = lm(Profit ~ Date * 
+        {mm03 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Turnover, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
@@ -1113,7 +1113,7 @@ llply(5, function(i) {
             mutate(.md = paste0('mmprf_p04'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p04, paste0('data/mmprf', i, '_p04.rds'))}, 
-        {mm05 = lm(Profit ~ Date * 
+        {mm05 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
                       poly(Cancelled, degree = i, raw = FALSE) * 
@@ -1126,7 +1126,7 @@ llply(5, function(i) {
             mutate(.md = paste0('mmprf_p05'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p05, paste0('data/mmprf', i, '_p05.rds'))}, 
-        {mm06 = lm(Profit ~ Date * 
+        {mm06 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
                       poly(Cancelled, degree = i, raw = FALSE) * 
@@ -1139,7 +1139,7 @@ llply(5, function(i) {
             mutate(.md = paste0('mmprf_p06'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
         write_rds(p06, paste0('data/mmprf', i, '_p06.rds'))}, 
-        {mm07 = lm(Profit ~ Date * 
+        {mm07 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
                       poly(Cancelled, degree = i, raw = FALSE) * 
@@ -1156,7 +1156,8 @@ llply(5, function(i) {
         ldply %>% 
         as_tibble
 
-mm000 = lm(Profit ~ Date * 
+## random effects with nested model
+mm000 = lmer(Profit ~ Date * 
               poly(Bettor, degree = 2, raw = FALSE) * 
               poly(Won, degree = 2, raw = FALSE) * 
               poly(Cancelled, degree = 2, raw = FALSE) * 
@@ -1165,6 +1166,7 @@ mm000 = lm(Profit ~ Date *
     extractAIC
 write_rds(mm000, paste0('data/mm000.rds'))
 
+## nested model
 mm001 = lm(Profit ~ Date * 
                poly(Bettor, degree = 2, raw = FALSE) * 
                poly(Won, degree = 2, raw = FALSE) * 
@@ -1174,13 +1176,29 @@ mm001 = lm(Profit ~ Date *
     extractAIC
 write_rds(mm001, paste0('data/mm001.rds'))
 
-
 ## lmer(y~poly(x,2,raw=TRUE)+(1|f)+(0+x|f)+(0+I(x^2)|f),
 ##            data=d)
 
-    ## save files, easier to read.
-    #write_rds(mprf, paste0('data/mprf', i, '.rds'))
-})
+## random effects with nested model
+mm000_d3 = lmer(Profit ~ Date * 
+              poly(Bettor, degree = 3, raw = FALSE) * 
+              poly(Won, degree = 3, raw = FALSE) * 
+              poly(Cancelled, degree = 3, raw = FALSE) * 
+              poly(Rebates, degree = 3, raw = FALSE) * 
+              (1 + Won * Cancelled | Bettor) * (Type / Date), smp2) %>% 
+    extractAIC
+write_rds(mm000_d3, paste0('data/mm000_d3.rds'))
+
+## nested model
+mm001_d3 = lm(Profit ~ Date * 
+               poly(Bettor, degree = 3, raw = FALSE) * 
+               poly(Won, degree = 3, raw = FALSE) * 
+               poly(Cancelled, degree = 3, raw = FALSE) * 
+               poly(Rebates, degree = 3, raw = FALSE) * 
+               (1 + Won * Cancelled / Bettor) * (Type / Date), smp2) %>% 
+    extractAIC
+write_rds(mm001_d3, paste0('data/mm001_d4.rds'))
+
 ```
 
 <br>
