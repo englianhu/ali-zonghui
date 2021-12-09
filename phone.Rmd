@@ -1,7 +1,7 @@
 ---
 title: "💙🤍 ❤️🖤 💚💙"
 subtitle: "📲 - *️⃣*️⃣*️⃣6️⃣4️⃣8️⃣2️⃣7️⃣7️⃣6️⃣ - 《踢出一个未来》🎶"
-author: "®γσ ξηg <img src='figure/aaaa.jpg' width='16'>"
+author: "®γσ ξηg <img src='figure/aaaa.jpg' width='12'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
@@ -13,6 +13,7 @@ output:
       collapsed: yes
       smooth_scroll: yes
     code_folding: hide
+    css: CSSBackgrounds.css
 ---
 
 # ${\color{Black} \circledR} {\color{DarkGreen} \gamma} {\color{Red} \sigma} \; {\color{Blue} \xi} {\color{Red} \eta} {\color{Blue} g}$^[[Latex Equation](https://www.codecogs.com/latex/eqneditor.php)] 🎏^[[Emoji list](https://gist.github.com/rxaviers/7360908),[Colorised LaTEX formula](https://community.rstudio.com/t/colorised-latex-formula/84115/2?u=englianhu)]
@@ -20,15 +21,96 @@ output:
 
 ![Quantitative Trading in Sportsbook and financial market](figure/soccer.jpg)
 
-<audio src='music/kick-off a better future.mp3' controls></audio>
+<audio controls loop autoplay src='music/kick-off a better future.mp3' controls></audio>
 
 <br>
 
 <iframe title="vimeo-player" src="https://player.vimeo.com/video/191464377" width="560" height="315" frameborder="0" allowfullscreen></iframe>
 
----
+------
 
-```{r}
+# Setting
+
+## SCSS Setup
+
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+.table-hover > tbody > tr:hover { 
+  background-color: #8D918D;
+}
+</style>
+
+```{r class.source = 'bg-success', class.output = 'bg-primary', message = FALSE, warning = FALSE}
+# install.packages("remotes")
+library('BBmisc', 'rmsfuns')
+#remotes::install_github("rstudio/sass")
+lib('sass')
+```
+
+```{scss class.source = 'bg-success', class.output = 'bg-primary'}
+/* https://stackoverflow.com/a/66029010/3806250 */
+h1 { color: #002C54; }
+h2 { color: #2F496E; }
+h3 { color: #375E97; }
+h4 { color: #556DAC; }
+h5 { color: #92AAC7; }
+
+/* ----------------------------------------------------------------- */
+/* https://gist.github.com/himynameisdave/c7a7ed14500d29e58149#file-broken-gradient-animation-less */
+.hover01 {
+  /* color: #FFD64D; */
+  background: linear-gradient(155deg, #EDAE01 0%, #FFEB94 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #EDAE01 20%, #FFEB94 80%);
+    }
+  }
+
+.hover02 {
+  color: #FFD64D;
+  background: linear-gradient(155deg, #002C54 0%, #4CB5F5 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #002C54 20%, #4CB5F5 80%);
+    }
+  }
+
+.hover03 {
+  color: #FFD64D;
+  background: linear-gradient(155deg, #A10115 0%, #FF3C5C 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #A10115 20%, #FF3C5C 80%);
+    }
+  }
+```
+
+```{r global_options, class.source='hover01', class.output='hover02'}
+## https://stackoverflow.com/a/36846793/3806250
+options(width = 999)
+knitr::opts_chunk$set(class.source = 'hover01', class.output = 'hover02', class.error = 'hover03')
+
+## Set the timezone but not change the datetime
+Sys.setenv(TZ = 'Asia/Tokyo')
+## options(knitr.table.format = 'html') will set all kableExtra tables to be 'html', otherwise need to set the parameter on every single table.
+options(warn = -1, knitr.table.format = 'html')#, digits.secs = 6)
+
+## https://stackoverflow.com/questions/39417003/long-vectors-not-supported-yet-abnor-in-rmd-but-not-in-r-script
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
+                      message = FALSE, cache.lazy = FALSE)
+```
+
+<br><br>
+
+## Setup
+
+```{r error=TRUE}
 ## https://www.ip138.com/sj
 if(!suppressPackageStartupMessages(require('BBmisc'))) {
   suppressWarnings(suppressMessages(install.packages('BBmisc')))
@@ -37,7 +119,8 @@ require('BBmisc')
 pkgs <- c('rvest', 'RSelenium', 'reticulate', 'tidyverse', 'magrittr', 
           'RCurl', 'plumber', 'bigQueryR', 'xts', 'forecast', 'purrr', 
           'googleCloudRunner', 'plyr', 'chinese.misc', 'knitr', 'tidyr', 
-          'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2', 'formattable')
+          'kableExtra', 'plyr', 'dplyr', 'devtools', 'XML', 'xml2', 
+          'formattable', 'lubridate')
 suppressAll(lib(pkgs))
 #(dependencies = TRUE, INSTALL_opts = '--no-lock')
 lnk <- 'https://www.ip138.com/sj'
@@ -54,18 +137,28 @@ options(tmp_chi_locale="Chinese (Traditional)_Taiwan.950")
 
 <br>
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ckgF2dNK1fc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 <figure>
+
+  <img src='figure/易博通《少林足球主題曲》.jpg' alt='Trulli' style='width:30%'>
+  <figcaption>[《少林足球主題曲》🎶](https://multi-byte.com)
+
   <img src='figure/中国电信《爱江山更爱美人》.jpg' alt='Trulli' style='width:30%'>
-  <figcaption>《爱江山更爱美人》🎶
+  <figcaption>[《爱江山更爱美人》🎶](https://www.189.cn)
 
   <img src='figure/中国联通《皇帝的烦恼》.jpg' alt='Trulli' style='width:32%'>
-  <figcaption>《皇帝的烦恼》🎶
+  <figcaption>[《皇帝的烦恼》🎶](http://www.chinaunicom.com)
 
   <img src='figure/中国移动《忘情水》.jpg' alt='Trulli' style='width:30%'>
-  <figcaption>《忘情水》🎶
+  <figcaption>[《忘情水》🎶](http://www.10086.cn)
 
   <img src='figure/中国广电《兄弟干杯》.jpg' alt='Trulli' style='width:30%'>
-  <figcaption>《兄弟干杯》🎶
+  <figcaption>[《兄弟干杯》🎶]()
+
+  <img src='figure/阿里通信《阿里山的姑娘》.jpg' alt='Trulli' style='width:30%'>
+  <figcaption>[《阿里山的姑娘》🎶](https://aliqin.tmall.com)
+
 </figure>
 
 <br>
@@ -352,37 +445,70 @@ p6482776 %>%
 
 ## 附录
 
-```{r, warning = FALSE, results = 'asis'}
-suppressMessages(require('dplyr', quietly = TRUE))
-suppressMessages(require('magrittr', quietly = TRUE))
+- File creation date: 2020-10-18
+- File latest updated date: `r lubridate::today('Asia/Tokyo')`
+- `r R.version.string`
+- [**rmarkdown**](https://github.com/rstudio/rmarkdown) package version: `r packageVersion('rmarkdown')`
+- File version: 0.2.1
+- Author Profile: [®γσ, ξηg Lιαη Ημ](https://github.com/scibrokes/owner)
+- GitHub: [Source Code](https://github.com/englianhu/report)
+- Additional session information
+
+```{r info, warning=FALSE, error=TRUE, results='asis'}
 suppressMessages(require('formattable', quietly = TRUE))
 suppressMessages(require('knitr', quietly = TRUE))
 suppressMessages(require('kableExtra', quietly = TRUE))
 
-sys1 <- devtools::session_info()$platform %>% 
-  unlist %>% data.frame(Category = names(.), session_info = .)
-rownames(sys1) <- NULL
+sys1 <- devtools::session_info()$platform |> 
+    unlist() |> 
+    {\(.) data.frame(row.names = 1:length(.), 
+                     Category = names(.), session_info = .)}()
 
-sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
-names(sys2)[2] <- c('Sys.info')
-rownames(sys2) <- NULL
+sys2 <- data.frame(Sys.info()) |> 
+    {\(.) data.frame(Category = row.names(.), Sys.info = .[,1])}()
 
-if (nrow(sys1) == 9 & nrow(sys2) == 8) {
-  sys2 %<>% rbind(., data.frame(
-  Category = 'Current time', 
-  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST🗾')))
-} else {
-  sys1 %<>% rbind(., data.frame(
-  Category = 'Current time', 
-  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST🗾')))
+#remarks, dim(sys1), dim(sys2)
+if (nrow(sys1) == 11 & nrow(sys2) == 8) {
+  sys2 <- sys2 |> 
+    {\(.) rbind(., data.frame(
+    Category = c('rmarkdown', 'rsconnect', 'Current time'), 
+    Sys.info = c(as.character(getwd()), 
+                 as.character(packageVersion('rsconnect')), 
+                 paste(as.character(lubridate::now('Asia/Tokyo')), 'JST 🌏'))))}()
+  
+} else if (nrow(sys1) == 10 & nrow(sys2) == 8) {
+  sys1 %<>% rbind(., data.frame(Category = '', session_info = ''))
+  
+  sys2 <- sys2 |> 
+    {\(.) rbind(., data.frame(
+    Category = c('rmarkdown', 'rsconnect', 'Current time'), 
+    Sys.info = c(as.character(getwd()), 
+                 as.character(packageVersion('rsconnect')), 
+                 paste(as.character(lubridate::now('Asia/Tokyo')), 'JST 🌏'))))}()
 }
 
-cbind(sys1, sys2) %>% 
-  kbl(caption = 'Additional session information:') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
-  row_spec(9, bold = T, color = 'white', background = '#D7261E')
+sys <- cbind(sys1, sys2) |> 
+  {\(.) 
+    kbl(., caption = 'Additional session information:')}() |> 
+  {\(.) 
+    kable_styling(., bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))}() |> 
+  {\(.) 
+    row_spec(., 0, background = 'DimGrey', color = 'yellow')}() |> 
+  {\(.) 
+    column_spec(., 1, background = 'CornflowerBlue', color = 'red')}() |> 
+  {\(.) 
+    column_spec(., 2, background = 'grey', color = 'black')}() |> 
+  {\(.) 
+    column_spec(., 3, background = 'CornflowerBlue', color = 'blue')}() |> 
+  {\(.) 
+    column_spec(., 4, background = 'grey', color = 'white')}() |> 
+  {\(.) 
+    row_spec(., 11, bold = TRUE, color = 'yellow', background = '#D7261E')}()
+
+rm(sys1, sys2)
+sys
 ```
 
 ---
 
-<span style='color:RoyalBlue'>**Powered by - Copyright® Intellectual Property Rights of <img src='figure/scibrokes_trading.jpg' width='24'> [Sςιβrοκεrs Trαdιηg®️](http://www.scibrokes.com)経営企業**</span>
+<span style='color:RoyalBlue'>**Powered by - Copyright® Intellectual Property Rights of <img src='figure/scibrokes_trading.jpg' width='18'> [Sςιβrοκεrs Trαdιηg®️](http://www.scibrokes.com)経営企業**</span>
