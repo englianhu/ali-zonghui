@@ -1,17 +1,20 @@
 library(shiny)
-library(shinythemes) #theme
-library(bslib) #theme
-library(sass) #stylist css
-library(shinyWidgets) #color gradient
-library(corazon) #color gradient
-library(shinydashboard)
-library(flexdashboard)
+library(shinythemes) #闪霓主题
+library(bslib) #闪霓主题
+library(sass) #层叠样式表个性化
+library(shinyWidgets) #彩色渐层
+library(corazon) #彩色渐层
+library(shinydashboard) #闪霓控板
+library(flexdashboard) #灵活性控板
+library(shinyBS)
+library(shinyjs)
+library(shinycssloaders)
 
 thematic::thematic_shiny(font = "auto")
 
 # Define UI for application that draws a histogram
 shinyUI(
-  fluidPage( ## https://rstudio.github.io/shinythemes/
+  fluidPage( ## https://rstudio.github.io/shinythemes/ 可以选择设置闪霓主题
     theme = bs_theme(version = 5, bootswatch = 'sketchy'), 
     shinythemes::themeSelector(), 
     
@@ -26,7 +29,7 @@ shinyUI(
     corazon::corazon_gradient(colorName = 'SWAMP', txtColor = 'yellow'), 
     
     # Application title
-    titlePanel('Hello Shiny!'),
+    titlePanel('一键生成报表'),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
@@ -40,7 +43,11 @@ shinyUI(
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput('distPlot')
+          tabsetPanel(
+            tabPanel('Tab 1',
+                     plotOutput('distPlot')), 
+            tabPanel('Tab 2')
+          )
         )
     )
 ))
