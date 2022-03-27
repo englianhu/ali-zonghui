@@ -46,7 +46,9 @@ shinyUI(
           tabsetPanel(
             tabPanel('Tab 1',
                      plotOutput('distPlot')), 
-            tabPanel('Tab 2')
+            tabPanel('Tab 2', 
+                     p('https://datascienceplus.com/making-a-shiny-dashboard-using-highcharter-analyzing-inflation-rates/')
+                     )
           )
         )
     )

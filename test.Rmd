@@ -37,6 +37,8 @@ $$
 {\color{Red} \widetilde{\beta_{1}}}
 $$
 
+`r lib('vembedr'); vlist <- c('C1hrbXlreY4', 'O8qPQNz8Q8Y', '3pnXMEusQCY', 'E9_eAm2tTns', 'budv9DSiuko'); embed_youtube(vlist[1], height=215)` `r embed_youtube(vlist[2], height=215)` `r embed_youtube(vlist[3], height=215)` `r embed_youtube(vlist[4], height=215)` `r embed_youtube(vlist[5], height=215)`
+
 ```{r}
 library(bslib)
 
