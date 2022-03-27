@@ -33,6 +33,7 @@
 - [Material Design + AdminLTE](https://ducthanhnguyen.github.io/MaterialAdminLTE/index3.html) 🔥
 - [Improved Skins](https://rinterface.github.io/shinydashboardPlus/articles/more-skins.html)
 - [Making a Shiny dashboard using `highcharter` – Analyzing Inflation Rates](https://datascienceplus.com/making-a-shiny-dashboard-using-highcharter-analyzing-inflation-rates)
+- [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
 
 ---
 
