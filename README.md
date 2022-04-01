@@ -1,3 +1,4 @@
+<img src="figure/alibaba1.jpg" width="240"/>
 
 ## 乐发集团（东方集团）
 
