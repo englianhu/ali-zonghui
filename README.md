@@ -35,6 +35,7 @@
 - [Improved Skins](https://rinterface.github.io/shinydashboardPlus/articles/more-skins.html)
 - [Making a Shiny dashboard using `highcharter` – Analyzing Inflation Rates](https://datascienceplus.com/making-a-shiny-dashboard-using-highcharter-analyzing-inflation-rates)
 - [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
+- [永洪一站式大数据分析平台](https://www.yonghongtech.com) ([Demo体验](http://public.yonghongtech.com/bi/?au_act=login&adminv=demo&passv=Yonghong123), [企业试用版](https://www.yonghongtech.com/al/zhuce/index.html?module=shiyong&column=))
 
 ---
 
