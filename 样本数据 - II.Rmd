@@ -1,6 +1,6 @@
 ---
 title: "盈利模式"
-subtitle: "分析购彩助手数据"
+subtitle: "分析购彩助手数据 (第II部)"
 author: "特邀导师 - 菜菜 <img src='figure/头像 - 高贵美女导师2.jpg' width='24'>"
 date: "`r lubridate::today()`"
 output:
@@ -626,32 +626,59 @@ webElem$sendKeysToElement(list(key = 'enter'))
 
 ## 附录
 
-```{r info, echo=FALSE, warning=FALSE, results='asis'}
-suppressMessages(require('dplyr', quietly = TRUE))
-suppressMessages(require('formattable', quietly = TRUE))
-suppressMessages(require('knitr', quietly = TRUE))
-suppressMessages(require('kableExtra', quietly = TRUE))
-sys1 <- devtools::session_info()$platform %>% 
-  unlist %>% data.frame(Category = names(.), session_info = .)
-rownames(sys1) <- NULL
-#sys1 %<>% rbind(., data.frame(
-#  Category = 'Current time', 
-#  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST'))) %>% 
-#  dplyr::filter(Category != 'os')
-sys2 <- data.frame(Sys.info()) %>% mutate(Category = rownames(.)) %>% .[2:1]
-names(sys2)[2] <- c('Sys.info')
-rownames(sys2) <- NULL
-if (nrow(sys1) == 7 & nrow(sys2) == 8) {
-  sys1 %<>% rbind(., data.frame(
-  Category = 'Current time', 
-  session_info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
-} else {
-  sys2 %<>% rbind(., data.frame(
-  Category = 'Current time', 
-  Sys.info = paste(as.character(lubridate::now('Asia/Tokyo')), 'JST')))
+```{r info}
+#suppressMessages(require('formattable', quietly = TRUE))
+#suppressMessages(require('knitr', quietly = TRUE))
+#suppressMessages(require('kableExtra', quietly = TRUE))
+#suppressMessages(require('magittr', quietly = TRUE))
+#suppressMessages(require('devtools', quietly = TRUE))
+
+sys1 <- session_info()$platform |> 
+    unlist() |> 
+    {\(.) data.frame(row.names = 1:length(.), 
+                     Category = names(.), session_info = .)}()
+
+sys2 <- data.frame(Sys.info()) |> 
+    {\(.) data.frame(Category = row.names(.), Sys.info = .[,1])}()
+
+#remarks, dim(sys1), dim(sys2)
+if (nrow(sys1) == 11 && nrow(sys2) == 8) {
+  sys2 <- sys2 |> 
+    {\(.) rbind(., data.frame(
+    Category = c('rmarkdown', 'rsconnect', 'Current time'), 
+    Sys.info = c(as.character(getwd()), 
+                 as.character(packageVersion('rsconnect')), 
+                 paste(as.character(lubridate::now('Asia/Shanghai')), 'CST 🗺'))))}()
+  
+} else if (nrow(sys1) == 10 && nrow(sys2) == 8) {
+  sys1 <- rbind(sys1, data.frame(Category = '', session_info = ''))
+  
+  sys2 <- sys2 |> 
+    {\(.) rbind(., data.frame(
+    Category = c('rmarkdown', 'rsconnect', 'Current time'), 
+    Sys.info = c(as.character(getwd()), 
+                 as.character(packageVersion('rsconnect')), 
+                 paste(as.character(lubridate::now('Asia/Shanghai')), 'CST 🗺'))))}()
 }
-cbind(sys1, sys2) %>% 
-  kable(caption = 'Additional session information:') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+
+sys <- cbind(sys1, sys2) |> 
+  {\(.) 
+    kbl(., caption = 'Additional session information:')}() |> 
+  {\(.) 
+    kable_styling(., bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))}() |> 
+  {\(.) 
+    row_spec(., 0, background = 'DimGrey', color = 'yellow')}() |> 
+  {\(.) 
+    column_spec(., 1, background = 'CornflowerBlue', color = 'red')}() |> 
+  {\(.) 
+    column_spec(., 2, background = 'grey', color = 'black')}() |> 
+  {\(.) 
+    column_spec(., 3, background = 'CornflowerBlue', color = 'blue')}() |> 
+  {\(.) 
+    column_spec(., 4, background = 'grey', color = 'white')}() |> 
+  {\(.) 
+    row_spec(., 11, bold = TRUE, color = 'yellow', background = '#D7261E')}()
+
 rm(sys1, sys2)
+sys
 ```

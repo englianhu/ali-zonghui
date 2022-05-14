@@ -8,12 +8,12 @@
 
 ## 量化数学中国共识加油赞
 
-> 宁可枝头抱🇺🇸🇨🇳死，<br> (The Patriot)
+> 宁可枝头抱🇺🇸🇹🇼🇨🇳死，<br> (The Patriot)
 不曾吹落东南风（🇵🇭🇰🇭🇮🇲Judi邪教Cube Ltd博彩庄家）；<br>
 山穷水路疑无🛣，<br>
 柳暗花明又一🌸。
 
-*GI JOE -versus- Cube Ltd / Kublai Commander*
+*GI JOE -versus- (外族) Cube Ltd / Kublai Commander*
 
 > 原本浏览比较了很多博彩网，发现1xbet.com（还🈶API）功能最全面最好 ，原本打算科研后，他日去欧洲发展，不过金融市场好（内地也🈶很多合法著名金融投资基金，他日到大陆发展好），决定不赌。
 > 
