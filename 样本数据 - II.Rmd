@@ -1,7 +1,7 @@
 ---
 title: "盈利模式"
 subtitle: "分析购彩助手数据 (第II部)"
-author: "特邀导师 - 菜菜 <img src='figure/头像 - 高贵美女导师2.jpg' width='24'>"
+author: "特邀导师 - 菜菜 <img src='www/景知夏小姐.jpg' width='24'>"
 date: "`r lubridate::today()`"
 output:
   html_document:
@@ -32,17 +32,13 @@ output:
 ## leiou123
 ## https://rstudio.cloud/project/1198888
 
-require('plyr')
-require('dplyr')
-require('magrittr')
-require('stringr')
-require('knitr')
-require('kableExtra')
-require('lubridate')
-require('broom')
-require('purrr')
-require('tibble')
-require('DT')
+if(!require('BBmisc')) {
+  install.packages('BBmisc')
+  require('BBmisc')
+  }
+
+pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'tibble', 'DT')
+lib(pkgs)
 ```
 
 # 数据
@@ -55,14 +51,20 @@ require('DT')
 
 ```{r warning=FALSE}
 hml <- read.delim(file = '1分快3样本数据2.txt')
-hml %<>% unlist %>% as.character
+hml %<>% 
+  unlist %>% 
+  as.character
 
 #时间 期数 号码 大小/单双 鱼虾蟹
 #12:41 0761 dice1 dice1 dice57 小 单 鱼 鱼 蟹
-smp <- c('12:41', '0761', 'dice1 dice1 dice5', '7 小 单', '鱼 鱼 蟹') %>% matrix(nc = 1, byrow = TRUE) %>% t %>% data.frame
+smp <- c('12:41', '0761', 'dice1 dice1 dice5', '7 小 单', '鱼 鱼 蟹') %>% 
+  matrix(nc = 1, byrow = TRUE) %>% 
+  t %>% 
+  data.frame
 nm <- c('时间', '期数', '号码', '大小/单双', '鱼虾蟹')
 names(smp) <- nm
-smp %<>% tbl_df
+smp %<>% 
+  tbl_df
 
 smp %>% 
   kable(caption = '1分快3样本数据') %>% 
@@ -74,33 +76,44 @@ smp %>%
 ## 整理数据
 
 ```{r warning=FALSE}
-smpp <- hml %>% llply(., function(x) {
-    x %>% str_extract_all('([0-9]{2}:[0-9]{2})|([0-9]{1,2}%)|(\\w+)') %>% unlist %>% str_replace_all('2e1d3b04', '') %>% str_replace_all('([0-9]+[a-zA-Z]+)|([a-zA-Z]+)|[0-9]{1,2}%', '') %>% .[nchar(.)>0] %>% t %>% data.frame
-}) %>% bind_rows %>% tbl_df
+smpp <- hml %>% 
+  llply(., function(x) {
+    x %>% 
+      str_extract_all('([0-9]{2}:[0-9]{2})|([0-9]{1,2}%)|(\\w+)') %>% 
+      unlist %>% 
+      str_replace_all('2e1d3b04', '') %>% 
+      str_replace_all('([0-9]+[a-zA-Z]+)|([a-zA-Z]+)|[0-9]{1,2}%', '') %>% 
+      .[nchar(.)>0] %>% 
+      t %>% 
+      data.frame
+    }) %>% 
+  bind_rows %>% 
+  tbl_df
+
 names(smpp) <- c('时间', '期数', '骰子1', '骰子2', '骰子3', '总值', '大小', '单双', '鱼虾蟹1', '鱼虾蟹2', '鱼虾蟹3')
 
 smpp %<>% mutate(
-    `时间` = hm(`时间`), `期数` = factor(`期数`), 
-    `骰子1` = as.numeric(`骰子1`), `骰子2` = as.numeric(`骰子2`), 
-    `骰子3` = as.numeric(`骰子3`), `总值` = as.numeric(`总值`), 
-    `大小` = factor(`大小`), `单双` = factor(`单双`), 
-    `鱼虾蟹1` = factor(`鱼虾蟹1`), `鱼虾蟹2` = factor(`鱼虾蟹2`), 
-    `鱼虾蟹3` = factor(`鱼虾蟹3`))
+  `时间` = hm(`时间`), `期数` = factor(`期数`), 
+  `骰子1` = as.numeric(`骰子1`), `骰子2` = as.numeric(`骰子2`), 
+  `骰子3` = as.numeric(`骰子3`), `总值` = as.numeric(`总值`), 
+  `大小` = factor(`大小`), `单双` = factor(`单双`), 
+  `鱼虾蟹1` = factor(`鱼虾蟹1`), `鱼虾蟹2` = factor(`鱼虾蟹2`), 
+  `鱼虾蟹3` = factor(`鱼虾蟹3`))
 
 smppp <- smpp[c('总值', '大小', '单双')]
 
 smpp %>% datatable(
-    caption = "1分快3样本数据", 
-    escape = FALSE, filter = 'top', rownames = FALSE, 
-    extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
-                      'Buttons' = NULL, 'Responsive' = NULL), 
-    options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
-                   lengthMenu = list(c(10, 50, 100, -1), c('10', '50', '100', 'All')), 
-                   ColReorder = TRUE, rowReorder = TRUE, 
-                   buttons = list('copy', 'print', 
-                                  list(extend = 'collection', 
-                                       buttons = c('csv', 'excel', 'pdf'), 
-                                       text = 'Download'), I('colvis'))))
+  caption = "1分快3样本数据", 
+  escape = FALSE, filter = 'top', rownames = FALSE, 
+  extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
+                    'Buttons' = NULL, 'Responsive' = NULL), 
+  options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+                 lengthMenu = list(c(10, 50, 100, -1), c('10', '50', '100', 'All')), 
+                 ColReorder = TRUE, rowReorder = TRUE, 
+                 buttons = list('copy', 'print', 
+                                list(extend = 'collection', 
+                                     buttons = c('csv', 'excel', 'pdf'), 
+                                     text = 'Download'), I('colvis'))))
 ```
 
 以上是整理过的样本数据。
@@ -110,19 +123,26 @@ smpp %>% datatable(
 ## 基本分析
 
 ```{r}
-smpp[-c(1:2)] %>% llply(table)
+smpp[-c(1:2)] %>% 
+  llply(table)
 ```
 
 ```{r warning=FALSE}
-yy <- suppressMessages(llply(3:18, function(i) {
-  dpois(i, smppp$总值) %>% round(2)
-}) %>% bind_cols)
+yy <- suppressMessages(
+  llply(3:18, function(i) {
+    dpois(i, smppp$总值) %>% 
+      round(2)
+    }) %>% 
+    bind_cols)
+
 names(yy) <- paste0('X', 3:18)
-yy <- data.frame(smppp, yy) %>% tbl_df
+yy <- data.frame(smppp, yy) %>% 
+  tbl_df
 
 yy %>% 
   kable(caption = '和值概率明细') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -188,16 +208,18 @@ md1a <- glm(`总值`~`骰子1`+`骰子2`+`骰子3`, data = smpp, family = poisso
 
 md1b <- glm(`总值`~`骰子1`+`骰子2`+`骰子3` - 1, data = smpp, family = poisson)
 
-ldply(list(md1a, md1b), AIC) %>% 
-    data.frame(`模型·` = c('截距', '没截距'), .) %>% 
-    rename(aic = V1) %>% 
+ldply(
+  list(md1a, md1b), AIC) %>% 
+  data.frame(`模型·` = c('截距', '没截距'), .) %>% 
+  rename(aic = V1) %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+```
 
 根据以上模型，`截距`模型比较精准。
 
-
+```{r eval=FALSE}
 md1a.pp <- md1a %>% coef %>% 
     exp %>% 
     llply(., function(x) {dpois(3:18, x)}) %>% 
@@ -207,7 +229,7 @@ names(md1a.pp) <- c('x', '截距', '骰子1', '骰子2', '骰子3')
 md1a.pp %>% 
   kable(caption = '统计模型') %>% 
   kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
+```
 
 ### 计算大小概率
 
@@ -682,3 +704,8 @@ sys <- cbind(sys1, sys2) |>
 rm(sys1, sys2)
 sys
 ```
+
+---
+
+[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

@@ -27,6 +27,9 @@ pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr',
          'lubridate', 'highcharter', 'htmltools', 'echarts4r')
 
 plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
+
+conflict_prefer('mutate', 'dplyr')
+
 ```
 
 # 数据
@@ -414,6 +417,9 @@ sys
 
 1) [How to investigate a 3-way interaction?](hhttps://stats.stackexchange.com/questions/47265/how-to-investigate-a-3-way-interaction/47501#47501)
 
+<br><br>
+
 ---
 
-<span style='color:RoyalBlue'>**Powered by - Copyright® Intellectual Property Rights of <img src='figure/scibrokes_trading.jpg' width='24'> [Sςιβrοκεrs Trαdιηg®️](http://www.scibrokes.com)経営企業**</span>
+[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

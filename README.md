@@ -8,6 +8,8 @@
 
 ## 量化数学中国共识加油赞
 
+### 不与诈骗集团为伍
+
 > 宁可枝头抱🇺🇸🇹🇼🇨🇳死，<br> (The Patriot)
 不曾吹落东南风（🇵🇭🇰🇭🇮🇲Judi邪教Cube Ltd博彩庄家）；<br>
 山穷水路疑无🛣，<br>
@@ -22,6 +24,19 @@
 获得连接金融市场API实时数据的平台也比较多和容易
 
 [[咨询]：如何连接到 Web Browser 网页应用的API](https://d.cosx.org/d/421872-web-browser-api/6)
+
+<br><br>
+
+### 经济西征之路
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XI4hl9F6wrE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="//player.bilibili.com/player.html?aid=981862346&bvid=BV1Vt4y1s7B3&cid=725422877&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+> Нэг бүс нэг зам: Баруун эдийн засгийн экспедицийн зам~
+
+出处：[[vk] 一带一路：经济西征（考察）之路～](https://vk.com/englianhu?w=wall611842020_104)<br>
+出处：[[Tumblr] 一带一路：经济西征（考察）之路～](https://englianhu.tumblr.com/post/684806031267725312/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%95%86%E5%BE%88%E5%B0%91%E5%BC%80%E5%8F%91%E4%B8%AD%E5%9B%BD%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%85%B6%E4%BB%96%E6%97%B6%E6%9C%9F-%E7%9F%A5%E4%B9%8E)
 
 <br><br>
 
