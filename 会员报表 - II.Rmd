@@ -12,6 +12,7 @@ output:
       collapsed: yes
       smooth_scroll: yes
     code_folding: hide
+    css: CSSBackgrounds.css
 ---
 
 ```{r warning = FALSE, message=FALSE}
