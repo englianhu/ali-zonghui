@@ -5,6 +5,7 @@ author: "雷欧 <img src='figure/cd23-isqivxh1309422.jpg' width='24'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
+    mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -15,7 +16,120 @@ output:
     css: CSSBackgrounds.css
 ---
 
-```{r warning = FALSE, message=FALSE}
+# 设定
+
+## SCSS 设置
+
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+.table-hover > tbody > tr:hover { 
+  background-color: #8D918D;
+}
+</style>
+
+```{r load-sass, class.source='bg-success', class.output='bg-primary'}
+# install.packages('remotes', dependencies = TRUE, INSTALL_opts = '--no-lock')
+library('BBmisc', 'rmsfuns')
+#remotes::install_github("rstudio/sass")
+lib('sass')
+
+## https://support.rstudio.com/hc/en-us/articles/200532197
+## https://community.rstudio.com/t/r-does-not-display-korean-chinese/30889/3?u=englianhu
+#Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+#Sys.setlocale("LC_CTYPE", "zh_CN.UTF-8")
+#Sys.setlocale(category = "LC_CTYPE", "Chinese (Simplified)_China.936")
+#Sys.setlocale(locale = "Chinese")
+#Sys.setlocale(locale = "Japanese")
+#Sys.setlocale(locale = "English")
+
+# rmarkdown::render('/home/englianhu/Documents/owner/ryo-cn.Rmd',  encoding = 'UTF-8')
+#Sys.setlocale("LC_CTYPE", "UTF-8")
+#Sys.setlocale(locale = "UTF-8")
+#Sys.setlocale(category = "LC_ALL", locale = "chs")
+#Sys.setlocale(category = "LC_ALL", locale = "UTF-8")
+#Sys.setlocale(category = "LC_ALL", locale = "Chinese")
+#Sys.setlocale(category = "LC_ALL", locale = "zh_CN.UTF-8")
+Sys.setlocale("LC_ALL", "en_US.UTF-8")
+```
+
+```{scss set-scss, class.source='bg-success', class.output='bg-primary'}
+/* https://stackoverflow.com/a/66029010/3806250 */
+h1 { color: #002C54; }
+h2 { color: #2F496E; }
+h3 { color: #375E97; }
+h4 { color: #556DAC; }
+h5 { color: #92AAC7; }
+
+/* ----------------------------------------------------------------- */
+/* https://gist.github.com/himynameisdave/c7a7ed14500d29e58149#file-broken-gradient-animation-less */
+.hover01 {
+  /* color: #FFD64D; */
+  background: linear-gradient(155deg, #EDAE01 0%, #FFEB94 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #EDAE01 20%, #FFEB94 80%);
+    }
+  }
+
+.hover02 {
+  color: #FFD64D;
+  background: linear-gradient(155deg, #002C54 0%, #4CB5F5 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #002C54 20%, #4CB5F5 80%);
+    }
+  }
+
+.hover03 {
+  color: #FFD64D;
+  background: linear-gradient(155deg, #A10115 0%, #FF3C5C 100%);
+  transition: all 0.45s;
+  &:hover{
+    background: linear-gradient(155deg, #A10115 20%, #FF3C5C 80%);
+    }
+  }
+```
+
+```{r gb-opts, class.source='hover01', class.output='hover02'}
+## Set the timezone but not change the datetime
+Sys.setenv(TZ = 'Asia/Shanghai')
+
+## Setting to omit all warnings
+## https://stackoverflow.com/a/36846793/3806250
+## Set width
+## options(knitr.table.format = 'html') will set all kableExtra tables to be 'html', otherwise need to set the parameter on every single table.
+options(warn = -1, width = 999, knitr.table.format = 'html')#, digits.secs = 6)
+
+## https://stackoverflow.com/questions/39417003/long-vectors-not-supported-yet-abnor-in-rmd-but-not-in-r-script
+## https://yihui.org/knitr/options
+knitr::opts_chunk$set(
+  class.source = 'hover01', class.output = 'hover02', class.error = 'hover03', 
+  message = FALSE, warning = FALSE, error = TRUE, 
+  autodep = TRUE, aniopts = 'loop', 
+  progress = TRUE, verbose = TRUE, 
+  cache = FALSE, cache.lazy = FALSE, result = 'asis')
+```
+
+<br><br>
+
+## 设置
+
+```{r libs, eval=FALSE}
+## Setup Options, Loading Required Libraries and Preparing Environment
+## Loading the packages and setting adjustment
+source('function/libs.R')
+```
+
+读取程序包
+
+```{r load-pkgs}
+## Setup Options, Loading Required Libraries and Preparing Environment
 ## 3210448065@qq.com
 ## leiou123
 
@@ -23,15 +137,42 @@ output:
 ## leiou123
 ## https://rstudio.cloud/project/1198888
 
-pkg <- c('plyr', 'tidyverse', 'magrittr', 'readr', 'readxl', 'tidyr', 
-         'knitr', 'kableExtra', 'forecast', 'formattable', 'DT', 
-         'lubridate', 'highcharter', 'htmltools', 'echarts4r')
+## Loading the package 'BBmisc'
+if(suppressMessages(!require('BBmisc'))){
+  install.packages('BBmisc', dependencies = TRUE, INSTALL_opts = '--no-lock')
+  suppressMessages(library('BBmisc'))
+}
+if (suppressMessages(!require('rmsfuns'))) {
+  install.packages('rmsfuns', dependencies = TRUE, INSTALL_opts = '--no-lock')
+  suppressMessages(library('rmsfuns'))
+}
 
-plyr::l_ply(pkg, require, quietly = TRUE, character.only = TRUE, .print = FALSE)
+if(!require('REmap')) devtools::install_github('lchiffon/REmap')
 
-conflict_prefer('mutate', 'dplyr')
+## Loading multiple packages at once
+#pkgs <- c('readr', 'plyr', 'dplyr', 'magrittr', 'tidyverse', 'devtools', 'zoo', 'lubridate', 'stringr', 'rvest', 'markdown', 'googleVis', 'knitr', 'rmarkdown', 'htmltools', 'knitr', 'kableExtra', 'formattable', 'echarts4r', 'radarchart', 'MASS', 'htmlwidgets', 'maps', 'REmap', 'ggmap', 'vembedr')
 
+pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'tibble', 'DT')
+
+suppressAll(lib(pkgs))
+load_pkg(pkgs)
+rm(pkgs)
+
+## Set the googleVis options first to change the behaviour of plot.gvis, so that 
+##  only the chart component of the HTML file is written into the output file.
+op <- options(gvis.plot.tag = 'chart')
+
+## <audio src='music/bigmoney.mp3' autoplay controls loop></audio>
 ```
+
+```{r set-prefer}
+conflict_prefer('filter', 'dplyr')
+conflict_prefer('select', 'dplyr')
+conflict_prefer('mutate', 'dplyr')
+conflict_prefer('rename', 'dplyr')
+```
+
+<br><br>
 
 # 数据
 

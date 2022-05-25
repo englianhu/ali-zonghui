@@ -5,6 +5,7 @@ author: "特邀导师 - 菜菜 <img src='www/景知夏小姐.jpg' height='24'>"
 date: "`r lubridate::today()`"
 output:
   html_document: 
+    mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -14,6 +15,7 @@ output:
     code_folding: hide
     css: CSSBackgrounds.css
   html_notebook: 
+    mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -66,7 +68,7 @@ lib('sass')
 Sys.setlocale("LC_ALL", "en_US.UTF-8")
 ```
 
-```{scss scss-setup, class.source='bg-success', class.output='bg-primary'}
+```{scss set-scss, class.source='bg-success', class.output='bg-primary'}
 /* https://stackoverflow.com/a/66029010/3806250 */
 h1 { color: #002C54; }
 h2 { color: #2F496E; }
@@ -136,7 +138,7 @@ source('function/libs.R')
 
 读取程序包
 
-```{r setup, include=FALSE}
+```{r load-pkgs}
 ## Setup Options, Loading Required Libraries and Preparing Environment
 ## 3210448065@qq.com
 ## leiou123
@@ -180,6 +182,8 @@ conflict_prefer('mutate', 'dplyr')
 conflict_prefer('rename', 'dplyr')
 ```
 
+<br><br>
+
 # 数据
 
 ## 样本数据
@@ -188,7 +192,7 @@ conflict_prefer('rename', 'dplyr')
 
 ![](figure/QQ图片20200627153341.png)
 
-```{r warning=FALSE}
+```{r read-data}
 hml <- read.delim(file = '1分快3样本数据2.txt')
 hml %<>% 
   unlist %>% 
@@ -197,7 +201,7 @@ hml %<>%
 #时间 期数 号码 大小/单双 鱼虾蟹
 #12:41 0761 dice1 dice1 dice57 小 单 鱼 鱼 蟹
 smp <- c('12:41', '0761', 'dice1 dice1 dice5', '7 小 单', '鱼 鱼 蟹') %>% 
-  matrix(nc = 1, byrow = TRUE) %>% 
+  matrix(ncol = 1, byrow = TRUE) %>% 
   t %>% 
   data.frame
 nm <- c('时间', '期数', '号码', '大小/单双', '鱼虾蟹')
@@ -207,14 +211,17 @@ smp %<>%
 
 smp %>% 
   kable(caption = '1分快3样本数据') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(1, color = '#FFFF00', background = '#657383')
 ```
 
 以上是原始样本数据结构。
 
 ## 整理数据
 
-```{r warning=FALSE}
+```{r clean-data}
 smpp <- hml %>% 
   llply(., function(x) {
     x %>% 
@@ -257,16 +264,18 @@ smpp %>% datatable(
 
 以上是整理过的样本数据。
 
+<br><br>
+
 # 统计模型
 
 ## 基本分析
 
-```{r}
+```{r prob-overview}
 smpp[-c(1:2)] %>% 
   llply(table)
 ```
 
-```{r warning=FALSE}
+```{r prob-tbl}
 yy <- suppressMessages(
   llply(3:18, function(i) {
     dpois(i, smppp$总值) %>% 
@@ -282,12 +291,15 @@ yy %>%
   kable(caption = '和值概率明细') %>% 
   kable_styling(
     bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(yy), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(yy), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
 以上图表显示骰子总值从`3`到`18`的概率明细。
 
-```{r}
+```{r prob-dist}
 table(smpp$`总值`)
 prop.table(table(smpp$`总值`))
 barplot(prop.table(table(smpp$`总值`)))
@@ -339,7 +351,7 @@ barplot(prop.table(table(smpp$`鱼虾蟹3`)))
 
 以下是以广义型泊松模型预测开奖率。
 
-```{r eval=FALSE}
+```{r}
 ### 计算总值概率
 
 ## https://stats.stackexchange.com/questions/272194/interpreting-poisson-output-in-r
@@ -349,72 +361,100 @@ md1b <- glm(`总值`~`骰子1`+`骰子2`+`骰子3` - 1, data = smpp, family = po
 
 ldply(
   list(md1a, md1b), AIC) %>% 
-  data.frame(`模型·` = c('截距', '没截距'), .) %>% 
-  dplyr::rename(aic = V1) %>% 
+  data.frame(`模型` = c('截距', '没截距'), .) %>% 
+  dplyr::rename(AIC = V1) %>% 
+  dplyr::mutate(Rank = rank(AIC)) %>% 
   kable(caption = '统计模型') %>% 
   kable_styling(
-    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(1, color = '#FFFF00', background = '#657383') %>% 
+  row_spec(2, color = '#FFFF00', background = '#6D7B8D')
 ```
 
 根据以上模型，`截距`模型比较精准。
 
-```{r eval=FALSE}
-md1a.pp <- md1a %>% coef %>% 
-    exp %>% 
-    llply(., function(x) {dpois(3:18, x)}) %>% 
-    bind_cols %>% 
-    data.frame(x = 3:18, .)
+```{r}
+md1a.pp <- md1a %>% 
+  coef %>% 
+  exp %>% 
+  llply(., function(x) {dpois(3:18, x)}) %>% 
+  bind_cols %>% 
+  data.frame(x = 3:18, .)
+
 names(md1a.pp) <- c('x', '截距', '骰子1', '骰子2', '骰子3')
 md1a.pp %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
+  scroll_box(width = '100%', height = '400px')
 ```
 
 ### 计算大小概率
 
-
+```{r}
 md2a <- glm(as.numeric(`大小`)~`骰子1`+`骰子2`+`骰子3`, data = smpp, family = poisson)
 
 md2b <- glm(as.numeric(`大小`)~`骰子1`+`骰子2`+`骰子3` - 1, data = smpp, family = poisson)
 
 ldply(list(md2a, md2b), AIC) %>% 
-    data.frame(`模型·` = c('截距', '没截距'), .) %>% 
-    rename(aic = V1) %>% 
+  data.frame(`模型` = c('截距', '没截距'), .) %>% 
+  dplyr::rename(AIC = V1) %>% 
+  dplyr::mutate(Rank = rank(AIC)) %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(1, color = '#FFFF00', background = '#657383') %>% 
+  row_spec(2, color = '#FFFF00', background = '#6D7B8D')
+```
 
 根据以上模型，`截距`模型比较精准。
 
+```{r}
+md2a.pp <- md2a %>% 
+  coef %>% 
+  exp %>% 
+  llply(., function(x) {dpois(1:18, x)}) %>% 
+  bind_cols %>% 
+  data.frame(x = 1:18, .)
 
-md2a.pp <- md2a %>% coef %>% 
-    exp %>% 
-    llply(., function(x) {dpois(1:18, x)}) %>% 
-    bind_cols %>% 
-    data.frame(x = 1:18, .)
 names(md1a.pp) <- c('x', '截距', '骰子1', '骰子2', '骰子3')
 md1a.pp %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
+  kable_styling(
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
+  scroll_box(width = '100%', height = '400px')
+```
 
 ### 计算单双概率
 
-
+```{r}
 md3a <- glm(as.numeric(`单双`)~`骰子1`+`骰子2`+`骰子3`, data = smpp, family = poisson)
 
 md3b <- glm(as.numeric(`单双`)~`骰子1`+`骰子2`+`骰子3` - 1, data = smpp, family = poisson)
 
 ldply(list(md3a, md3b), AIC) %>% 
-    data.frame(`模型·` = c('截距', '没截距'), .) %>% 
-    rename(aic = V1) %>% 
+  data.frame(`模型` = c('截距', '没截距'), .) %>% 
+  dplyr::rename(AIC = V1) %>% 
+  dplyr::mutate(Rank = rank(AIC)) %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
-
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(1, color = '#FFFF00', background = '#657383') %>% 
+  row_spec(2, color = '#FFFF00', background = '#6D7B8D')
+```
 
 根据以上模型，`截距`模型比较精准。
 
-
+```{r}
 md3a.pp <- md3a %>% coef %>% 
     exp %>% 
     llply(., function(x) {dpois(1:6, x)}) %>% 
