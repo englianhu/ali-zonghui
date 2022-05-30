@@ -162,7 +162,7 @@ if(!require('REmap')) devtools::install_github('lchiffon/REmap')
 ## Loading multiple packages at once
 #pkgs <- c('readr', 'plyr', 'dplyr', 'magrittr', 'tidyverse', 'devtools', 'zoo', 'lubridate', 'stringr', 'rvest', 'markdown', 'googleVis', 'knitr', 'rmarkdown', 'htmltools', 'knitr', 'kableExtra', 'formattable', 'echarts4r', 'radarchart', 'MASS', 'htmlwidgets', 'maps', 'REmap', 'ggmap', 'vembedr')
 
-pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'tibble', 'DT')
+pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'readxl', 'tibble', 'DT')
 
 suppressAll(lib(pkgs))
 load_pkg(pkgs)
@@ -207,7 +207,7 @@ smp <- c('12:41', '0761', 'dice1 dice1 dice5', '7 小 单', '鱼 鱼 蟹') %>%
 nm <- c('时间', '期数', '号码', '大小/单双', '鱼虾蟹')
 names(smp) <- nm
 smp %<>% 
-  tbl_df
+  as_tibble
 
 smp %>% 
   kable(caption = '1分快3样本数据') %>% 
@@ -234,7 +234,7 @@ smpp <- hml %>%
       data.frame
     }) %>% 
   bind_rows %>% 
-  tbl_df
+  as_tibble
 
 names(smpp) <- c('时间', '期数', '骰子1', '骰子2', '骰子3', '总值', '大小', '单双', '鱼虾蟹1', '鱼虾蟹2', '鱼虾蟹3')
 
@@ -248,18 +248,21 @@ smpp %<>% mutate(
 
 smppp <- smpp[c('总值', '大小', '单双')]
 
-smpp %>% datatable(
-  caption = "1分快3样本数据", 
-  escape = FALSE, filter = 'top', rownames = FALSE, 
-  extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
-                    'Buttons' = NULL, 'Responsive' = NULL), 
-  options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
-                 lengthMenu = list(c(10, 50, 100, -1), c('10', '50', '100', 'All')), 
-                 ColReorder = TRUE, rowReorder = TRUE, 
-                 buttons = list('copy', 'print', 
-                                list(extend = 'collection', 
-                                     buttons = c('csv', 'excel', 'pdf'), 
-                                     text = 'Download'), I('colvis'))))
+smpp %>% 
+  datatable(
+    caption = "1分快3样本数据", 
+    escape = FALSE, filter = 'top', rownames = FALSE, 
+    extensions = list(
+      'ColReorder' = NULL, 'RowReorder' = NULL, 
+      'Buttons' = NULL, 'Responsive' = NULL), 
+    options = list(
+      dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+      lengthMenu = list(c(10, 50, 100, -1), c('10', '50', '100', 'All')), 
+      ColReorder = TRUE, rowReorder = TRUE, 
+      buttons = list('copy', 'print', 
+                     list(extend = 'collection', 
+                          buttons = c('csv', 'excel', 'pdf'), 
+                          text = 'Download'), I('colvis'))))
 ```
 
 以上是整理过的样本数据。
@@ -285,7 +288,7 @@ yy <- suppressMessages(
 
 names(yy) <- paste0('X', 3:18)
 yy <- data.frame(smppp, yy) %>% 
-  tbl_df
+  as_tibble
 
 yy %>% 
   kable(caption = '和值概率明细') %>% 
@@ -455,18 +458,35 @@ ldply(list(md3a, md3b), AIC) %>%
 根据以上模型，`截距`模型比较精准。
 
 ```{r}
-md3a.pp <- md3a %>% coef %>% 
-    exp %>% 
-    llply(., function(x) {dpois(1:6, x)}) %>% 
-    bind_cols %>% 
-    data.frame(x = 1:6, .)
+md3a.pp <- md3a %>% 
+  coef %>% 
+  exp %>% 
+  llply(., function(x) {dpois(1:6, x)}) %>% 
+  bind_cols %>% 
+  data.frame(x = 1:6, .)
+
 names(md1a.pp) <- c('x', '截距', '骰子1', '骰子2', '骰子3')
+
 md1a.pp %>% 
   kable(caption = '统计模型') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+  kable_styling(
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
+  scroll_box(width = '100%', height = '400px')
 ```
 
-```{r, eval=FALSE}
+```{r error=TRUE}
+## load function files
+pth <- paste0('function/bivpois/R/', list.files(path = 'function/bivpois/R/'))
+l_ply(pth, source)
+
+attr(smpp$单双,'contrasts') <- stats::contrasts(stats::C(factor(smpp$单双), sum))
+attr(smpp$大小,'contrasts') <- stats::contrasts(stats::C(factor(smpp$大小), sum))
+attr(smpp$单双,'levels') <- levels(factor(smpp$单双))
+attr(smpp$大小,'levels') <- levels(factor(smpp$大小))
+
 ## formula for modeling of lambda1 and lambda2
 #form1 <- ~c(team1,team2)+c(team2,team1)
 
@@ -485,29 +505,34 @@ l1 = 总值~1; l2 = 总值~2; l1l2 = NULL; l3 = ~1; data = smppp; common.interce
 lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, zeroL3 = TRUE, data = smpp)
 lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, data = smpp, maxit = 2)
 lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, l3 = ~单双, data = smpp, maxit = 2)
-lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, l3=~大小+单双, data = smpp, maxit = 2)
+lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, l3 = ~大小+单双, data = smpp, maxit = 2)
 ```
 
 ### 计算大小单双概率
 
 #### 760期
 
-```{r}
+```{r error=TRUE}
 dx = glm(as.numeric(大小)~总值-1, family=poisson, data=smppp) %>% 
-    coef %>% exp
+  coef %>% 
+  exp
 dx <- dx/sum(1 + dx)
 ds = glm(as.numeric(单双)~总值-1, family=poisson, data=smppp) %>% 
-    coef %>% exp
+  coef %>% 
+  exp
 ds <- ds/sum(1 + ds)
 n760 <- data.frame(dx, ds) %>% 
-    rename(`开大` = dx, `开单` = ds) %>% 
-    mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
-    select('开大', '开小', '开单', '开双')
+    dplyr::rename(`开大` = dx, `开单` = ds) %>% 
+    dplyr::mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
+    dplyr::select('开大', '开小', '开单', '开双')
 
 n760[c('开大', '开小', '开单', '开双')] %>% 
   colMeans %>% t %>% 
   kable(caption = '760期为标准') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'))
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(1, color = '#FFFF00', background = '#657383')
 ```
 
 #### 20期
@@ -517,21 +542,26 @@ n760[c('开大', '开小', '开单', '开双')] %>%
 n20 <- llply(21:nrow(smppp), function(i) {
   ii <- i - 20
   dx = glm(as.numeric(大小)~总值-1, family=poisson, data=smppp[c(ii:i),]) %>% 
-    coef %>% exp
+    coef %>% 
+    exp
   dx <- dx/sum(1 + dx)
   ds = glm(as.numeric(单双)~总值-1, family=poisson, data=smppp[c(ii:i),]) %>% 
-    coef %>% exp
+    coef %>% 
+    exp
   ds <- ds/sum(1 + ds)
   data.frame(dx, ds) %>% 
-    rename(`开大` = dx, `开单` = ds) %>% 
-    mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
-    select('开大', '开小', '开单', '开双') %>% 
+    dplyr::rename(`开大` = dx, `开单` = ds) %>% 
+    dplyr::mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
+    dplyr::select('开大', '开小', '开单', '开双') %>% 
     data.frame(smppp[i,], .)
-}) %>% bind_rows %>% tbl_df
+  }) %>% 
+  bind_rows %>% 
+  as_tibble
 
 n20 %>% 
   kable(caption = '20期为标准') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_styling(
+    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -563,7 +593,7 @@ n30 <- llply(31:nrow(smppp), function(i) {
     mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
     select('开大', '开小', '开单', '开双') %>% 
     data.frame(smppp[i,], .)
-}) %>% bind_rows %>% tbl_df
+}) %>% bind_rows %>% as_tibble
 
 n30 %>% 
   kable(caption = '20期为标准') %>% 
@@ -599,7 +629,7 @@ n40 <- llply(41:nrow(smppp), function(i) {
     mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
     select('开大', '开小', '开单', '开双') %>% 
     data.frame(smppp[i,], .)
-}) %>% bind_rows %>% tbl_df
+}) %>% bind_rows %>% as_tibble
 
 n40 %>% 
   kable(caption = '40期为标准') %>% 
@@ -635,7 +665,7 @@ n50 <- llply(51:nrow(smppp), function(i) {
     mutate(`开小` = 1- `开大`, `开双` = 1- `开单`) %>% 
     select('开大', '开小', '开单', '开双') %>% 
     data.frame(smppp[i,], .)
-}) %>% bind_rows %>% tbl_df
+}) %>% bind_rows %>% as_tibble
 
 n20 %>% 
   kable(caption = '50期为标准') %>% 
@@ -662,7 +692,7 @@ md <- list(n760 = n760,
      n30 = n30[c('开大', '开小', '开单', '开双')] %>% colMeans, 
      n40 = n40[c('开大', '开小', '开单', '开双')] %>% colMeans, 
      n50 = n50[c('开大', '开小', '开单', '开双')] %>% colMeans) %>% bind_rows
-md <- data.frame(.id = c('n760', 'n20', 'n30', 'n40', 'n50'), md) %>% tbl_df
+md <- data.frame(.id = c('n760', 'n20', 'n30', 'n40', 'n50'), md) %>% as_tibble
 
 md %>% 
   kable(caption = '模型比较') %>% 

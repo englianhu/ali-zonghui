@@ -152,7 +152,7 @@ if(!require('REmap')) devtools::install_github('lchiffon/REmap')
 ## Loading multiple packages at once
 #pkgs <- c('readr', 'plyr', 'dplyr', 'magrittr', 'tidyverse', 'devtools', 'zoo', 'lubridate', 'stringr', 'rvest', 'markdown', 'googleVis', 'knitr', 'rmarkdown', 'htmltools', 'knitr', 'kableExtra', 'formattable', 'echarts4r', 'radarchart', 'MASS', 'htmlwidgets', 'maps', 'REmap', 'ggmap', 'vembedr')
 
-pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'tibble', 'DT')
+pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'readxl', 'tibble', 'DT')
 
 suppressAll(lib(pkgs))
 load_pkg(pkgs)
@@ -190,12 +190,13 @@ conflict_prefer('rename', 'dplyr')
 ```{r, results = 'asis', warning = FALSE}
 ## 读取数据
 fls <- suppressWarnings(list.files('data/彩种'))
-smp <- fls %>% llply(., function(x) {
+smp <- fls %>% 
+  llply(., function(x) {
     dtt <- x %>% str_replace_all('.xls', '') %>% ymd
     smpp <- read_excel(paste0('data/彩种/', x)) %>% 
       .[-nrow(.),]
     data.frame('日期' = dtt, smpp)
-}) %>% bind_rows %>% 
+  }) %>% bind_rows %>% 
     as_tibble %>% 
     mutate('彩种名称' = factor(彩种名称), '盈率' = as.numeric(percent(盈率))) %>% 
     mutate_if(is.character, as.numeric)
