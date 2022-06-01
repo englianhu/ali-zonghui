@@ -184,6 +184,12 @@ conflict_prefer('rename', 'dplyr')
 
 <br><br>
 
+# 简介
+
+[盈利模式 - 分析购彩助手数据](https://rpubs.com/englianhu/goucai)使用广义型线性模型`glm`推算出`大`与`单`的出现率较高，<span style='color:goldenrod'>*盈利模式 - 分析购彩助手数据*</span>
+
+<br><br>
+
 # 数据
 
 ## 样本数据
@@ -477,7 +483,7 @@ md1a.pp %>%
   scroll_box(width = '100%', height = '400px')
 ```
 
-```{r error=TRUE}
+```{r}
 ## load function files
 pth <- paste0('function/bivpois/R/', list.files(path = 'function/bivpois/R/'))
 l_ply(pth, source)
@@ -512,7 +518,7 @@ lm.bp(大小 ~ 1, 单双 ~ 2, l1l2 = form1, l3 = ~大小+单双, data = smpp, ma
 
 #### 760期
 
-```{r error=TRUE}
+```{r}
 dx = glm(as.numeric(大小)~总值-1, family=poisson, data=smppp) %>% 
   coef %>% 
   exp
@@ -561,7 +567,10 @@ n20 <- llply(21:nrow(smppp), function(i) {
 n20 %>% 
   kable(caption = '20期为标准') %>% 
   kable_styling(
-    bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -597,7 +606,11 @@ n30 <- llply(31:nrow(smppp), function(i) {
 
 n30 %>% 
   kable(caption = '20期为标准') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_styling(
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -633,7 +646,11 @@ n40 <- llply(41:nrow(smppp), function(i) {
 
 n40 %>% 
   kable(caption = '40期为标准') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_styling(
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -667,9 +684,13 @@ n50 <- llply(51:nrow(smppp), function(i) {
     data.frame(smppp[i,], .)
 }) %>% bind_rows %>% as_tibble
 
-n20 %>% 
+n50 %>% 
   kable(caption = '50期为标准') %>% 
-  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  kable_styling(
+  bootstrap_options = c('striped', 'hover', 'condensed', 'responsive')) %>% 
+  row_spec(0, bold = TRUE, color = '#FDD017', background = '#3A3B3C') %>% 
+  row_spec(seq(1, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#657383') %>% 
+  row_spec(seq(2, nrow(md1a.pp), by = 2), color = '#FFFF00', background = '#C0C0C0') %>% 
   scroll_box(width = '100%', height = '400px')
 ```
 
@@ -703,87 +724,7 @@ md %>%
 
 ## 盈利模式
 
-### 套彩
-
-**赔率与优惠**
-
-以平台欧赔`1.98`来说，亚赔`0.98`等于`r 1/0.98`，会员平均投`r 1/0.98`元才能赢1元。
-
-- 以开大概率`0.506`来说，开大的优势为`r 0.506/0.5`，会员将会亏`r 0.506/0.5 - 1/0.98`，不过以我们平台的优惠活动彩金送得多，还是可以赢钱的呢。
-- 以开单概率`0.508`来说，开单的优势为`r 0.508/5`，会员将会亏`r 0.508/0.5 - 1/0.98`，不过以我们平台的优惠活动彩金送得多，还是可以赢钱的呢。
-
-我们平台最新活动彩金介绍：
-
-  1) 周一到周五转账彩金2%送，次日自动到账。
-  2) 周六，周日转账彩金3%送，当天未下注前找在线客服领取。
-  3) 每日嘉奖零点后自己手动领取，在平台的活动中心每日嘉奖里面领取。
-  4) 晋级奖励最高58888 在平台活动中心晋级奖励里面领取。
-  5) 官方授权聊天室福利来袭  红包每天100万 整点发放领取最高1888。
-  6) 余额宝活期理财，每1万本金存入余额宝转出余额可以直接领取1000彩金。
-  7) 签到满勤奖，只要一星期内满足存款条件，星期一即可领取最高5888元奖励
-  
-提醒：每笔充值金额达到200元以上，方可领取转卡加赠彩金（不限笔数）
-
-以上优惠与赔率开奖数据，可以证明是可以套彩的呢。
-
-### 投注模式
-
-**必胜攻略，真实稳赚**
-你一定行，你一定赢
-
-#### 秘诀1：增倍方式
-
-以10起押为例,10,20,40,80,160,320,640依次下去，反正一把就要把前面输的赢回来，准备最少6期本金。当然也要视自己的情况押，比如5,10,20,40 起押，倍增多少自己可以算。
-
-![](figure/快三 - 倍投表.jpg)
-
-有兴趣索取个倍投表电子表格，加菜菜QQ：2849108450
-
-#### 秘诀2：押注方式
-
-进行游戏后谁赢就押谁。大赢了，就押大。 如果小赢了，那就跟着押小;然后就一直交替着押，这样押的目的是避免出10连，甚至20连亏。
-
-#### 秘诀3：走势规律
-
-口诀中的一见跳跟跳;不管什么时候玩，我们都要学会观察走势规律，即大小大小大小;这样单跳的情况，一旦出现时，我们就要顺势而为出大买小，前面的方法我们都先不要管，一直到不再单跳为止。
-
-![](figure/看走势.jpg)
-
-#### 秘诀4：雪球方式
-
-每日最多充50次200元最多亏1万元，每次2百元梭哈7次赢到12800才提款，过一个6次梭哈就抵消64次亏200元的本金，依概率来说很划算。一天试50次，只要过一次就能赢几千元。即使第50次才过也能赚2800元，难道试50次，就连过一个7次梭哈都不可能吗？
-
-最简单最实用的方法，需要听老师详细讲解。
-
-### 线下活动
-
-#### 大额彩金
-
-![](figure/优惠 - 活动1.jpg)
-
-彩金送得多，名额有限，相信其它平台都没有呢。
-
-#### 包赔活动
-
-亏得多的会员可以报名预约带亏了包赔，名额有限，相信其它平台都没有呢。
-
-#### 带赚活动
-
-![](figure/单带预约表1.jpg)
-
-无论盈亏的会员，亏得多的会员更需要报名预约赢回钱，名额有限，相信其它平台都没有呢。
-
-### 当代理
-
-![](figure/代理 - 开发下级佣金1.jpg)
-
-以上图表显示当代理可以挣钱的呢。比方说介绍3个朋友当下级，返点设置为`8.5`的话，各别充5千打1万5千打码量的话，就有4万5千打码量，3人 x 4.5打码量 x 50返点 = `r 3*4.5*50`。假如1天挣`r 3*4.5*50`，一个月就能挣`r 3*4.5*50*30`了。
-
-![](figure/代理 - 开发下级步骤.jpg)
-
-以上乃激活邀请码的教程。
-
-当代理挣返点也是适合打工一族业余兼职、宝妈、学生，尤其是生意人人脉广阔，挣钱方便生意周转。
+<br><br>
 
 # 结论
 
@@ -796,11 +737,7 @@ md %>%
 ## 改进
 
 ## https://stackoverflow.com/a/45344291
-require('RSelenium')
-require('rvest')
-#require('wdman')
-#require('webshot')
-require('decryptr')
+lib(c('RSelenium', 'rvest', 'wdman', 'webshot', 'decryptr'))
 
 ## 网址
 ## 登录网址
@@ -818,7 +755,7 @@ lnk3k3 <- 'https://m.cjezllpcecbm.com/history/K3/OG3K3/?source=lottery'
 #  html_table()
 
 ## 打开隐藏浏览器
-pDrv <- phantomjs(port = 4567L, check = FALSE, verbose = FALSE)
+pDrv <- phantomjs(port = 4567L, verbose = FALSE)
 remDr <- remoteDriver(browserName = 'phantomjs', port = 4567L)
 remDr$open(silent = TRUE)
 
@@ -846,6 +783,10 @@ webElem$sendKeysToElement(list(key = 'enter'))
 #if (!require(devtools)) install.packages('devtools')
 #devtools::install_github('decryptr/decryptr')
 
+## 开奖记录
+webElem <- remDr$findElement(using = 'xpath', value = '//*[@id="lotteryNavBar"]')
+webElem$clickElement()
+webElem$sendKeysToElement(list('leiou004', key = 'enter'))
 
 
 
@@ -855,7 +796,22 @@ webElem$sendKeysToElement(list(key = 'enter'))
 
 ```
 
-## 附录
+<br><br>
+
+# 附录
+
+## 文书明细
+
+以下乃此文书的文件信息。
+
+- 文集建立日：2022-05-31
+- 文集最新更新日：`r today('Asia/Shanghai')`
+- `r R.version.string`
+- [**rmarkdown**](https://github.com/rstudio/rmarkdown) 程序包版本：`r packageVersion('rmarkdown')`
+- 文集版本：0.2.1
+- 文集作者：[®γσ, ξηg Lιαη Ημ](https://rpubs.com/englianhu/ryo-cn)
+- 猫舍：[源代码](https://github.com/scibrokes/owner)
+- 追加附属信息
 
 ```{r info}
 #suppressMessages(require('formattable', quietly = TRUE))
@@ -913,6 +869,10 @@ sys <- cbind(sys1, sys2) |>
 rm(sys1, sys2)
 sys
 ```
+
+## 参考文献
+
+1) [心理学书籍[第三辑]PDF电子书百度云网盘打包下载](https://www.bluestep.cc/%E5%BF%83%E7%90%86%E5%AD%A6%E4%B9%A6%E7%B1%8D%E7%AC%AC%E4%B8%89%E8%BE%91pdf%E7%94%B5%E5%AD%90%E4%B9%A6%E7%99%BE%E5%BA%A6%E4%BA%91%E7%BD%91%E7%9B%98%E6%89%93%E5%8C%85%E4%B8%8B%E8%BD%BD)
 
 ---
 
