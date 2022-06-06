@@ -15,7 +15,10 @@
 山穷水路疑无🛣，<br>
 柳暗花明又一🌸。
 
-*GI JOE -versus- (外族) Cube Ltd / Kublai Commander*
+> **®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='figure/Asean.png' height='12'> Kublai Commander**<br>
+**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='figure/Asean.png' height='12'> Хубилай командлагчч**<br>
+
+出处：[猫舍：通过数码海洋（Digital Ocean）建立服务器](https://github.com/scibrokes/setup-centOS7-DO)
 
 > 原本浏览比较了很多博彩网，发现1xbet.com（还🈶API）功能最全面最好 ，原本打算科研后，他日去欧洲发展，不过金融市场好（内地也🈶很多合法著名金融投资基金，他日到大陆发展好），决定不赌。
 > 
@@ -81,6 +84,7 @@
 - [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
 - [永洪一站式大数据分析平台](https://www.yonghongtech.com) ([Demo体验](http://public.yonghongtech.com/bi/?au_act=login&adminv=demo&passv=Yonghong123), [企业试用版](https://www.yonghongtech.com/al/zhuce/index.html?module=shiyong&column=))
 - [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
+- [R语言中文网“apriori” 相关内容](https://www.r-china.net/search.php?mod=forum&searchid=23&orderby=lastpost&ascdesc=desc&searchsubmit=yes&kw=apriori)
 
 ---
 
