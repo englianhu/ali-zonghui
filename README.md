@@ -1,8 +1,8 @@
-<img src="figure/alibaba1.jpg" width="240"/>
+<img src="文艺坊图库/alibaba1.jpg" width="240"/>
 
 ---
 
-[<img src='www/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='www/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](www/shiny-badge.svg)](https://www.shinyapps.io) 
+[<img src='文艺坊图库/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='文艺坊图库/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](文艺坊图库/shiny-badge.svg)](https://www.shinyapps.io) 
 
 <br>
 
@@ -15,8 +15,8 @@
 山穷水路疑无🛣，<br>
 柳暗花明又一🌸。
 
-> **®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='figure/Asean.png' height='12'> Kublai Commander**<br>
-**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='figure/Asean.png' height='12'> Хубилай командлагчч**<br>
+> **®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='文艺坊图库/Asean.png' height='12'> Kublai Commander**<br>
+**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='文艺坊图库/Asean.png' height='12'> Хубилай командлагчч**<br>
 
 出处：[猫舍：通过数码海洋（Digital Ocean）建立服务器](https://github.com/scibrokes/setup-centOS7-DO)
 
@@ -41,7 +41,7 @@
 出处：[[vk] 一带一路：经济西征（考察）之路～](https://vk.com/englianhu?w=wall611842020_104)<br>
 出处：[[Tumblr] 一带一路：经济西征（考察）之路～](https://englianhu.tumblr.com/post/684806031267725312/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%95%86%E5%BE%88%E5%B0%91%E5%BC%80%E5%8F%91%E4%B8%AD%E5%9B%BD%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%85%B6%E4%BB%96%E6%97%B6%E6%9C%9F-%E7%9F%A5%E4%B9%8E)
 
-<br><br>
+<br>
 
 ## 乐发集团（东方集团）
 
@@ -61,14 +61,14 @@
 
 一键生成报告。
 
-<br><br>
+<br>
 
 ## 中国手机号
 
 - [中国号，心头好 (RPubs)](https://rpubs.com/englianhu/845478)
 - [中国号，心头好 (RStudioConnect)](https://beta.rstudioconnect.com/connect/#/apps/7dd0a6c7-defc-4c82-9c99-8788bb95d7b0/access)
 
-<br><br>
+<br>
 
 ## 参考文献
 
@@ -88,5 +88,5 @@
 
 ---
 
-[<img src="www/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="www/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

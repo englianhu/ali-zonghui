@@ -1,7 +1,7 @@
 ---
 title: "<span style='color:Red'>阿里彩票</span>"
 subtitle: "彩种报告 (第II部)"
-author: "雷欧 <img src='figure/dashencaicai2.jpg' width='24'>"
+author: "雷欧 <img src='文艺坊图库/dashencaicai2.jpg' height='14'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
@@ -436,7 +436,7 @@ md2 %>%
 - [Multivariate Polynomial Regression in R (Prediction)](https://stackoverflow.com/a/50261058/3806250)
 - [Polynomial regression with multiple independent variables in R](https://stackoverflow.com/questions/45013550/polynomial-regression-with-multiple-independent-variables-in-r)
 
-![<span style='color:Orange'>*图像3.2.1：多项式线型模型*</span> [*Fitting Polynomial Regression in R*](https://www.r-bloggers.com/2015/09/fitting-polynomial-regression-in-r)](figure/How to fit a polynomial regression 2.png)
+![<span style='color:Orange'>*图像3.2.1：多项式线型模型*</span> [*Fitting Polynomial Regression in R*](https://www.r-bloggers.com/2015/09/fitting-polynomial-regression-in-r)](文艺坊图库/How to fit a polynomial regression 2.png)
 
 <span style='color:Red'>**备注**：[lm() breaks when using poly() with predictors set up as factors](https://stackoverflow.com/a/61410867/3806250)讲述`poly`无法分析多元`factor`而只能分析虚拟变量（0或1）。</span>
 
@@ -1057,15 +1057,15 @@ print(anova(fit_1,fit_2,fit_3,fit_4,fit_5))
 ```
 [*7.8.1 Polynomial Regression and Step Functions7.8.1 Polynomial Regression and Step Functions*](http://www.science.smith.edu/~jcrouser/SDS293/labs/lab12-r.html#Deciding-on-a-degree)
 
-![<span style='color:Orange'>*图像3.2.2a：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](figure/polynomials and orthogonal polymials.png)
+![<span style='color:Orange'>*图像3.2.2a：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](文艺坊图库/polynomials and orthogonal polymials.png)
 
-![<span style='color:Orange'>*图像3.2.2b：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](figure/polynomials and orthogonal polymials 2.png)
+![<span style='color:Orange'>*图像3.2.2b：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](文艺坊图库/polynomials and orthogonal polymials 2.png)
 
-![<span style='color:Orange'>*图像3.2.2c：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](figure/polynomials and orthogonal polymials 3.png)
+![<span style='color:Orange'>*图像3.2.2c：分层多项式线型模型*</span> [*High (or very high) order polynomial regression in R (or alternatives?)*](https://stackoverflow.com/a/39803843/3806250)](文艺坊图库/polynomials and orthogonal polymials 3.png)
 
-![<span style='color:Orange'>*图像3.2.3a：拟合由`leaps :: regsubsets`选择的多项式回归模型*</span> [*关于r：拟合由`leaps :: regsubsets`选择的多项式回归模型*](https://www.codenong.com/51223897)](figure/拟合由leaps regsubsets选择的多项式回归模型1.png)
+![<span style='color:Orange'>*图像3.2.3a：拟合由`leaps :: regsubsets`选择的多项式回归模型*</span> [*关于r：拟合由`leaps :: regsubsets`选择的多项式回归模型*](https://www.codenong.com/51223897)](文艺坊图库/拟合由leaps regsubsets选择的多项式回归模型1.png)
 
-![<span style='color:Orange'>*图像3.2.3b：拟合由`leaps :: regsubsets`选择的多项式回归模型*</span> [*关于r：拟合由`leaps :: regsubsets`选择的多项式回归模型*](https://www.codenong.com/51223897)](figure/拟合由leaps regsubsets选择的多项式回归模型2.png)
+![<span style='color:Orange'>*图像3.2.3b：拟合由`leaps :: regsubsets`选择的多项式回归模型*</span> [*关于r：拟合由`leaps :: regsubsets`选择的多项式回归模型*](https://www.codenong.com/51223897)](文艺坊图库/拟合由leaps regsubsets选择的多项式回归模型2.png)
 
 ```{r}
 mdp <- dir('data', pattern = '^mp') %>% 
@@ -1346,7 +1346,7 @@ write_rds(mm001_d3, paste0('data/mm001_d4.rds'))
 - [Linear Regression and group by in R](https://stackoverflow.com/a/12064463/3806250)
 - [Why do I get wildly different results for poly(raw=T) vs. poly()?](https://stats.stackexchange.com/a/31222/68357)
 
-![[*Linear Regression and group by in R*](https://stackoverflow.com/a/12064463/3806250)](figure/nested-polynomial-lm.png)
+![[*Linear Regression and group by in R*](https://stackoverflow.com/a/12064463/3806250)](文艺坊图库/nested-polynomial-lm.png)
 
 ```{r}
 ## https://stackoverflow.com/a/24133767/3806250
@@ -1513,18 +1513,18 @@ sys
 ## 参考文献
 
 1) [Free themes for Bootstrap](https://bootswatch.com/3/)
-
 2) [R packages for optimal stratified sampling: a review and compared evaluation](https://www.researchgate.net/publication/327791484_R_packages_for_optimal_stratified_sampling_a_review_and_compared_evaluation/comments)
-
 3) [Use of models in SamplingStrata](https://cran.r-project.org/web/packages/SamplingStrata/vignettes/models.html)
-
 4) [Example of Using a Banner Image with RMarkdown](https://rpubs.com/thaufas/555157)
-
 5) [IN R MARKDOWN, How Can I add a background image (HTML output)?](https://stackoverflow.com/questions/60498668/in-r-markdown-how-can-i-add-a-background-image-html-output)
-
 6) [CSS Background Image Size Tutorial – How to Code a Full Page Background Image](https://www.freecodecamp.org/news/css-full-page-background-image-tutorial)
+7) [GitHub : Statistical Rethinking (2022 Edition)](https://github.com/englianhu/stat_rethinking_2022)
+8) [GitHub : `rethinking` package](https://github.com/englianhu/rethinking) McElreath 2020. Statistical Rethinking, 2nd edition
+9) [GitHub : Stan](https://github.com/stan-dev)
+10) [GitHub : Repository for distributing (some) stan-dev R packages](https://github.com/stan-dev/r-packages)
+11) [书栈网](https://www.bookstack.cn/user/englianhu)
 
 ---
 
-[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

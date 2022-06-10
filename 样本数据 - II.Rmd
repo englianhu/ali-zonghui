@@ -1,7 +1,7 @@
 ---
 title: "盈利模式"
 subtitle: "分析购彩助手数据 (第II部)"
-author: "特邀导师 - 菜菜 <img src='www/景知夏小姐.jpg' height='24'>"
+author: "特邀导师 - 菜菜 <img src='文艺坊图库/景知夏小姐.jpg' height='14'>"
 date: "`r lubridate::today()`"
 output:
   html_document: 
@@ -196,7 +196,7 @@ conflict_prefer('rename', 'dplyr')
 
 账号：`zxg00123`，以下是从我们平台购彩助手中的官方数据采集下来的数据，什么彩种都可以分析，就拿个主打**1分快3**为样本。
 
-![](figure/QQ图片20200627153341.png)
+![](文艺坊图库/QQ图片20200627153341.png)
 
 ```{r read-data}
 hml <- read.delim(file = '1分快3样本数据2.txt')
@@ -873,8 +873,13 @@ sys
 ## 参考文献
 
 1) [心理学书籍[第三辑]PDF电子书百度云网盘打包下载](https://www.bluestep.cc/%E5%BF%83%E7%90%86%E5%AD%A6%E4%B9%A6%E7%B1%8D%E7%AC%AC%E4%B8%89%E8%BE%91pdf%E7%94%B5%E5%AD%90%E4%B9%A6%E7%99%BE%E5%BA%A6%E4%BA%91%E7%BD%91%E7%9B%98%E6%89%93%E5%8C%85%E4%B8%8B%E8%BD%BD)
+2) [GitHub : Statistical Rethinking (2022 Edition)](https://github.com/englianhu/stat_rethinking_2022)
+3) [GitHub : `rethinking` package](https://github.com/englianhu/rethinking) McElreath 2020. Statistical Rethinking, 2nd edition
+4) [GitHub : Stan](https://github.com/stan-dev)
+5) [GitHub : Repository for distributing (some) stan-dev R packages](https://github.com/stan-dev/r-packages)
+6) [书栈网](https://www.bookstack.cn/user/englianhu)
 
 ---
 
-[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

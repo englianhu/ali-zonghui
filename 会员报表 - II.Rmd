@@ -1,7 +1,7 @@
 ---
 title: "阿里彩票"
 subtitle: "会员报表报告 (第II部)"
-author: "雷欧 <img src='figure/cd23-isqivxh1309422.jpg' width='24'>"
+author: "雷欧 <img src='文艺坊图库/cd23-isqivxh1309422.jpg' height='14'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
@@ -199,7 +199,7 @@ rm(fls)
 #    escape = FALSE, filter = 'top', rownames = FALSE, 
 #    extensions = list('ColReorder' = NULL, 'RowReorder' = NULL, 
 #                      'Buttons' = NULL, 'Responsive' = NULL), 
-#    options = list(dom = 'BRrltpi', autoWidth = TRUE,  scrollX = TRUE, 
+#    options = list(dom = 'BRrltpi', autowidth = TRUE,  scrollX = TRUE, 
 #                   lengthMenu = list(c(10, 50, 100, 500, -1), 
 #                                     c('10', '50', '100', '500', 'All')), 
 #                   ColReorder = TRUE, rowReorder = TRUE, 
@@ -570,10 +570,15 @@ sys
 ## 参考文献
 
 1) [How to investigate a 3-way interaction?](hhttps://stats.stackexchange.com/questions/47265/how-to-investigate-a-3-way-interaction/47501#47501)
+2) [GitHub : Statistical Rethinking (2022 Edition)](https://github.com/englianhu/stat_rethinking_2022)
+3) [GitHub : `rethinking` package](https://github.com/englianhu/rethinking) McElreath 2020. Statistical Rethinking, 2nd edition
+4) [GitHub : Stan](https://github.com/stan-dev)
+5) [GitHub : Repository for distributing (some) stan-dev R packages](https://github.com/stan-dev/r-packages)
+6) [书栈网](https://www.bookstack.cn/user/englianhu)
 
 <br><br>
 
 ---
 
-[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>

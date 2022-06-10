@@ -1,7 +1,7 @@
 ---
 title: "阿里彩票"
 subtitle: "分析阿里数据 (第II部)"
-author: "雷欧 <img src='figure/QQ图片20200720121653.png' width='24'>"
+author: "雷欧 <img src='文艺坊图库/QQ图片20200720121653.png' height='14'>"
 date: "`r lubridate::today('Asia/Tokyo')`"
 output:
   html_document: 
@@ -717,7 +717,14 @@ sys
 
 ## 参考文献
 
+1) []()
+2) [GitHub : Statistical Rethinking (2022 Edition)](https://github.com/englianhu/stat_rethinking_2022)
+3) [GitHub : `rethinking` package](https://github.com/englianhu/rethinking) McElreath 2020. Statistical Rethinking, 2nd edition
+4) [GitHub : Stan](https://github.com/stan-dev)
+5) [GitHub : Repository for distributing (some) stan-dev R packages](https://github.com/stan-dev/r-packages)
+6) [书栈网](https://www.bookstack.cn/user/englianhu)
+
 ---
 
-[<img src="figure/Scibrokes.png" width="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="figure/Scibrokes.png" width="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
