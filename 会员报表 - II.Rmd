@@ -20,10 +20,9 @@ output:
 
 <img src='文艺坊图库/商场如战场.png' width='560'>
 
-<br>
-[[**主题曲**]{style="color:red"}](https://zhidao.baidu.com/question/397416930.html)
+[[**主题曲**]{style="color:blue"}](https://github.com/englianhu/report/discussions)
 
-<br>
+🚄东方快车，🚄一带一路。
 
 <audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
 

@@ -6,7 +6,10 @@
 
 <img src='文艺坊图库/商场如战场.png' width='560'>
 
-[**主题曲**]{style="color:blue"}<br>
+[[**主题曲**]{style="color:blue"}](https://github.com/englianhu/report/discussions)
+
+🚄东方快车，🚄一带一路。
+
 <audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
 
 ## 量化数学中国共识加油赞
@@ -88,6 +91,7 @@
 - [永洪一站式大数据分析平台](https://www.yonghongtech.com) ([Demo体验](http://public.yonghongtech.com/bi/?au_act=login&adminv=demo&passv=Yonghong123), [企业试用版](https://www.yonghongtech.com/al/zhuce/index.html?module=shiyong&column=))
 - [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
 - [R语言中文网“apriori” 相关内容](https://www.r-china.net/search.php?mod=forum&searchid=23&orderby=lastpost&ascdesc=desc&searchsubmit=yes&kw=apriori)
+- [用朴素贝叶斯模型预测柯南中被害人和凶手！](https://gist.github.com/baymaxium/0357d4e9b1d365475659f7f55f851150)
 
 ---
 
