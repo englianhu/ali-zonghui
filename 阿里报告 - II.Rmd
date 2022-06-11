@@ -249,7 +249,8 @@ datt <- llply(dbt, function(x) {
     y <- y[index(y) %in% dbtt]
     xx <- auto.arima(y, D=1)
     fst <- forecast(xx, h=1) %>% 
-      tbl_df %>% select('Point Forecast') %>% 
+      tbl_df %>% 
+      select('Point Forecast') %>% 
       rename(`FP` = `Point Forecast`)
     names(y) %<>% str_extract_all('[A-Z]{1,}')
     y <- y[nrow(y)]

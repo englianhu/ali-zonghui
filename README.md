@@ -6,7 +6,7 @@
 
 <img src='文艺坊图库/商场如战场.png' width='560'>
 
-[[**主题曲**]{style="color:blue"}](https://github.com/englianhu/report/discussions)
+[**主题曲**](https://github.com/englianhu/report/discussions)
 
 🚄东方快车，🚄一带一路。
 
@@ -92,6 +92,8 @@
 - [DATA ANALYSIS](https://rpubs.com/Author_Nasila18/836843)
 - [R语言中文网“apriori” 相关内容](https://www.r-china.net/search.php?mod=forum&searchid=23&orderby=lastpost&ascdesc=desc&searchsubmit=yes&kw=apriori)
 - [用朴素贝叶斯模型预测柯南中被害人和凶手！](https://gist.github.com/baymaxium/0357d4e9b1d365475659f7f55f851150)
+- [如何用简单易懂的例子解释隐马尔可夫模型？](https://www.zhihu.com/question/20962240)
+- [R语言估计时变VAR模型时间序列的实证研究分析案例](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e4%bc%b0%e8%ae%a1%e6%97%b6%e5%8f%98var%e6%a8%a1%e5%9e%8b%e6%97%b6%e9%97%b4%e5%ba%8f%e5%88%97%e7%9a%84%e5%ae%9e%e8%af%81%e7%a0%94%e7%a9%b6%e5%88%86%e6%9e%90%e6%a1%88%e4%be%8b)
 
 ---
 
