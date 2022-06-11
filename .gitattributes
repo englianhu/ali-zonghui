@@ -1,3 +1,6 @@
-*.js linguist-language=R; 
-*.css linguist-language=R; 
-*.html linguist-language=R;
+*.js linguist-language=js; 
+*.css linguist-language=css; 
+*.html linguist-language=html;
+*.py linguist-language=Python;
+*.sql linguist-language=sql;
+*.R linguist-language=R;

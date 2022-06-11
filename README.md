@@ -4,11 +4,14 @@
 
 [<img src='文艺坊图库/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='文艺坊图库/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](文艺坊图库/shiny-badge.svg)](https://www.shinyapps.io) 
 
-<br>
+<img src='文艺坊图库/商场如战场.png' width='560'>
+
+[**主题曲**]{style="color:blue"}<br>
+<audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
 
 ## 量化数学中国共识加油赞
 
-### 不与诈骗集团为伍
+### 不与诈骗Judi巫师邪教集团为伍
 
 > 宁可枝头抱🇺🇸🇹🇼🇨🇳死，<br> (The Patriot)
 不曾吹落东南风（🇵🇭🇰🇭🇮🇲Judi邪教Cube Ltd博彩庄家）；<br>

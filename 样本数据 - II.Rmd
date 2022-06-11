@@ -1,7 +1,7 @@
 ---
 title: "盈利模式"
 subtitle: "分析购彩助手数据 (第II部)"
-author: "特邀导师 - 菜菜 <img src='文艺坊图库/景知夏小姐.jpg' height='14'>"
+author: "特邀导师 - 菜菜 <img src='文艺坊图库/景知夏小姐.jpg' height='24'>"
 date: "`r lubridate::today()`"
 output:
   html_document: 
@@ -25,6 +25,16 @@ output:
     code_folding: hide
     css: CSSBackgrounds.css
 ---
+
+# 主题
+
+<img src='文艺坊图库/商场如战场.png' width='560'>
+
+[[**主题曲**]{style="color:blue"}](https://zhidao.baidu.com/question/397416930.html)
+
+<audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
+
+<br><br>
 
 # 设定
 
@@ -878,6 +888,10 @@ sys
 4) [GitHub : Stan](https://github.com/stan-dev)
 5) [GitHub : Repository for distributing (some) stan-dev R packages](https://github.com/stan-dev/r-packages)
 6) [书栈网](https://www.bookstack.cn/user/englianhu)
+7) [机器学习，关联规则与购物篮分析实战](https://zhuanlan.zhihu.com/p/386763670)
+8) [数据挖掘之概率统计(一)](https://zhuanlan.zhihu.com/p/149937711)
+9) []()
+
 
 ---
 

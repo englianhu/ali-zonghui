@@ -16,6 +16,19 @@ output:
     css: CSSBackgrounds.css
 ---
 
+# 主题
+
+<img src='文艺坊图库/商场如战场.png' width='560'>
+
+<br>
+[[**主题曲**]{style="color:red"}](https://zhidao.baidu.com/question/397416930.html)
+
+<br>
+
+<audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
+
+<br>
+
 # 设定
 
 ## SCSS 设置
@@ -211,7 +224,7 @@ rm(fls)
 smp %>% as_tibble
 ```
 
-上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的报表数据。
+上图显示从`#r smp$'日期' %>% range %>% .[1]`到`#r smp$'日期' %>% range %>% .[2]`的报表数据。
 
 <br>
 <br>
@@ -269,7 +282,7 @@ smp %>%
   e_toolbox_feature('saveAsImage', title = '截图')
 ```
 
-上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**投注人数**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+上图显示从`#r smp$'日期' %>% range %>% .[1]`到`#r smp$'日期' %>% range %>% .[2]`的**投注人数**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
 
 <br>
 
@@ -304,7 +317,7 @@ smp %>%
   e_toolbox_feature('saveAsImage', title = '截图')
 ```
 
-上图显示从`r smp$'日期' %>% range %>% .[1]`到`r smp$'日期' %>% range %>% .[2]`的**投注金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
+上图显示从`#r smp$'日期' %>% range %>% .[1]`到`#r smp$'日期' %>% range %>% .[2]`的**投注金额**，默认设置显示所有彩种，可以点击彩种筛选焦点彩种。
 
 <br>
 
