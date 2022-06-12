@@ -921,8 +921,8 @@ sys
 25) [R语言中的STAN概率编程MCMC采样的贝叶斯模型](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e4%b8%ad%e7%9a%84stan%e6%a6%82%e7%8e%87%e7%bc%96%e7%a8%8bmcmc%e9%87%87%e6%a0%b7%e7%9a%84%e8%b4%9d%e5%8f%b6%e6%96%af%e6%a8%a1%e5%9e%8b)
 26) [R语言使用贝叶斯层次模型进行空间数据分析](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e4%bd%bf%e7%94%a8%e8%b4%9d%e5%8f%b6%e6%96%af%e5%b1%82%e6%ac%a1%e6%a8%a1%e5%9e%8b%e8%bf%9b%e8%a1%8c%e7%a9%ba%e9%97%b4%e6%95%b0%e6%8d%ae%e5%88%86%e6%9e%90)
 27) [R语言实现向量自回归VAR模型](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e5%ae%9e%e7%8e%b0%e5%90%91%e9%87%8f%e8%87%aa%e5%8a%a8%e5%9b%9e%e5%bd%92var%e6%a8%a1%e5%9e%8b)
-28) []()
-29) []()
+28) [一文搞懂HMM（隐马尔可夫模型）](https://www.cnblogs.com/skyme/p/4651331.html)
+29) [马尔可夫链观点下的电商网站](http://meroa.com/markov-chain-shopping-guide)
 30) []()
 
 ---
