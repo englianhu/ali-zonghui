@@ -135,7 +135,7 @@ knitr::opts_chunk$set(
 ```{r libs, eval=FALSE}
 ## Setup Options, Loading Required Libraries and Preparing Environment
 ## Loading the packages and setting adjustment
-source('function/libs.R')
+source('函数/libs.R')
 ```
 
 读取程序包
@@ -192,10 +192,10 @@ conflict_prefer('rename', 'dplyr')
 
 ```{r warning = FALSE}
 ## 读取数据
-fls <- suppressWarnings(list.files('data/会员报表'))
+fls <- suppressWarnings(list.files('文艺数据库/会员报表'))
 smp <- fls %>% llply(., function(x) {
     dtt <- x %>% str_replace_all('.xls', '') %>% ymd
-    smpp <- read_excel(paste0('data/会员报表/', x))
+    smpp <- read_excel(paste0('文艺数据库/会员报表/', x))
     data.frame('日期' = dtt, smpp)
 }) %>% bind_rows %>% 
     as_tibble %>% 

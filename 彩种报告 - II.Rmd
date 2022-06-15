@@ -135,7 +135,7 @@ knitr::opts_chunk$set(
 ```{r libs, eval=FALSE}
 ## Setup Options, Loading Required Libraries and Preparing Environment
 ## Loading the packages and setting adjustment
-source('function/libs.R')
+source('函数/libs.R')
 ```
 
 读取程序包
@@ -201,11 +201,11 @@ conflict_prefer('rename', 'dplyr')
 
 ```{r, results = 'asis', warning = FALSE}
 ## 读取数据
-fls <- suppressWarnings(list.files('data/彩种'))
+fls <- suppressWarnings(list.files('文艺数据库/彩种'))
 smp <- fls %>% 
   llply(., function(x) {
     dtt <- x %>% str_replace_all('.xls', '') %>% ymd
-    smpp <- read_excel(paste0('data/彩种/', x)) %>% 
+    smpp <- read_excel(paste0('文艺数据库/彩种/', x)) %>% 
       .[-nrow(.),]
     data.frame('日期' = dtt, smpp)
   }) %>% bind_rows %>% 
@@ -320,14 +320,14 @@ md <- list(
 
 ## save files, easier to read.
 microbenchmark(
-   save(md, file = 'data/md.rda'), 
-   write_rds(md, 'data/md.rds'), 
-   saveRDS(md, file = 'data/md.rds'))
+   save(md, file = '文艺数据库/md.rda'), 
+   write_rds(md, '文艺数据库/md.rds'), 
+   saveRDS(md, file = '文艺数据库/md.rds'))
 #Unit: microseconds
 #                                expr     min       lq     mean   median      uq     max neval
-#      save(md, "data/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
-# write_rds(md, "data/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
-#   saveRDS(md, "data/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
+#      save(md, "文艺数据库/md.rda") 114.666 130.9080 135.2061 134.3990 137.111 174.759   100
+# write_rds(md, "文艺数据库/md.rds") 111.098 120.6370 126.8601 125.1935 129.534 178.582   100
+#   saveRDS(md, "文艺数据库/md.rds") 143.649 160.3135 178.6935 183.2730 186.673 358.803   100
 ```
 
 1) $m00 = lm(Profit \sim Date * Type * Bettor * Turnover * Won * Cancelled * Rebates, smp2)$
@@ -365,7 +365,7 @@ microbenchmark(
 <br>
 
 ```{r, results = 'asis', warning = FALSE}
-md <- read_rds('data/md.rds')
+md <- read_rds('文艺数据库/md.rds')
 md2 <- md
 
 ## https://www.colorhexa.com/color-names
@@ -489,7 +489,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p01'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p01, paste0('data/mprf', i, '_p01.rds'))}, 
+        write_rds(p01, paste0('文艺数据库/mprf', i, '_p01.rds'))}, 
         {p02 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -501,7 +501,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p02'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p02, paste0('data/mprf', i, '_p02.rds'))}, 
+        write_rds(p02, paste0('文艺数据库/mprf', i, '_p02.rds'))}, 
         {p03 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -513,7 +513,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p03'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p03, paste0('data/mprf', i, '_p03.rds'))}, 
+        write_rds(p03, paste0('文艺数据库/mprf', i, '_p03.rds'))}, 
         {p04 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -525,7 +525,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p04'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p04, paste0('data/mprf', i, '_p04.rds'))}, 
+        write_rds(p04, paste0('文艺数据库/mprf', i, '_p04.rds'))}, 
         {p05 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -537,7 +537,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p05'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p05, paste0('data/mprf', i, '_p05.rds'))}, 
+        write_rds(p05, paste0('文艺数据库/mprf', i, '_p05.rds'))}, 
         {p06 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -549,7 +549,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p06'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p06, paste0('data/mprf', i, '_p06.rds'))}, 
+        write_rds(p06, paste0('文艺数据库/mprf', i, '_p06.rds'))}, 
         {p07 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -562,7 +562,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p07'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p07, paste0('data/mprf', i, '_p07.rds'))}, 
+        write_rds(p07, paste0('文艺数据库/mprf', i, '_p07.rds'))}, 
         {p08 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -573,7 +573,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p08'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p08, paste0('data/mprf', i, '_p08.rds'))}, 
+        write_rds(p08, paste0('文艺数据库/mprf', i, '_p08.rds'))}, 
         {p09 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -584,7 +584,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p09'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p09, paste0('data/mprf', i, '_p09.rds'))}, 
+        write_rds(p09, paste0('文艺数据库/mprf', i, '_p09.rds'))}, 
         {p10 = lm(Profit ~ 
                      poly(Won, degree = i, raw = FALSE) * 
                      poly(Cancelled, degree = i, raw = FALSE) * 
@@ -595,7 +595,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p10'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p10, paste0('data/mprf', i, '_p10.rds'))}, 
+        write_rds(p10, paste0('文艺数据库/mprf', i, '_p10.rds'))}, 
         {p11 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -606,7 +606,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p11'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p11, paste0('data/mprf', i, '_p11.rds'))}, 
+        write_rds(p11, paste0('文艺数据库/mprf', i, '_p11.rds'))}, 
         {p12 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -617,7 +617,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p12'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p12, paste0('data/mprf', i, '_p12.rds'))}, 
+        write_rds(p12, paste0('文艺数据库/mprf', i, '_p12.rds'))}, 
         {p13 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -628,7 +628,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p13'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p13, paste0('data/mprf', i, '_p13.rds'))}, 
+        write_rds(p13, paste0('文艺数据库/mprf', i, '_p13.rds'))}, 
         {p14 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -639,7 +639,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p14'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p14, paste0('data/mprf', i, '_p14.rds'))}, 
+        write_rds(p14, paste0('文艺数据库/mprf', i, '_p14.rds'))}, 
         {p15 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = FALSE) * 
                      poly(Cancelled, degree = i, raw = FALSE) * 
@@ -650,7 +650,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p15'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p15, paste0('data/mprf', i, '_p15.rds'))}, 
+        write_rds(p15, paste0('文艺数据库/mprf', i, '_p15.rds'))}, 
         {p16 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -661,7 +661,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p16'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p16, paste0('data/mprf', i, '_p16.rds'))}, 
+        write_rds(p16, paste0('文艺数据库/mprf', i, '_p16.rds'))}, 
         {p17 = lm(Profit ~ 
                      poly(Won, degree = i, raw = FALSE) * 
                      poly(Cancelled, degree = i, raw = FALSE) * 
@@ -672,7 +672,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p17'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p17, paste0('data/mprf', i, '_p17.rds'))}, 
+        write_rds(p17, paste0('文艺数据库/mprf', i, '_p17.rds'))}, 
         {p18 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -684,7 +684,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p18'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p18, paste0('data/mprf', i, '_p18.rds'))}, 
+        write_rds(p18, paste0('文艺数据库/mprf', i, '_p18.rds'))}, 
         {p19 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -696,7 +696,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p19'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p19, paste0('data/mprf', i, '_p19.rds'))}, 
+        write_rds(p19, paste0('文艺数据库/mprf', i, '_p19.rds'))}, 
         {p20 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -708,7 +708,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p20'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p20, paste0('data/mprf', i, '_p20.rds'))}, 
+        write_rds(p20, paste0('文艺数据库/mprf', i, '_p20.rds'))}, 
         {p21 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = FALSE) * 
                      poly(Turnover, degree = i, raw = FALSE) * 
@@ -721,7 +721,7 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p21'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p21, paste0('data/mprf', i, '_p21.rds'))}, 
+        write_rds(p21, paste0('文艺数据库/mprf', i, '_p21.rds'))}, 
         {p22 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = FALSE) * 
                      poly(Won, degree = i, raw = FALSE) * 
@@ -733,13 +733,13 @@ mprf_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprf_p22'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p22, paste0('data/mprf', i, '_p22.rds'))}
+        write_rds(p22, paste0('文艺数据库/mprf', i, '_p22.rds'))}
     ) %>% 
         ldply %>% 
         as_tibble
     
     ## save files, easier to read.
-    #write_rds(mprf, paste0('data/mprf', i, '.rds'))
+    #write_rds(mprf, paste0('文艺数据库/mprf', i, '.rds'))
 })
 ```
 
@@ -774,7 +774,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p01'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p01, paste0('data/mprt', i, '_p01.rds'))}, 
+        write_rds(p01, paste0('文艺数据库/mprt', i, '_p01.rds'))}, 
         {p02 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -786,7 +786,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p02'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p02, paste0('data/mprt', i, '_p02.rds'))}, 
+        write_rds(p02, paste0('文艺数据库/mprt', i, '_p02.rds'))}, 
         {p03 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -798,7 +798,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p03'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p03, paste0('data/mprt', i, '_p03.rds'))}, 
+        write_rds(p03, paste0('文艺数据库/mprt', i, '_p03.rds'))}, 
         {p04 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -810,7 +810,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p04'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p04, paste0('data/mprt', i, '_p04.rds'))}, 
+        write_rds(p04, paste0('文艺数据库/mprt', i, '_p04.rds'))}, 
         {p05 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -822,7 +822,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p05'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p05, paste0('data/mprt', i, '_p05.rds'))}, 
+        write_rds(p05, paste0('文艺数据库/mprt', i, '_p05.rds'))}, 
         {p06 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -834,7 +834,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p06'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p06, paste0('data/mprt', i, '_p06.rds'))}, 
+        write_rds(p06, paste0('文艺数据库/mprt', i, '_p06.rds'))}, 
         {p07 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -847,7 +847,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p07'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p07, paste0('data/mprt', i, '_p07.rds'))}, 
+        write_rds(p07, paste0('文艺数据库/mprt', i, '_p07.rds'))}, 
         {p08 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -858,7 +858,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p08'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p08, paste0('data/mprt', i, '_p08.rds'))}, 
+        write_rds(p08, paste0('文艺数据库/mprt', i, '_p08.rds'))}, 
         {p09 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -869,7 +869,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p09'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p09, paste0('data/mprt', i, '_p09.rds'))}, 
+        write_rds(p09, paste0('文艺数据库/mprt', i, '_p09.rds'))}, 
         {p10 = lm(Profit ~ 
                      poly(Won, degree = i, raw = TRUE) * 
                      poly(Cancelled, degree = i, raw = TRUE) * 
@@ -880,7 +880,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p10'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p10, paste0('data/mprt', i, '_p10.rds'))}, 
+        write_rds(p10, paste0('文艺数据库/mprt', i, '_p10.rds'))}, 
         {p11 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -891,7 +891,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p11'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p11, paste0('data/mprt', i, '_p11.rds'))}, 
+        write_rds(p11, paste0('文艺数据库/mprt', i, '_p11.rds'))}, 
         {p12 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -902,7 +902,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p12'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p12, paste0('data/mprt', i, '_p12.rds'))}, 
+        write_rds(p12, paste0('文艺数据库/mprt', i, '_p12.rds'))}, 
         {p13 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -913,7 +913,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p13'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p13, paste0('data/mprt', i, '_p13.rds'))}, 
+        write_rds(p13, paste0('文艺数据库/mprt', i, '_p13.rds'))}, 
         {p14 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -924,7 +924,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p14'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p14, paste0('data/mprt', i, '_p14.rds'))}, 
+        write_rds(p14, paste0('文艺数据库/mprt', i, '_p14.rds'))}, 
         {p15 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = TRUE) * 
                      poly(Cancelled, degree = i, raw = TRUE) * 
@@ -935,7 +935,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p15'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p15, paste0('data/mprt', i, '_p15.rds'))}, 
+        write_rds(p15, paste0('文艺数据库/mprt', i, '_p15.rds'))}, 
         {p16 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -946,7 +946,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p16'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p16, paste0('data/mprt', i, '_p16.rds'))}, 
+        write_rds(p16, paste0('文艺数据库/mprt', i, '_p16.rds'))}, 
         {p17 = lm(Profit ~ 
                      poly(Won, degree = i, raw = TRUE) * 
                      poly(Cancelled, degree = i, raw = TRUE) * 
@@ -957,7 +957,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p17'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p17, paste0('data/mprt', i, '_p17.rds'))}, 
+        write_rds(p17, paste0('文艺数据库/mprt', i, '_p17.rds'))}, 
         {p18 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -969,7 +969,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p18'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p18, paste0('data/mprt', i, '_p18.rds'))}, 
+        write_rds(p18, paste0('文艺数据库/mprt', i, '_p18.rds'))}, 
         {p19 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -981,7 +981,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p19'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p19, paste0('data/mprt', i, '_p19.rds'))}, 
+        write_rds(p19, paste0('文艺数据库/mprt', i, '_p19.rds'))}, 
         {p20 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -993,7 +993,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p20'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p20, paste0('data/mprt', i, '_p20.rds'))}, 
+        write_rds(p20, paste0('文艺数据库/mprt', i, '_p20.rds'))}, 
         {p21 = lm(Profit ~ 
                      poly(Bettor, degree = i, raw = TRUE) * 
                      poly(Turnover, degree = i, raw = TRUE) * 
@@ -1006,7 +1006,7 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p21'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p21, paste0('data/mprt', i, '_p21.rds'))}, 
+        write_rds(p21, paste0('文艺数据库/mprt', i, '_p21.rds'))}, 
         {p22 = lm(Profit ~ 
                      poly(Turnover, degree = i, raw = TRUE) * 
                      poly(Won, degree = i, raw = TRUE) * 
@@ -1018,13 +1018,13 @@ mprt_list <- llply(num, function(i) {
           dplyr::rename(df = V1, AIC = V2) %>% 
           mutate(.md = paste0('mprt_p22'), degree = i, raw = TRUE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p22, paste0('data/mprt', i, '_p22.rds'))}
+        write_rds(p22, paste0('文艺数据库/mprt', i, '_p22.rds'))}
     ) %>% 
         ldply %>% 
         as_tibble
     
     ## save files, easier to read.
-    #write_rds(mprt, paste0('data/mprt', i, '.rds'))
+    #write_rds(mprt, paste0('文艺数据库/mprt', i, '.rds'))
 })
 ```
 
@@ -1082,7 +1082,7 @@ print(anova(fit_1,fit_2,fit_3,fit_4,fit_5))
 ```{r}
 mdp <- dir('data', pattern = '^mp') %>% 
     ldply(., function(x) {
-        read_rds(paste0('data/', x))
+        read_rds(paste0('文艺数据库/', x))
     }) %>% 
     as_tibble
 ```
@@ -1164,7 +1164,7 @@ mdp %>%
 ```{r, eval = FALSE}
 dir('data', pattern = '^m.+rds$') %>% 
     ldply(., function(x) {
-        read_rds(paste0('data/', x))
+        read_rds(paste0('文艺数据库/', x))
     }) %>% arrange(AIC) %>% 
     dplyr::slice(1:5) %>% 
   mutate(
@@ -1199,7 +1199,7 @@ mm = lmer(Profit ~
     dplyr::rename(df = V1, AIC = V2) %>% 
     mutate(.md = paste0('mprf_p07'), degree = 2, raw = FALSE) %>% 
     dplyr::select(.md, degree, df, AIC)
-write_rds(p07, paste0('data/mprf', i, '_p07.rds'))
+write_rds(p07, paste0('文艺数据库/mprf', i, '_p07.rds'))
 
 
 
@@ -1217,7 +1217,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p01'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(mm01, paste0('data/mmprf', i, '_p01.rds'))}, 
+        write_rds(mm01, paste0('文艺数据库/mmprf', i, '_p01.rds'))}, 
         {mm02 = lmer(Profit ~ Date * 
                    poly(Bettor, degree = i, raw = FALSE) * 
                        poly(Turnover, degree = i, raw = FALSE) * 
@@ -1230,7 +1230,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p02'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(mm02, paste0('data/mmprf', i, '_p02.rds'))}, 
+        write_rds(mm02, paste0('文艺数据库/mmprf', i, '_p02.rds'))}, 
         {mm03 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Turnover, degree = i, raw = FALSE) * 
@@ -1243,7 +1243,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p03'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(mm03, paste0('data/mmprf', i, '_p03.rds'))}, 
+        write_rds(mm03, paste0('文艺数据库/mmprf', i, '_p03.rds'))}, 
         {mm04 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Turnover, degree = i, raw = FALSE) * 
@@ -1256,7 +1256,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p04'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p04, paste0('data/mmprf', i, '_p04.rds'))}, 
+        write_rds(p04, paste0('文艺数据库/mmprf', i, '_p04.rds'))}, 
         {mm05 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
@@ -1269,7 +1269,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p05'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p05, paste0('data/mmprf', i, '_p05.rds'))}, 
+        write_rds(p05, paste0('文艺数据库/mmprf', i, '_p05.rds'))}, 
         {mm06 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
@@ -1282,7 +1282,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p06'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p06, paste0('data/mmprf', i, '_p06.rds'))}, 
+        write_rds(p06, paste0('文艺数据库/mmprf', i, '_p06.rds'))}, 
         {mm07 = lmer(Profit ~ Date * 
                       poly(Bettor, degree = i, raw = FALSE) * 
                       poly(Won, degree = i, raw = FALSE) * 
@@ -1295,7 +1295,7 @@ llply(5, function(i) {
             dplyr::rename(df = V1, AIC = V2) %>% 
             mutate(.md = paste0('mmprf_p07'), degree = i, raw = FALSE) %>% 
             dplyr::select(.md, degree, df, AIC); 
-        write_rds(p06, paste0('data/mmprf', i, '_p07.rds'))}
+        write_rds(p06, paste0('文艺数据库/mmprf', i, '_p07.rds'))}
     ) %>% 
         ldply %>% 
         as_tibble
@@ -1308,7 +1308,7 @@ mm000 = lmer(Profit ~ Date *
               poly(Rebates, degree = 2, raw = FALSE) * 
               (1 + Won * Cancelled | Bettor) * (Type / Date), smp2) %>% 
     extractAIC
-write_rds(mm000, paste0('data/mm000.rds'))
+write_rds(mm000, paste0('文艺数据库/mm000.rds'))
 
 ## nested model
 mm001 = lm(Profit ~ Date * 
@@ -1318,7 +1318,7 @@ mm001 = lm(Profit ~ Date *
                poly(Rebates, degree = 2, raw = FALSE) * 
                (1 + Won * Cancelled / Bettor) * (Type / Date), smp2) %>% 
     extractAIC
-write_rds(mm001, paste0('data/mm001.rds'))
+write_rds(mm001, paste0('文艺数据库/mm001.rds'))
 
 ## lmer(y~poly(x,2,raw=TRUE)+(1|f)+(0+x|f)+(0+I(x^2)|f),
 ##            data=d)
@@ -1331,7 +1331,7 @@ mm000_d3 = lmer(Profit ~ Date *
               poly(Rebates, degree = 3, raw = FALSE) * 
               (1 + Won * Cancelled | Bettor) * (Type / Date), smp2) %>% 
     extractAIC
-write_rds(mm000_d3, paste0('data/mm000_d3.rds'))
+write_rds(mm000_d3, paste0('文艺数据库/mm000_d3.rds'))
 
 ## nested model
 mm001_d3 = lm(Profit ~ Date * 
@@ -1341,7 +1341,7 @@ mm001_d3 = lm(Profit ~ Date *
                poly(Rebates, degree = 3, raw = FALSE) * 
                (1 + Won * Cancelled / Bettor) * (Type / Date), smp2) %>% 
     extractAIC
-write_rds(mm001_d3, paste0('data/mm001_d4.rds'))
+write_rds(mm001_d3, paste0('文艺数据库/mm001_d4.rds'))
 
 ```
 
