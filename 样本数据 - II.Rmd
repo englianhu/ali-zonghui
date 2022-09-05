@@ -924,7 +924,7 @@ sys
 28) [一文搞懂HMM（隐马尔可夫模型）](https://www.cnblogs.com/skyme/p/4651331.html)
 29) [马尔可夫链观点下的电商网站](http://meroa.com/markov-chain-shopping-guide)
 30) [R语言多元LOGISTIC逻辑回归 应用案例](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e5%a4%9a%e5%85%83logistic%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92-%e5%ba%94%e7%94%a8%e6%a1%88%e4%be%8b)
-31) []()
+31) [不同用户生命周期的运营策略](https://www.jianshu.com/p/c03b6f8aeee9)
 32) []()
 33) []()
 34) []()
