@@ -1,13 +1,11 @@
 
 <img src='诸子百家考工记/世博量化.png' height='100'> <img src='诸子百家考工记/大秦赋 - 北京大学.png' height='100'>
 
-<img src='诸子百家考工记/alibaba1.jpg' width='240'>
+<img src='诸子百家考工记/阿里巴巴一.png' width='240'>
 
 ---
 
 # 黄联富（®γσ ξηg 雷欧） / 乐发集团（阿里报告）
-
-[<img src='诸子百家考工记/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='诸子百家考工记/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](诸子百家考工记/shiny-badge.svg)](https://www.shinyapps.io) 
 
 <img src='诸子百家考工记/商场如战场.png' width='560'>
 
@@ -17,13 +15,13 @@
 
 <audio controls loop autoplay src="文艺坊歌曲库/東方快車合唱團 Oriental Express - 紅紅青春敲呀敲 《黑松沙士》廣告主題曲.mp3" controls></audio>
 
-**大秦赋 (Chinese Emperor)**<br>
+**大秦赋**<br>
 春秋战国《*礼记•经解*》<br>
-孔子曰：『君子慎始，差若毫厘，缪以千里。』
+孔子曰：「君子慎始，差若毫厘，缪以千里。」
 
-> <span style='color:#FFEBCD; background-color:#D2B48C;'>**《礼记·经解》孔子曰：**</span><span style='color:#A9A9A9'; background-color:#696969;'>*「君子慎始，差若毫厘，谬以千里。」*</span>[^1]
+> <span style='color:#FFEBCD; background-color:#991B00;'>**《礼记•经解》孔子曰：**</span><span style='color:#DimGrey; background-color:#D52600;'>*「君子慎始，差若毫厘，谬以千里。」*</span>[^1]
 
-*引用：[「快懂百科」《礼记•经解》](https://www.baike.com/wikiid/2225522569881832051?view_id=2tt3iw3blkq000)和[第一范文网：差之毫厘，谬以千里的故事](https://www.diyifanwen.com/chengyu/liuziyishangchengyugushi/2010051523105152347092749890.htm)和[「百度百科」春秋时期孔子作品《礼记•经解》](https://baike.baidu.com/item/%E7%A4%BC%E8%AE%B0%C2%B7%E7%BB%8F%E8%A7%A3/2523092)和[「當代中國」差之毫釐 謬以千里](https://www.ourchinastory.com/zh/2962/%E5%B7%AE%E4%B9%8B%E6%AF%AB%E9%87%90%20%E8%AC%AC%E4%BB%A5%E5%8D%83%E9%87%8C)*
+*引用：[「快懂百科」《礼记•经解》](https://www.baike.com/wikiid/2225522569881832051)和[第一范文网：差之毫厘，谬以千里的故事](https://www.diyifanwen.com/chengyu/liuziyishangchengyugushi/2010051523105152347092749890.htm)和[「百度百科」春秋时期孔子作品《礼记•经解》](https://baike.baidu.com/item/礼记·经解/2523092)和[「當代中國」差之毫釐 謬以千里](https://www.ourchinastory.com/zh/2962/差之毫釐%20謬以千里)*
 
 [^1]: [HTML Color Codes](https://html-color.codes)
 
@@ -59,8 +57,8 @@
 
 > Нэг бүс нэг зам: Баруун эдийн засгийн экспедицийн зам~
 
-出处：[[vk] 一带一路：经济西征（考察）之路～](https://vk.com/englianhu?w=wall611842020_104)<br>
-出处：[[Tumblr] 一带一路：经济西征（考察）之路～](https://englianhu.tumblr.com/post/684806031267725312/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%95%86%E5%BE%88%E5%B0%91%E5%BC%80%E5%8F%91%E4%B8%AD%E5%9B%BD%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%85%B6%E4%BB%96%E6%97%B6%E6%9C%9F-%E7%9F%A5%E4%B9%8E)
+出处：[「vk」一带一路：经济西征（考察）之路～](https://vk.com/englianhu?w=wall611842020_104)<br>
+出处：[「Tumblr」一带一路：经济西征（考察）之路～](https://englianhu.tumblr.com/post/684806031267725312/为什么游戏开发商很少开发中国历史上的其他时期-知乎)
 
 <br>
 
