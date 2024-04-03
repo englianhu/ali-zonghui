@@ -5,6 +5,8 @@
 
 ---
 
+# 黄联富（®γσ ξηg 雷欧） / 乐发集团（阿里报告）
+
 [<img src='文艺坊图库/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='文艺坊图库/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](文艺坊图库/shiny-badge.svg)](https://www.shinyapps.io) 
 
 <img src='文艺坊图库/商场如战场.png' width='560'>
