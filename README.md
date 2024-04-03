@@ -1,15 +1,15 @@
 
-<img src='文艺坊图库/世博量化.png' height='100'> <img src='文艺坊图库/大秦赋 - 北京大学.png' height='100'>
+<img src='诸子百家考工记/世博量化.png' height='100'> <img src='诸子百家考工记/大秦赋 - 北京大学.png' height='100'>
 
-<img src='文艺坊图库/alibaba1.jpg' width='240'>
+<img src='诸子百家考工记/alibaba1.jpg' width='240'>
 
 ---
 
 # 黄联富（®γσ ξηg 雷欧） / 乐发集团（阿里报告）
 
-[<img src='文艺坊图库/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='文艺坊图库/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](文艺坊图库/shiny-badge.svg)](https://www.shinyapps.io) 
+[<img src='诸子百家考工记/RStudioCloud.png' height='20'>](https://rstudio.cloud) [<img src='诸子百家考工记/RStudioCom2.png' height='20'>](https://community.rstudio.com/new-topic?category=shiny&tags=shiny) [![](诸子百家考工记/shiny-badge.svg)](https://www.shinyapps.io) 
 
-<img src='文艺坊图库/商场如战场.png' width='560'>
+<img src='诸子百家考工记/商场如战场.png' width='560'>
 
 [**主题曲**](https://github.com/englianhu/report/discussions)
 
@@ -36,8 +36,8 @@
 山穷水路疑无🛣，<br>
 柳暗花明又一🌸。
 
-> **®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='文艺坊图库/Asean.png' height='12'> Kublai Commander**<br>
-**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='文艺坊图库/Asean.png' height='12'> Хубилай командлагчч**<br>
+> **®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='诸子百家考工记/Asean.png' height='12'> Kublai Commander**<br>
+**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='诸子百家考工记/Asean.png' height='12'> Хубилай командлагчч**<br>
 
 出处：[猫舍：通过数码海洋（Digital Ocean）建立服务器](https://github.com/scibrokes/setup-centOS7-DO)
 
@@ -110,7 +110,9 @@
 - [如何用简单易懂的例子解释隐马尔可夫模型？](https://www.zhihu.com/question/20962240)
 - [R语言估计时变VAR模型时间序列的实证研究分析案例](http://tecdat.cn/r%e8%af%ad%e8%a8%80%e4%bc%b0%e8%ae%a1%e6%97%b6%e5%8f%98var%e6%a8%a1%e5%9e%8b%e6%97%b6%e9%97%b4%e5%ba%8f%e5%88%97%e7%9a%84%e5%ae%9e%e8%af%81%e7%a0%94%e7%a9%b6%e5%88%86%e6%9e%90%e6%a1%88%e4%be%8b)
 
+<br><br>
+
 ---
 
-[<img src="文艺坊图库/Scibrokes.png" height="14"/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
-<span style='color:RoyalBlue'>**[<img src="文艺坊图库/Scibrokes.png" height="14"/> 世博量化®](http://www.scibrokes.com)企业知识产权及版权所有，盗版必究。**</span>
+[<img src='诸子百家考工记/世博量化.png' height='14'/> Sςιβrοκεrs Trαdιηg®](http://www.scibrokes.com)<br>
+<span style='color:RoyalBlue'>**[<img src='诸子百家考工记/世博量化.png' height='14'/> 世博量化®](http://www.scibrokes.com)企业知识产权®及版权®所有，盗版必究。**</span>
