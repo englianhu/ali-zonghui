@@ -40,7 +40,7 @@
 
 > <s>**®Studio 🇺🇸 GI Joe -vs- Kubuntu 🇲🇳 <img src='诸子百家考工记/东盟.png' height='12'> Kublai Commander**</s><br>
 <s>**®Studio 🇺🇸 GI Жо -vs- Kubuntu 🇲🇳 <img src='诸子百家考工记/东盟.png' height='12'> Хубилай командлагчч**</s><br>
-> 菲律宾会稽太阳谷/菲律宾克拉克太阳谷（Clark 中译：书记/会计/秘书/掌柜）文言文（Nguyen完颜氏，世袭制道家 耳元“阮”）越王勾践（世袭制道家，奠耳“鄭”或关耳“郑”、耳东“陈”、耳元“阮”）西征之道～
+> 菲律宾会稽太阳谷/菲律宾克拉克太阳谷（Clark 中译：书记/会计/秘书/掌柜）文言文（🇻🇳越南佛家Nguyen完颜氏， 🇨🇳🇻🇳世袭制道家 耳元“阮”）越王勾践（世袭制道家，奠耳“鄭”或关耳“郑”、耳东“陈”、耳元“阮”）西征之道～
 
 *出处：[「猫城」通过数码海洋（Digital Ocean）建立服务器](https://github.com/scibrokes/setup-centOS7-DO)*
 
