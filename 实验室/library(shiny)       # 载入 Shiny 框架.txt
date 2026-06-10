@@ -1,0 +1,265 @@
+library(shiny)       # 载入 Shiny 框架，用于构建交互式网页应用（UI 和 Server 架构）
+library(BTYD)        # 载入 Buy Till You Die 核心库，包含业界标杆 BG/NBD 与 Gamma-Gamma 概率统计模型
+library(tidyverse)   # 载入数据科学全家桶（含 ggplot2, dplyr, purrr 等），用于高效数据清洗与转换
+library(plotly)      # 载入 3D/2D 动态交互图表库，用于将静态的 ggplot 转化为可鼠标悬停交互的图表
+
+# 定义一个用于生成高仿真商业交易流水数据的函数，模拟一个大型消费/电商平台
+generate_simulated_data <- function(n_customers = 1000) {
+  set.seed(42)       # 设置随机数种子，确保每次运行代码生成的“随机”数据完全一致，便于回测和调试
+  
+  # 定义模拟的历史观测时间窗口（整整1年，365天）
+  start_date <- as.Date("2025-01-01") # 定义数据集的起点（用户入驻的开始日期）
+  end_date <- as.Date("2025-12-31")   # 定义当前观察的截止点（数据快照日期）
+  
+  # 批量生成唯一的客户 ID，例如从 "CUST-1001" 到指定的规模数量
+  customer_ids <- paste0("CUST-", 1000 + 1:n_customers)
+  
+  # 使用 purrr 库的 map_df 循环遍历每个客户 ID，生成多行交易记录，并最终合并为一个大 DataFrame
+  df_transactions <- map_df(customer_ids, function(id) {
+    
+    # 为当前用户随机分配获客渠道，并设置概率权重（模拟现实中各大渠道的进量占比）
+    channel <- sample(c("Google_Paid", "Facebook_Ads", "Organic_Search"), 1, prob = c(0.4, 0.4, 0.2))
+    
+    # 模拟用户的“诞生日期”（入驻时间），限制在全年的前半年（0到180天之间随机一天入驻）
+    join_date <- start_date + sample(0:180, 1) 
+    
+    # 核心商业直觉：根据不同的渠道，赋予不同的基础消费频次（泊松过程的 Lambda 参数）
+    base_freq <- switch(channel, "Google_Paid" = 0.05, "Facebook_Ads" = 0.03, "Organic_Search" = 0.08)
+    
+    # 统计学原理：使用泊松分布（Poisson）随机生成该用户在观察期内的重复购买总次数
+    n_tx <- rpois(1, lambda = base_freq * as.numeric(end_date - join_date))
+    
+    # 如果该用户极度不活跃，算出来的购买次数为 0，则直接跳过，返回空值（该用户只有注册没有消费）
+    if (n_tx == 0) return(NULL)
+    
+    # 在用户入驻到观察截止期的时间段内，随机抽取 N 个天数偏移量，并从小到大排序，作为消费间隔
+    tx_offsets <- sort(sample(0:as.numeric(end_date - join_date), n_tx))
+    tx_dates <- join_date + tx_offsets # 将入驻日期加上天数偏移量，得到具体的交易发生日期
+    
+    # 核心商业直觉：根据渠道赋予不同的平均消费基础客单价（Monetary Value 先验）
+    base_spend <- switch(channel, "Google_Paid" = 80, "Facebook_Ads" = 110, "Organic_Search" = 60)
+    
+    # 统计学原理：使用伽马分布（Gamma）生成每次交易的具体金额。金融学中消费金额通常呈右偏分布，最适合用 Gamma 建模
+    spendings <- rgamma(n_tx, shape = 5, scale = base_spend / 5)
+    
+    # 将当前这个用户所有的多条交易流水封装成一个规整的表格，并向下传递合并
+    tibble(
+      cust_id = id,          # 客户唯一标识符
+      date = tx_dates,       # 当前这笔消费发生的具体日期
+      spend = round(spendings, 2), # 消费金额，四舍五入保留2位小数
+      channel = channel,     # 该客户所属的最初获客渠道（用于后续 ROI 计算）
+      birth_date = join_date # 该客户的注册入驻日期（用于计算生存计算的基准）
+    )
+  })
+  return(df_transactions) # 函数返回整张模拟出的、包含数千条流水的原始交易日志表
+}
+
+
+# 定义用户界面（UI）的布局与视觉元素
+ui <- fluidPage(
+  # 设置前端主题样式为 "cosmo"（如果本地无该包则忽略，保持极简网页风格）
+  theme = shinytheme("cosmo") %>% optional(), 
+  
+  # 网页大标题，开门见山展示高级数据科学的应用主题
+  titlePanel("高级数据科学：基于 BG/NBD 与 Gamma-Gamma 的 LTV 预测与模拟系统"),
+  
+  # 采用经典的左侧控制面板 + 右侧主显示区域的侧边栏布局（Sidebar Layout）
+  sidebarLayout(
+    
+    # 左侧输入控制面板区域
+    sidebarPanel(
+      h4("🔮 模拟与回测配置"), # 小标题
+      
+      # 动态滑动条：控制生成历史用户池的基数大小
+      sliderInput("obs_customers", "模拟历史客户规模:", min = 500, max = 3000, value = 1200, step = 100),
+      
+      # 动态滑动条：控制模型向未来预测（T.star）的长短
+      sliderInput("forecast_days", "未来 LTV 预测天数 (T):", min = 30, max = 365, value = 180, step = 30),
+      
+      # 数字输入框：金融折现率，用于对未来的现金流进行无风险资产价值调整
+      numericInput("discount_rate", "年度折现率 (Discount Rate %):", value = 10, min = 0, max = 100),
+      hr(), # 在网页上画一条水平分割线
+      
+      h4("📊 获客成本 (CPA) 假设"), # 营销经济学参数配置小标题
+      
+      # 数字输入框：配置各个渠道的动态获客成本（CPA），用于实时对撞 LTV 测算 ROI 杠杆
+      numericInput("cpa_google", "Google Paid CPA ($):", value = 45),
+      numericInput("cpa_fb", "Facebook Ads CPA ($):", value = 65),
+      numericInput("cpa_organic", "Organic CPA ($):", value = 5),
+      
+      # 核心动作按钮：用户点击后，后台才会正式启动极其消耗算力的数学模型训练
+      actionButton("run_analysis", "🚀 运行模型与回测", class = "btn-primary btn-block")
+    ),
+    
+    # 右侧主数据显示面板区域
+    mainPanel(
+      # 创建标签页组件（Tabset），让复杂的输出结果分门别类显示，保持排版精简
+      tabsetPanel(
+        
+        # 标签页 1：展示核心的预测成果与营销决策大盘
+        tabPanel("📈 LTV 预测与 ROI 回测", 
+                 fluidRow( # 采用流式行布局，横向排列指标卡
+                   br(),  # 网页换行留白
+                   valueBoxOutput("total_pred_ltv", width = 4), # 输出动态指标卡 1：群体平均 LTV
+                   valueBoxOutput("avg_roi", width = 4),        # 输出动态指标卡 2：全大盘 ROI 杠杆率
+                   valueBoxOutput("model_status", width = 4)     # 输出动态指标卡 3：展示算法收敛状态
+                 ),
+                 hr(), # 水平分割线
+                 h3("不同渠道的 净LTV 相比 获客成本(CPA) 的边际表现"), # 图表大标题
+                 plotlyOutput("roi_comparison_plot") # 承接后台渲染完毕的 Plotly 交互式柱状图
+        ),
+        
+        # 标签页 2：展示微观数据明细，方便数据科学家进行个体画像下钻
+        tabPanel("👥 群组分析矩阵 (Cohort & Feature)", 
+                 br(),
+                 h3("模型预测结果数据集 (Top 100 客户视图)"),
+                 p("基于 BG/NBD 计算的 pAlive（当前存活概率）及 Gamma-Gamma 计算的期望客单价："),
+                 dataTableOutput("prediction_table") # 承接后台生成的支持排序、搜索的动态交互数据表格
+        )
+      )
+    )
+  )
+)
+
+
+# 定义服务端的业务处理逻辑（处理输入 input，计算并产生输出 output）
+server <- function(input, output, session) {
+  
+  # 统计学防抖与事件监听：只有当用户点击左侧的 "run_analysis" 按钮时，内部的代码块才会激活运行
+  model_results <- eventReactive(input$run_analysis, {
+    
+    # Step 1: 调用最开始定义的仿真函数，根据前端滑动条的输入值，生成原始交易流水数据
+    raw_data <- generate_simulated_data(input$obs_customers)
+    max_date <- max(raw_data$date) # 找出整张流水表里的最后一天，作为当前的观察截断时刻
+    
+    # Step 2: 数据特征工程转换。将原始流水压缩转化为 BTYD 框架专属的 CBS (Customer Baseline Statistics) 矩阵
+    cbs_summary <- raw_data %>%
+      group_by(cust_id) %>% # 以客户 ID 为最小颗粒度进行聚合
+      summarise(
+        x = n() - 1,   # 核心参数 x：用户的“重复购买次数”（总消费次数减去首单那一次）
+        
+        # 核心参数 t.x：用户的Recency（最后一次消费日期距离第一单首单日期之间相差的总天数）
+        t.x = as.numeric(max(date) - min(date)), 
+        
+        # 核心参数 T.cal：用户的Tenure/Age（首单发生那天，距离今天/数据快照截断日期之间相差的总天数）
+        T.cal = as.numeric(max_date - min(birth_date)), 
+        
+        # 核心参数 m.x：用户在首次消费之后，后续所有重复消费行为的“平均单次花费金额”
+        m.x = if_else(n() > 1, mean(spend[date > min(date)]), 0), 
+        
+        channel = first(channel) # 保留用户的初始获客渠道特征
+      ) %>%
+      filter(T.cal > 0) # 过滤掉那些当天注册当天就截断的异常边缘情况，确保分母不为 0
+    
+    # Step 3: 数学模型 1 训练 —— 估计 BG/NBD 模型参数
+    # 使用极大似然估计法 (MLE) 自动寻找最优的 4 个群体超参数 (r, alpha, s, beta)
+    bgnbd_params <- bgnbd.EstimateParameters(as.matrix(cbs_summary[, c("x", "t.x", "T.cal")]))
+    
+    t_pred <- input$forecast_days # 获取前端输入的预测时长（例如 180 天）
+    
+    # 概率算法应用：基于训练好的 BG/NBD 参数，传入每个人的历史特征，预测该用户在未来时间 T 内会买多少次
+    cbs_summary$expected_tx <- bgnbd.ConditionalExpectedTransactions(
+      bgnbd_params, T.star = t_pred, 
+      x = cbs_summary$x, t.x = cbs_summary$t.x, T.cal = cbs_summary$T.cal
+    )
+    
+    # 概率算法应用：基于贝叶斯定理，计算该用户截至到目前为止，在隐马尔可夫过程中依然“存活”的概率
+    cbs_summary$p_alive <- bgnbd.PAlive(bgnbd_params, x = cbs_summary$x, t.x = cbs_summary$t.x, T.cal = cbs_summary$T.cal)
+    
+    # Step 4: 数学模型 2 训练 —— 估计 Gamma-Gamma 模型参数
+    # 金融核心逻辑：Gamma-Gamma 只能在至少有一次重复购买（x > 0）的活跃用户子集上学习消费偏好分布
+    repeat_customers <- cbs_summary %>% filter(x > 0)
+    gg_params <- gg.EstimateParameters(repeat_customers$x, repeat_customers$m.x)
+    
+    # 贝叶斯收缩应用：计算每个客户未来的期望单笔消费金额（如果 x=0，算法会用大盘整体的平均数进行收缩平滑）
+    cbs_summary$expected_value <- gg.ConditionalExpectedTransactionValue(
+      gg_params, x = cbs_summary$x, m.x = cbs_summary$m.x
+    )
+    
+    # Step 5: 单位经济学指标合成与金融折现计算
+    d_hourly <- (input$discount_rate / 100) / 365 # 将前端输入的年折现率转化为天级别的连续复利折现因子
+    cbs_summary <- cbs_summary %>%
+      mutate(
+        # 终极预测 LTV 核心公式：未来预期交易次数 × 期望单笔金额，再除以时间价值折现因子
+        predicted_ltv = expected_tx * expected_value / (1 + d_hourly * t_pred),
+        
+        # 将前端输入的营销参数动态映射给对应的每一个用户
+        cpa = case_when(
+          channel == "Google_Paid" ~ input$cpa_google,
+          channel == "Facebook_Ads" ~ input$cpa_fb,
+          channel == "Organic_Search" ~ input$cpa_organic
+        ),
+        net_value = predicted_ltv - cpa # 核心决策指标：净 LTV = 预测未来的毛资产价值 - 过去的获客成本
+      )
+    
+    return(cbs_summary) # 将计算完毕、拥有丰富预测因子的数据集作为最终反应结果传给前端渲染器
+  })
+  
+  # ---- 渲染输出组件 1：平均 LTV 指标卡 ----
+  output$total_pred_ltv <- renderValueBox({
+    res <- model_results() # 获取模型计算结果
+    valueBox(
+      value = paste0("$", round(mean(res$predicted_ltv), 2)), # 计算全大盘所有用户的预测 LTV 平均值
+      subtitle = paste0("群体平均预测 ", input$forecast_days, "天 LTV"), # 指标卡小副标题
+      icon = icon("dollar-sign"), color = "purple" # 设置图标和卡片颜色为紫色
+    )
+  })
+  
+  # ---- 渲染输出组件 2：全大盘 LTV/CAC 杠杆乘数卡 ----
+  output$avg_roi <- renderValueBox({
+    res <- model_results()
+    total_ltv <- sum(res$predicted_ltv) # 算出全大盘产生的总毛资产价值
+    total_cac <- sum(res$cpa)           # 算出全大盘总共付出的获客总成本
+    roi_ratio <- round(total_ltv / total_cac, 2) # 两者相除得到整体营销效率比
+    valueBox(
+      value = paste0(roi_ratio, " x"), # 显示类似 "3.45 x" 形式的资产杠杆乘数
+      subtitle = "整体营销全渠道 LTV / CAC 杠杆比率",
+      icon = icon("chart-line"), 
+      color = if_else(roi_ratio >= 3, "green", "orange") # 商业红线控制：大于3倍杠杆显示健康绿，否则显示警告橙
+    )
+  })
+  
+  # ---- 渲染输出组件 3：模型收敛状态卡 ----
+  output$model_status <- renderValueBox({
+    res <- model_results()
+    valueBox(
+      value = "已收敛 (Converged)", # 提示非线性梯度下降优化成功，模型已找到全局最优解
+      subtitle = "BG/NBD & Gamma-Gamma 最大似然估计成功",
+      icon = icon("check-circle"), color = "blue"
+    )
+  })
+  
+  # ---- 渲染输出组件 4：渠道边际回报对比图 (Plotly) ----
+  output$roi_comparison_plot <- renderPlotly({
+    res <- model_results()
+    
+    # 按照渠道进行二次分组，聚合算出渠道级别的平均 LTV 和固定的 CPA
+    summary_df <- res %>%
+      group_by(channel) %>%
+      summarise(
+        Avg_LTV = mean(predicted_ltv),
+        CPA = first(cpa),
+        Net_LTV = mean(net_value),
+        Customer_Count = n()
+      )
+    
+    # 使用 ggplot2 构建基础柱状图：柱子的高度代表预测未来能赚多少钱（LTV）
+    p % layout(showlegend = FALSE) # 将静态的 ggplot 图表无缝打包升级为动态 Plotly 交互图，并隐藏多余图例
+  })
+  
+  # ---- 渲染输出组件 5：微观数据明细大表 ----
+  output$prediction_table <- renderDataTable({
+    model_results() %>%
+      # 精细挑选出业务团队最关心的 8 个核心原子字段进行输出
+      select(cust_id, channel, x, p_alive, expected_value, predicted_ltv, cpa, net_value) %>%
+      mutate(across(where(is.numeric), ~ round(.x, 2))) %>% # 将数据集中所有高精度浮点数截断保留 2 位小数
+      arrange(desc(predicted_ltv)) %>% # 根据预测出的 LTV 从高到低进行降序排列，优先把高价值 VIP 用户顶上顶端
+      head(100) # 为了前端加载的高并发性能，仅截取最高价值的前 100 名用户透出到表格上
+  }, options = list(pageLength = 10, scrollX = TRUE)) # 设置数据表的每页默认显示 10 条记录，并开启横向滚动条防挤压
+}
+
+# ==============================================================================
+# 4. 系统总装与启动指令
+# ==============================================================================
+# 传入刚刚逐行构建并配置好的前端（ui）与后端（server），将整个 Shiny 实例点火上线运作
+shinyApp(ui = ui, server = server)

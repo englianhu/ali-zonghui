@@ -10,6 +10,10 @@ library(tidyr)
 library(DT)
 library(randomForestSRC)
 library(cmprsk)
+library(BTYD)
+
+conflicted::conflicts_prefer(dplyr::arrange)
+conflicted::conflicts_prefer(dplyr::lag)
 
 # ---------------------------- 数据模拟函数（内置） ----------------------------
 simulate_user_data <- function(n_users = 200, max_days = 90, seed = 2026) {
