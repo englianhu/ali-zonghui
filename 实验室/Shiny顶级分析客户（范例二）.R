@@ -6,15 +6,15 @@ library(DT)
 library(randomForestSRC)
 library(BTYD)
 library(PerformanceAnalytics)
-library(shapviz)
-library(fastshap)
+library(xts)          # 显式加载 xts，确保 maxDrawdown 等函数可用
 library(data.table)
 library(conflicted)
 
 conflicted::conflicts_prefer(dplyr::arrange)
 conflicted::conflicts_prefer(dplyr::lag)
+conflicted::conflicts_prefer(dplyr::filter)
 
-# ---------------------------- 数据模拟函数（内置） ----------------------------
+# ---------------------------- 数据模拟函数 ----------------------------
 simulate_user_data <- function(n_users = 200, max_days = 90, seed = 2026) {
   set.seed(seed)
   user_data <- data.frame(
@@ -98,6 +98,7 @@ get_user_features <- function(daily_df) {
 # ---------------------------- BTYD ----------------------------
 fit_btyd_model <- function(user_df) {
   if (nrow(user_df) < 5) return(NULL)
+  # 构建符合 BTYD 要求的数据框
   clv <- user_df %>%
     transmute(
       customer_id = as.character(user_id),
@@ -107,7 +108,8 @@ fit_btyd_model <- function(user_df) {
       monetary_value = ifelse(purchase_days > 0, total_revenue / purchase_days, 0.01)
     )
   tryCatch({
-    BTYD::bgnbd.EstimateParameters(clv$x + 1, clv$t.x + 1, clv$T.cal + 1)
+    # 修正点：直接传入数据框
+    BTYD::bgnbd.EstimateParameters(clv)
   }, error = function(e) NULL)
 }
 
@@ -118,14 +120,17 @@ calc_portfolio_metrics <- function(df) {
     summarise(net = sum(revenue) - sum(inactive_cost), .groups = "drop") %>%
     arrange(day)
   
-  returns <- daily_net$net
-  if (length(returns) < 2) returns <- c(0, 0)
+  net_vals <- daily_net$net
+  if (length(net_vals) < 2) net_vals <- c(0, 0)
+  
+  # 转换为 xts 以保证 PerformanceAnalytics 正常运行
+  net_xts <- xts(net_vals, order.by = as.Date("2026-01-01") + daily_net$day - 1)
   
   list(
-    sharpe = as.numeric(PerformanceAnalytics::SharpeRatio.annualized(returns, geometric = FALSE, scale = 365)),
-    sortino = as.numeric(PerformanceAnalytics::SortinoRatio(returns, MAR = 0)),
-    maxdd = as.numeric(PerformanceAnalytics::maxDrawdown(returns)),
-    equity = cumsum(returns),
+    sharpe = as.numeric(SharpeRatio.annualized(net_xts, geometric = FALSE, scale = 365)),
+    sortino = as.numeric(SortinoRatio(net_xts, MAR = 0)),
+    maxdd = as.numeric(maxDrawdown(net_xts)),
+    equity = cumsum(net_vals),
     daily_net = daily_net
   )
 }
@@ -153,13 +158,10 @@ predict_user_rsf <- function(user_id, history_days, future_days, daily_df, rsf_f
   pred <- predict(rsf_fit, newdata = future)
   surv <- as.data.frame(pred$survival)
   
-  if (ncol(surv) == 0) {
-    surv_prob <- rep(NA, future_days)
+  surv_prob <- if (ncol(surv) >= future_days) {
+    as.numeric(surv[1, seq_len(future_days)])
   } else {
-    surv_prob <- as.numeric(surv[1, seq_len(min(future_days, ncol(surv)))])
-    if (length(surv_prob) < future_days) {
-      surv_prob <- c(surv_prob, rep(tail(surv_prob, 1), future_days - length(surv_prob)))
-    }
+    rep(tail(as.numeric(surv[1, ]), 1), future_days)
   }
   
   data.frame(
@@ -193,7 +195,7 @@ make_feature_importance <- function(rsf_fit) {
 
 # ---------------------------- UI ----------------------------
 ui <- fluidPage(
-  titlePanel("RSF + BTYD + Bayesian 风控版用户流失预测"),
+  titlePanel("RSF + BTYD + 风险调整版用户流失预测"),
   sidebarLayout(
     sidebarPanel(
       numericInput("n_users", "模拟用户数量", value = 200, min = 50, max = 1000, step = 50),
@@ -206,7 +208,7 @@ ui <- fluidPage(
       h4("选择用户"),
       uiOutput("user_select"),
       br(),
-      helpText("RSF 用于流失预测，BTYD 用于复购/CLV，PerformanceAnalytics 用于收益风险。")
+      helpText("RSF 用于流失预测，BTYD 用于复购/CLV，风险指标基于每日净收益计算。")
     ),
     mainPanel(
       tabsetPanel(
@@ -251,16 +253,10 @@ server <- function(input, output, session) {
   output$model_summary <- renderPrint({
     req(analysis_ready())
     print(analysis_ready()$rsf)
-    cat("
-
---- 用户特征概览 ---
-")
+    cat("\n--- 用户特征概览 ---\n")
     print(summary(analysis_ready()$user_feat))
     if (!is.null(analysis_ready()$btyd)) {
-      cat("
-
---- BTYD 参数 ---
-")
+      cat("\n--- BTYD 参数 ---\n")
       print(analysis_ready()$btyd)
     }
   })
@@ -316,14 +312,10 @@ server <- function(input, output, session) {
   output$risk_summary <- renderPrint({
     req(analysis_ready())
     r <- analysis_ready()$risk
-    cat("Sharpe Ratio:", round(r$sharpe, 4), "
-")
-    cat("Sortino Ratio:", round(r$sortino, 4), "
-")
-    cat("Max Drawdown:", round(r$maxdd, 4), "
-")
-    cat("说明：收益口径为 revenue - inactive_cost。
-")
+    cat("Sharpe Ratio:", round(r$sharpe, 4), "\n")
+    cat("Sortino Ratio:", round(r$sortino, 4), "\n")
+    cat("Max Drawdown:", round(r$maxdd, 4), "\n")
+    cat("说明：以每日净收益(revenue - inactive_cost)作为现金流序列计算。\n")
   })
   
   output$equity_plot <- renderPlot({
