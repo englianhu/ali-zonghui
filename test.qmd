@@ -1,20 +1,17 @@
 ---
 title: "Untitled"
-author: "®γσ ξηg <img src='figure/aaaa.jpg' width='16'>"
+author: "®γσ ξηg <img src='诸子百家考工记/aaaa.jpg' width='16'>"
 date: "10/20/2020"
   html_document: 
     mathjax: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 ---
 
-$$
-\begin{align*}
+$$\begin{align*}
  Y& = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{2}\\ 
  &= \beta_{0} + {\color{Red} \widetilde{\beta_{1}}}X_{1} + \beta_{2}X_{2}; {\color{Red} \widetilde{\beta_{1}}} = \beta_{1} + \beta_{2}X_{2}\\
-\end{align*}
-$$
+\end{align*}$$
 
-$$
-\begin{align*}
+\$\$ \begin{align*}
 \color{red}{x} + \color{blue}{y}\\
 
 {\color{red} x} + {\color{blue} y}\\
@@ -22,20 +19,13 @@ $$
 \color{Red} \beta_{1}X_{1}\\
 
 {\color{Red} \beta_{1}}X_{1}\\
-\end{align*}
-$$
+\end{align*} \$\$
 
-$$
-\color{Red} \widetilde{\beta_{1}}X_{1}
-$$
+$$\color{Red} \widetilde{\beta_{1}}X_{1}$$
 
-$$
-{\color{Red} \widetilde{\beta_{1}}}}X_{1}
-$$
+$${\color{Red} \widetilde{\beta_{1}}}}X_{1}$$
 
-$$
-{\color{Red} \widetilde{\beta_{1}}}
-$$
+$${\color{Red} \widetilde{\beta_{1}}}$$
 
 `r lib('vembedr'); vlist <- c('C1hrbXlreY4', 'O8qPQNz8Q8Y', '3pnXMEusQCY', 'E9_eAm2tTns', 'budv9DSiuko'); embed_youtube(vlist[1], height=215)` `r embed_youtube(vlist[2], height=215)` `r embed_youtube(vlist[3], height=215)` `r embed_youtube(vlist[4], height=215)` `r embed_youtube(vlist[5], height=215)`
 
@@ -62,4 +52,3 @@ if (interactive()) {
 theme <- bs_add_variables(theme, "my-class-color" = "red")
 theme <- bs_add_rules(theme, ".my-class { color: $my-class-color }")
 ```
-
