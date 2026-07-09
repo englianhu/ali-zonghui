@@ -155,7 +155,7 @@ display(combined.head())
 # CSV
 
 combined.to_csv(
-    "/kaggle/working/彩种_合并.csv",
+    "/诸子百家学府/彩种_合并.csv",
     index=False,
     encoding="utf-8-sig"
 )
@@ -163,7 +163,7 @@ combined.to_csv(
 # SQLite
 
 with sqlite3.connect(
-    "/kaggle/working/mango.db"
+    "/诸子百家学府/mango.db"
 ) as con:
 
     combined.to_sql(
@@ -192,7 +192,7 @@ records = (
 )
 
 with sqlite3.connect(
-    "/kaggle/working/mongo.db"
+    "/诸子百家学府/mongo.db"
 ) as con:
 
     con.execute(

@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 import os
 
 # 读取原始 CSV，不假设表头稳定
-raw = pd.read_csv("Cai-Chong-_He-Bing.csv", header=None)
+raw = pd.read_csv("/诸子百家学府/彩种_合并.csv", header=None)
 
 # 只保留前 8 列，并设定标准字段名
 raw = raw.iloc[:, :8].copy()
