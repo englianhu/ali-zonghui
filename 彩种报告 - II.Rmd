@@ -158,13 +158,17 @@ if (suppressMessages(!require('rmsfuns'))) {
   install.packages('rmsfuns', dependencies = TRUE, INSTALL_opts = '--no-lock')
   suppressMessages(library('rmsfuns'))
 }
+if (suppressMessages(!require('pacman'))) {
+  install.packages('pacman', dependencies = TRUE, INSTALL_opts = '--no-lock')
+  suppressMessages(library('pacman'))
+}
 
 if(!require('REmap')) devtools::install_github('lchiffon/REmap')
 
 ## Loading multiple packages at once
 #pkgs <- c('readr', 'plyr', 'dplyr', 'magrittr', 'tidyverse', 'devtools', 'zoo', 'lubridate', 'stringr', 'rvest', 'markdown', 'googleVis', 'knitr', 'rmarkdown', 'htmltools', 'knitr', 'kableExtra', 'formattable', 'echarts4r', 'radarchart', 'MASS', 'htmlwidgets', 'maps', 'REmap', 'ggmap', 'vembedr')
 
-pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'readxl', 'tibble', 'DT')
+pkgs <- c('plyr', 'dplyr', 'magrittr', 'stringr', 'knitr', 'kableExtra', 'lubridate', 'broom', 'purrr', 'readxl', 'tibble', 'DT', 'formattable', 'conflicted')
 
 suppressAll(lib(pkgs))
 load_pkg(pkgs)
@@ -201,11 +205,11 @@ conflict_prefer('rename', 'dplyr')
 
 ```{r, results = 'asis', warning = FALSE}
 ## 读取数据
-fls <- suppressWarnings(list.files('文艺数据库/彩种'))
+fls <- suppressWarnings(list.files('诸子百家学府/彩种'))
 smp <- fls %>% 
   llply(., function(x) {
     dtt <- x %>% str_replace_all('.xls', '') %>% ymd
-    smpp <- read_excel(paste0('文艺数据库/彩种/', x)) %>% 
+    smpp <- read_excel(paste0('诸子百家学府/彩种/', x)) %>% 
       .[-nrow(.),]
     data.frame('日期' = dtt, smpp)
   }) %>% bind_rows %>% 

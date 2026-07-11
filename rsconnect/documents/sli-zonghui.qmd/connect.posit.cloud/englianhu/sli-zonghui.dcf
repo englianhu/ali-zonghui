@@ -1,0 +1,14 @@
+name: sli-zonghui
+title: sli-zonghui
+username: englianhu
+account: englianhu
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 019ec177-27fe-5d48-8af9-1ba45b7c9b28
+bundleId:
+url: https://connect.posit.cloud/englianhu/content/019ec177-27fe-5d48-8af9-1ba45b7c9b28
+version: 1
+quarto_version: 1.8.27
+quarto_engines: knitr
+asMultiple: FALSE
+asStatic: FALSE
