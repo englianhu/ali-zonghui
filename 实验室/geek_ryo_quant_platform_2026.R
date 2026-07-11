@@ -411,7 +411,7 @@ ui <- page_sidebar(
         actionButton("run_all", "运行全部策略", class = "btn-primary w-100", icon = icon("play"))
       ),
       accordion_panel(
-        "多因子选股", icon = bs_icon("layer-group"),
+        "多因子选股", icon = bs_icon("layers-fill"),
         sliderInput("mf_weight_value", "价值因子权重", 0, 1, 0.4, 0.1),
         sliderInput("mf_weight_quality", "质量因子权重", 0, 1, 0.3, 0.1),
         sliderInput("mf_weight_mom", "动量因子权重", 0, 1, 0.3, 0.1),
@@ -432,7 +432,7 @@ ui <- page_sidebar(
         actionButton("run_fund", "运行", class = "btn-outline-primary btn-sm w-100")
       ),
       accordion_panel(
-        "股票中性", icon = bs_icon("shield-halved"),
+        "股票中性", icon = bs_icon("shield-shaded"),
         numericInput("mn_lookback", "回望期", 60, 20, 252),
         numericInput("mn_z", "Z阈值", 1.5, 0.5, 3, 0.1),
         actionButton("run_mn", "运行", class = "btn-outline-primary btn-sm w-100")
@@ -444,7 +444,7 @@ ui <- page_sidebar(
         actionButton("run_ls", "运行", class = "btn-outline-primary btn-sm w-100")
       ),
       accordion_panel(
-        "CTA趋势", icon = bs_icon("arrow-trend-up"),
+        "CTA趋势", icon = bs_icon("arrow-up"),
         numericInput("cta_fast", "短期均线", 20, 5, 60),
         numericInput("cta_slow", "长期均线", 60, 20, 252),
         numericInput("cta_risk", "单笔风险 (%)", 2, 0.5, 5, 0.5),
@@ -485,17 +485,17 @@ ui <- page_sidebar(
     nav_panel("仪表盘", icon = bs_icon("speedometer2"),
       layout_columns(
         value_box(title = "多因子选股", value = textOutput("vb_mf"), 
-                  showcase = bs_icon("layer-group"), theme = "primary"),
+                  showcase = bs_icon("layers-fill"), theme = "primary"),
         value_box(title = "事件驱动", value = textOutput("vb_ed"), 
                   showcase = bs_icon("calendar-event"), theme = "secondary"),
         value_box(title = "基本面量化", value = textOutput("vb_fund"), 
                   showcase = bs_icon("building"), theme = "success"),
         value_box(title = "股票中性", value = textOutput("vb_mn"), 
-                  showcase = bs_icon("shield-halved"), theme = "danger"),
+                  showcase = bs_icon("shield-shaded"), theme = "danger"),
         value_box(title = "股票多空", value = textOutput("vb_ls"), 
                   showcase = bs_icon("arrow-left-right"), theme = "warning"),
         value_box(title = "CTA趋势", value = textOutput("vb_cta"), 
-                  showcase = bs_icon("arrow-trend-up"), theme = "info"),
+                  showcase = bs_icon("arrow-up"), theme = "info"),
         value_box(title = "统计套利", value = textOutput("vb_arb"), 
                   showcase = bs_icon("infinity"), theme = "light"),
         value_box(title = "期货策略", value = textOutput("vb_fut"), 
@@ -510,7 +510,7 @@ ui <- page_sidebar(
         plotlyOutput("plot_comparison", height = "500px") %>% withSpinner()
       )
     ),
-    nav_panel("多因子选股", icon = bs_icon("layer-group"),
+    nav_panel("多因子选股", icon = bs_icon("layers-fill"),
       layout_columns(
         card(plotlyOutput("plot_mf_equity", height = "350px") %>% withSpinner()),
         card(DTOutput("tbl_mf_signals") %>% withSpinner())
@@ -531,7 +531,7 @@ ui <- page_sidebar(
       ),
       card(DTOutput("tbl_fund_signals") %>% withSpinner())
     ),
-    nav_panel("股票中性", icon = bs_icon("shield-halved"),
+    nav_panel("股票中性", icon = bs_icon("shield-shaded"),
       layout_columns(
         card(plotlyOutput("plot_mn_equity", height = "350px") %>% withSpinner()),
         card(plotlyOutput("plot_mn_zscore", height = "350px") %>% withSpinner())
@@ -545,7 +545,7 @@ ui <- page_sidebar(
       ),
       card(DTOutput("tbl_ls_metrics") %>% withSpinner())
     ),
-    nav_panel("CTA趋势", icon = bs_icon("arrow-trend-up"),
+    nav_panel("CTA趋势", icon = bs_icon("arrow-up"),
       layout_columns(
         card(plotlyOutput("plot_cta_equity", height = "350px") %>% withSpinner()),
         card(plotlyOutput("plot_cta_signals", height = "350px") %>% withSpinner())
